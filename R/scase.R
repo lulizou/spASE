@@ -1,4 +1,4 @@
-#' Main function for detecting ASE in single-cell data
+#' Main function for estimating ASE in single-cell data
 #'
 #' Fits a beta-binomial model for each gene and returns a results data frame.
 #'
@@ -23,15 +23,20 @@
 #' @return A data frame of results containing the gene names, estimated p and
 #' standard errors on the logit scale.
 #'
-#' @import aod
+#' @importFrom aod betabin
+#' @import foreach
+#' @import parallel
+#' @import doSNOW
 #'
 #' @export
 
-scase <- function(matrix1, matrix2,
-                  min.cells = 10, cores = 1, verbose = F) {
+scase <- function(matrix1, matrix2, covariates=NULL,
+                  min.cells = 10, cores = 1, genes = NULL,
+                  verbose = F) {
 
-  if(!is(matrix1, 'matrix') | !is(matrix2, 'matrix')) {
-    stop('input matrix1 and matrix2 must be a matrix')
+  if(!(is(matrix1, 'matrix') | is(matrix1, 'sparseMatrix')) &
+     !(is(matrix2, 'matrix') | is(matrix2, 'sparseMatrix'))) {
+    stop('input matrix1 and matrix2 must be a matrix or sparseMatrix')
   }
   if (ncol(matrix1)!=ncol(matrix2)) {
     stop('matrices dont have same number of columns')
@@ -40,49 +45,120 @@ scase <- function(matrix1, matrix2,
     stop('matrices dont have same number of rows')
   }
   if (is.null(rownames(matrix1))) {
-    warning('input matrix1 doesnt have rownames')
+    stop('input matrix1 doesnt have rownames')
   }
   if (is.null(colnames(matrix1))) {
-    warning('input matrix1 doesnt have colnames')
+    stop('input matrix1 doesnt have colnames')
+  }
+  if (!is.null(covariates)) {
+    colnames(covariates)[1] <- 'cell'
+    message(paste('assuming covariates first column is cell, using',
+                  colnames(covariates[,-1]), 'as baseline covariates'))
+    if (any(!is.factor(covariates[,-1]))) {
+      stop('cannot handle non-factor covariates rn; either convert all covariates
+           to factor or remove non-factor columns')
+    }
   }
   cl <- makeCluster(cores)
   registerDoSNOW(cl)
-  genes <- rownames(matrix1)
+  # Smart-seq uses NAs in the matrices which are different from 0's;
+  # make sure don't use cells for which gene counts are NA in one allele
+  matrix1[is.na(matrix2)] <- NA
+  matrix2[is.na(matrix1)] <- NA
+  numcells <- rowSums((matrix1>0)|(matrix2>0), na.rm=T)
+  remove.idx <- which(numcells < min.cells)
+  matrix1 <- matrix1[-remove.idx,]; matrix2 <- matrix2[-remove.idx,]
+  if (is.null(genes)) {
+    genes <- rownames(matrix1)
+    message(paste(nrow(matrix1), 'genes pass min threshold of', min.cells, 'cells'))
+  } else {
+    message('using user-supplied genes')
+  }
   pb <- txtProgressBar(max = length(genes), style = 3)
   progress <- function(n) setTxtProgressBar(pb, n)
   opts <- list(progress = progress)
   result <- foreach(
     i = 1:length(genes),
-    .combine = function(...) {
-      mapply('rbind', ..., SIMPLIFY = FALSE)
-    },
+    .combine = rbind,
     .options.snow = opts) %dopar% {
-      y <- matrix1[i,]
-      total <- y + matrix2[i,]
+      y <- matrix1[genes[i],]
+      idx <- !is.na(y)
+      y <- y[idx]
+      total <- y + matrix2[genes[i],idx]
       y <- y[total > 0]; total <- total[total > 0]
-      n <- length(y)
-      if (all(y==total)) {
-        data.frame(gene = genes[i], logit.p = NA, logit.p.sd = NA,
-                   phi = NA, phi.sd = NA, flag = 'monoallelic1')
-      } else if (sum(y)==0) {
-        data.frame(gene = genes[i], logit.p = NA, logit.p.sd = NA,
-                   phi = NA, phi.sd = NA, flag = 'monoallelic2')
+      n <- sum(total)
+      if (is.null(covariates)) {
+        if (all(y==total)) {
+          return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
+                            logit.p = NA, logit.p.sd = NA,
+                            phi = NA, phi.sd = NA, flag = 'monoallelic1'))
+        } else if (sum(y)==0) {
+          return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
+                            logit.p = NA, logit.p.sd = NA,
+                            phi = NA, phi.sd = NA, flag = 'monoallelic2'))
+        }
+        fit <- betabinase(y, total)
+        res  <- fit$result
+        if (!is.null(res)){
+          return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
+                            logit.p = unname(res@param['(Intercept)']),
+                            logit.p.sd = sqrt(res@varparam[1,1]),
+                            phi = unname(res@param['phi.(Intercept)']),
+                            phi.sd = sqrt(res@varparam[2,2]),
+                            flag = ''))
+        } else {
+          return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
+                            logit.p = NA, logit.p.sd = NA,
+                            phi = NA, phi.sd = NA, flag = 'conv'))
+        }
+      } else {
+        if (all(y==total)) {
+          return(data.frame(gene = genes[i], factor = NA, lvl = NA, totalUMI = n,
+                            totalCells = length(y),logit.p = NA, logit.p.sd = NA,
+                            phi = NA, phi.sd = NA, flag = 'monoallelic1'))
+        } else if (sum(y)==0) {
+          return(data.frame(gene = genes[i], factor = NA, lvl = NA, totalUMI = n,
+                            totalCells = length(y),logit.p = NA, logit.p.sd = NA,
+                            phi = NA, phi.sd = NA, flag = 'monoallelic2'))
+        }
+        covari <- left_join(data.frame(cell=names(y)), covariates, by='cell')
+        print(covari)
+        baseline.covari <- covari[,-1,drop=F]
+        bcov.names <- colnames(baseline.covari)
+        # fit one model to each cell type and return one entry per gene per level
+        dfres <- NULL
+        for (b in bcov.names) {
+          lvls <- table(baseline.covari[,b])
+          lvls <- names(lvls[lvls>min.cells])
+          for (l in lvls) {
+            ii <- which(baseline.covari[,b]==l)
+            n <- sum(y[ii])
+            ncell <- length(ii)
+            fit <- betabinase(y[ii], total[ii])
+            res  <- fit$result
+            if (!is.null(res)) {
+              if (is.null(dfres)) {
+                dfres <- data.frame(gene = genes[i], factor = b, lvl = l, totalUMI = n,
+                                    totalCells = ncell,
+                                    logit.p = unname(res@param['(Intercept)']),
+                                    logit.p.sd = sqrt(res@varparam[1,1]),
+                                    phi = unname(res@param['phi.(Intercept)']),
+                                    phi.sd = sqrt(res@varparam[2,2]), flag = '')
+              } else {
+                dfres <- rbind(dfres,
+                               data.frame(gene = genes[i], factor = b, lvl = l, totalUMI = n,
+                                          totalCells = ncell,
+                                          logit.p = unname(res@param['(Intercept)']),
+                                          logit.p.sd = sqrt(res@varparam[1,1]),
+                                          phi = unname(res@param['phi.(Intercept)']),
+                                          phi.sd = sqrt(res@varparam[2,2]), flag = ''))
+              }
+            }
+          }
+        }
+        return(dfres)
       }
-      conv_issue <-  FALSE
-      tryCatch({
-        fit <- betabin(cbind(Y,total-Y)~1, ~1, data = data.frame(total=total, Y=Y))
-      }, warning = function(w) { conv_issue <<- TRUE},
-      error = function(e) { conv_issue <<- TRUE}
-      )
-      if (conv_issue) {
-        data.frame(gene = genes[i], logit.p = NA, logit.p.sd = NA,
-                   phi = NA, phi.sd = NA, flag = 'convergence')
-      }
-      fitsum <- summary(fit)
-      data.frame(gene = genes[i], logit.p = fitsum@Coef$Estimate,
-                 logit.p.sd = fitsum@Coef$`Std. Error`,
-                 phi = fitsum@Phi$Estimate, phi.sd = fitsum@Phi$`Std. Error`,
-                 flag = '')
     }
+  stopCluster(cl)
   return(result)
 }

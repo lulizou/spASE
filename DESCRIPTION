@@ -1,9 +1,9 @@
 Package: spASE
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Detecting Allele-Specific Expression in Single-Cell and Spatial Transcriptomics
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Luli S. Zou
+Maintainer: Luli S. Zou <zou@g.harvard.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?

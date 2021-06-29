@@ -5,71 +5,59 @@
 \title{Main function for detecting spatial allele-specific expression (ASE) patterns}
 \usage{
 spase(
-  se,
-  predict = NULL,
-  model = "all",
+  matrix1,
+  matrix2,
+  covariates,
+  df = 5,
+  genes = NULL,
   min.pixels = 100,
-  min.k = 100,
-  max.k = 300,
+  min.pixels.per.factor = 15,
   cores = 1,
   verbose = F
 )
 }
 \arguments{
-\item{predict}{(optional) a \code{data.frame} or \code{matrix} containing the
-coordinates at which to evaluate the model. If \code{NULL} then a default
-set of 400 coordinates is automatically generated from the range of the data.}
+\item{matrix1}{matrix or sparseMatrix of allele counts for allele to be
+modeled. Row names should be genes and column names should be pixel IDs.}
 
-\item{model}{a string specifying which model to do, either 'all', 'cell.type',
-or 'cell.type.interaction'. 'all' is the default and just uses all data to fit
-the spatial model. 'cell.type' includes cell type as a covariate; each cell
-type gets its own mean (intercept), 'cell.type.interaction' includes
-interaction terms between cell type and the spatial spline, which allows each
-cell type to have its own intercept and spatial fit. Typically challenging
-to fit the latter two models with very sparse data.}
+\item{matrix2}{matrix or sparseMatrix of allele counts for second allele.}
 
-\item{min.pixels}{numeric specifying the minimum number of pixels a gene
-should be present on to fit}
+\item{covariates}{data frame that matches pixel IDs to spatial coordinates
+and other covariates. First column assumed to be pixel IDs, next two columns
+assumed to be x,y coordinates. Any additional columns assumed to be
+covariates that will be included in the baseline model.}
 
-\item{min.k}{numeric, sets the minimum $k$ value for fitting the GAM model.
-Default is \code{100}.}
+\item{df}{integer, sets the number of degrees of freedom to use for the
+smoothing spline. Default is 5. Usually want to increase this or test multiple.}
 
-\item{max.k}{numeric, sets the maximum $k$ value for fitting the GAM model.
-Default is \code{300}.}
+\item{genes}{optional vector of genes to run on. Good for testing things out.}
+
+\item{min.pixels}{integer specifying the minimum number of pixels a gene
+should be present on to fit. Default is 100.}
+
+\item{min.pixels.per.factor}{integer specifying the minimum number of pixels
+a gene should be present on if there are factor covariates e.g. cell type.
+For example, the default of 15 requires that at least 15 pixels are that cell
+type, otherwise that cell type will not be included in the model for that gene.}
 
 \item{cores}{number of cores to use for parallelization. Default is 1.}
 
 \item{verbose}{whether or not to print a lot of status messages. Default is
 FALSE.}
-
-\item{data}{a data object containing gene expression counts for both alleles
-(types). Accepted format is a
- \code{SpatialExperiment} object with exactly two assays, one for each
- allele. The assays can be sparse matrices and should be named by allele/type.
- By default, the probability of the first assay will be modeled as the
- binomial proportion p. Rows should be genes and columns should be pixel IDs.
- spatialCoords should optionally contain the cell types corresponding to each
- pixel.}
 }
 \value{
 A list containing following output:
-\itemize{ \item{\code{summaryStats}}{ a data frame containing a summary of
-the results including approximate goodness of fit (chi-squared) p-values and
-effect sizes of cell types if applicable}
-\item{\code{fittedVals}}{ a matrix containing the fitted values for each
-gene} \item{\code{seVals}}{ a matrix containing the standard errors of the
-fitted values for each gene}}
+\itemize{ \item{\code{results}}{ a data frame containing a summary of
+the results including p-values and q-values for goodness of spatial fit over
+baseline covariates provided }
+\item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}
 }
 \description{
 This function fits a spatial binomial model, estimates a
 smoothed probability surface, and stores information for plotting results.
-Input must include either a list of two gene x pixel count data matrices or
-a data frame containing a sparse representation of that, and a data frame or
-matrix of pixel IDs and spatial coordinates. Optionally, single cell types
-may be included for each pixel.
+Uses a likelihood ratio test to test for a significant spatial fit over
+optional baseline covariates such as cell type.
 }
 \details{
-Fits a binomial Gaussian process GAM model for each gene,
-extracts approximate goodness-of-fit (chi-squared) test p-values, and stores
-predicted estimates and standard errors for visualization.
+Fits a binomial GAM for each gene.
 }

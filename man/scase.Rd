@@ -2,7 +2,7 @@
 % Please edit documentation in R/scase.R
 \name{scase}
 \alias{scase}
-\title{Main function for detecting ASE in single-cell data}
+\title{Main function for estimating ASE in single-cell data}
 \usage{
 scase(matrix1, matrix2, min.cells = 10, cores = 1, verbose = F)
 }
