@@ -119,6 +119,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
       total <- y + matrix2[genes[i],]
       y <- y[total > 0]; total <- total[total > 0]
       n <- sum(total)
+      nspots <- length(total)
       covari <- left_join(data.frame(pixel=names(y)), covariates, by='pixel')
       # accounting for pixels w/o coordinates:
       remove.idx <- which(is.na(covari$x1)|is.na(covari$x2))
@@ -130,11 +131,11 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
       el <- list()
       if (all(y==total)) {
         el[[genes[i]]] <- NA
-        return(list(result=data.frame(gene = genes[i], totalUMI = n,
+        return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                       chisq.p = NA, flag = 'monoallelic1'), fits=el))
       } else if (sum(y)==0) {
         el[[genes[i]]] <- NA
-        return(list(result=data.frame(gene = genes[i], totalUMI = n,
+        return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                       chisq.p = NA, flag = 'monoallelic2'), fits=el))
       }
       if (baseline.cov=='') {
@@ -142,7 +143,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
         mm <- NULL
         if (is.null(baseline.model$result)) {
           el[[genes[i]]] <- NA
-          return(list(result=data.frame(gene = genes[i], totalUMI = n,
+          return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                         chisq.p = NA, flag = 'conv'), fits=el))
         }
       } else {
@@ -177,12 +178,12 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
           baseline.model <- betabinase(y, total, mm)
           if (is.null(baseline.model$result)) {
             el[[genes[i]]] <- NA
-            return(list(result=data.frame(gene = genes[i], totalUMI = n,
+            return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                           chisq.p = NA, flag = 'conv'), fits=el))
           }
         } else {
           el[[genes[i]]] <- NA
-          return(list(result=data.frame(gene = genes[i], totalUMI = n,
+          return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                         chisq.p = NA, flag = 'min pixels'), fits=el))
         }
       }
@@ -196,7 +197,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
       smooth.model <- betabinase(y, total, mm)
       if (is.null(smooth.model$result)) {
         el[[genes[i]]] <- NA
-        return(list(result=data.frame(gene = genes[i], totalUMI = n,
+        return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                       chisq.p = NA, flag = 'conv'), fits=el))
       }
       lrt.stat <- 2*(smooth.model$result@logL-baseline.model$result@logL)
@@ -204,7 +205,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
         df.residual(smooth.model$result)
       pval <- 1 - pchisq(abs(lrt.stat), df.diff)
       el[[genes[i]]] <- smooth.model$result
-      return(list(result=data.frame(gene = genes[i], totalUMI = n,
+      return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
                                     chisq.p = pval,flag = ''), fits=el))
     }
 
