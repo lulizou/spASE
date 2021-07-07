@@ -1,0 +1,1944 @@
+Chromosome	Start	End	cM	strand GRCm38	MGI ID	Feature Type	Symbol	Name		
+X	61116378	61139460	34.19	+	MGI:5637821	non-coding RNA gene	Cdr1os	cerebellar degeneration related antigen 1, opposite strand	
+X					MGI:5440630	non-coding RNA gene	Linx	long intervening transcript in Xic	
+X	152868620	152868860		+	MGI:5454464	ribozyme gene	Gm24687	predicted gene, 24687	
+X	82178454	82178672		+	MGI:5455951	ribozyme gene	Gm26174	predicted gene, 26174	
+X	59080891	59081122		-	MGI:5456128	ribozyme gene	Gm26351	predicted gene, 26351	
+X	6027056	6092269		-	MGI:5477112	sense overlapping lncRNA gene	Gm26618	predicted gene, 26618	
+X					MGI:107213	rRNA gene	Rn18s-rs7	18s RNA, related sequence 7	
+X	86406128	86406246	39.82	-	MGI:4421744	rRNA gene	n-R5s10	nuclear encoded rRNA 5S 10	
+X					MGI:4421745	rRNA gene	n-R5s11	nuclear encoded rRNA 5S 11	
+X	136277505	136277623	57.67	+	MGI:4421746	rRNA gene	n-R5s12	nuclear encoded rRNA 5S 12	
+X	151777671	151777789	68.46	+	MGI:4421747	rRNA gene	n-R5s13	nuclear encoded rRNA 5S 13	
+X	151985310	151985416	68.46	+	MGI:4421748	rRNA gene	n-R5s14	nuclear encoded rRNA 5S 14	
+X	152304001	152304111	68.46	+	MGI:4421749	rRNA gene	n-R5s15	nuclear encoded rRNA 5S 15	
+X	155543290	155543408	72.38	+	MGI:4421750	rRNA gene	n-R5s16	nuclear encoded rRNA 5S 16	
+X					MGI:4421751	rRNA gene	n-R5s17	nuclear encoded rRNA 5S 17	
+X	164133385	164133505	76.12	+	MGI:4421752	rRNA gene	n-R5s18	nuclear encoded rRNA 5S 18	
+X	6106891	6107009	2.71	+	MGI:4421736	rRNA gene	n-R5s2	nuclear encoded rRNA 5S 2	
+X	13215698	13215809	8.1	-	MGI:4421737	rRNA gene	n-R5s3	nuclear encoded rRNA 5S 3	
+X					MGI:4421738	rRNA gene	n-R5s4	nuclear encoded rRNA 5S 4	
+X	18323444	18323562	13.63	-	MGI:4421739	rRNA gene	n-R5s5	nuclear encoded rRNA 5S 5	
+X	49879307	49879394	26.09	+	MGI:4421740	rRNA gene	n-R5s6	nuclear encoded rRNA 5S 6	
+X	68949564	68949684	34.91	-	MGI:4421741	rRNA gene	n-R5s7	nuclear encoded rRNA 5S 7	
+X	71131237	71131354	36.44	+	MGI:4421742	rRNA gene	n-R5s8	nuclear encoded rRNA 5S 8	
+X	83345743	83345859	38.38	+	MGI:4421743	rRNA gene	n-R5s9	nuclear encoded rRNA 5S 9	
+X	157638203	157638296		-	MGI:5453158	rRNA gene	Gm23381	predicted gene, 23381	
+X	159449277	159449385		+	MGI:5453583	rRNA gene	Gm23806	predicted gene, 23806	
+X	102838155	102838255		+	MGI:5454286	rRNA gene	Gm24509	predicted gene, 24509	
+X	167902315	167902424		+	MGI:5454549	rRNA gene	Gm24772	predicted gene, 24772	
+X	102801184	102801284		+	MGI:5455135	rRNA gene	Gm25358	predicted gene, 25358	
+X	21716017	21716095		+	MGI:5455330	rRNA gene	Gm25553	predicted gene, 25553	
+X	10510048	10510156		+	MGI:5455662	rRNA gene	Gm25885	predicted gene, 25885	
+X	76788422	76788529		-	MGI:5455818	rRNA gene	Gm26041	predicted gene, 26041	
+X	102856291	102856391		-	MGI:5455929	rRNA gene	Gm26152	predicted gene, 26152	
+X	162237099	162237226		+	MGI:5530872	rRNA gene	Gm27490	predicted gene, 27490	
+X	56587539	56587611		+	MGI:4413675	tRNA gene	n-TAagc2	nuclear encoded tRNA alanine 2 (anticodon AGC)	
+X	136569763	136569835		+	MGI:4413693	tRNA gene	n-TAcgc1	nuclear encoded tRNA alanine 1 (anticodon CGC)	
+X	136567865	136567936		-	MGI:4413694	tRNA gene	n-TAcgc2	nuclear encoded tRNA alanine 2 (anticodon CGC)	
+X	136367721	136367792		+	MGI:4413696	tRNA gene	n-TAcgc4	nuclear encoded tRNA alanine 4 (anticodon CGC)	
+X	136401868	136401939		+	MGI:4413697	tRNA gene	n-TAcgc5	nuclear encoded tRNA alanine 5 (anticodon CGC)	
+X	136395522	136395593		-	MGI:4413698	tRNA gene	n-TAcgc6	nuclear encoded tRNA alanine 6 (anticodon CGC)	
+X	136379366	136379437		-	MGI:4413699	tRNA gene	n-TAcgc7	nuclear encoded tRNA alanine 7 (anticodon CGC)	
+X	136590365	136590436		+	MGI:4413703	tRNA gene	n-TAtgc1	nuclear encoded tRNA alanine 1 (anticodon TGC)	
+X	136357602	136357673		+	MGI:4413704	tRNA gene	n-TAtgc2	nuclear encoded tRNA alanine 2 (anticodon TGC)	
+X	136553725	136553796		+	MGI:4413705	tRNA gene	n-TAtgc3	nuclear encoded tRNA alanine 3 (anticodon TGC)	
+X	136430365	136430436		-	MGI:4413706	tRNA gene	n-TAtgc4	nuclear encoded tRNA alanine 4 (anticodon TGC)	
+X	136380747	136380818		+	MGI:4413708	tRNA gene	n-TAtgc6	nuclear encoded tRNA alanine 6 (anticodon TGC)	
+X	136396904	136396975		+	MGI:4413709	tRNA gene	n-TAtgc7	nuclear encoded tRNA alanine 7 (anticodon TGC)	
+X	136569246	136569317		+	MGI:4413710	tRNA gene	n-TAtgc8	nuclear encoded tRNA alanine 8 (anticodon TGC)	
+X	111377217	111377289		+	MGI:4413726	tRNA gene	n-TRcct4	nuclear encoded tRNA arginine 4 (anticodon CCT)	
+X	13859166	13859237		-	MGI:4413835	tRNA gene	n-TQttg1	nuclear encoded tRNA glutamine 1 (anticodon TTG)	
+X	161135134	161135216		+	MGI:4413941	tRNA gene	n-TLtaa1	nuclear encoded tRNA leucine 1 (anticodon TAA)	
+X	136195732	136195804		-	MGI:4413966	tRNA gene	n-TKctt19	nuclear encoded tRNA lysine 19 (anticodon CTT)	
+X	14702616	14702687		-	MGI:4414015	tRNA gene	n-TPtgg3	nuclear encoded tRNA proline 3 (anticodon TGG)	
+X	166909733	166909814		-	MGI:4414023	tRNA gene	n-TSaga3	nuclear encoded tRNA serine 3 (anticodon AGA)	
+X	160766110	160766182		+	MGI:4414106	tRNA gene	n-TVtac3	nuclear encoded tRNA valine 3 (anticodon TAC)	
+X	138303307	138303413		-	MGI:5451834	snRNA gene	Gm22057	predicted gene, 22057	
+X	165717409	165717515		-	MGI:5451839	snRNA gene	Gm22062	predicted gene, 22062	
+X	8083992	8084093		+	MGI:5451860	snRNA gene	Gm22083	predicted gene, 22083	
+X	105020268	105020378		-	MGI:5451867	snRNA gene	Gm22090	predicted gene, 22090	
+X	127327490	127327594		+	MGI:5451916	snRNA gene	Gm22139	predicted gene, 22139	
+X	151384494	151384643		+	MGI:5452025	snRNA gene	Gm22248	predicted gene, 22248	
+X	60257552	60257658		+	MGI:5452064	snRNA gene	Gm22287	predicted gene, 22287	
+X	50405813	50405919		+	MGI:5452065	snRNA gene	Gm22288	predicted gene, 22288	
+X	17325315	17325418		+	MGI:5452071	snRNA gene	Gm22294	predicted gene, 22294	
+X	74713767	74713873		-	MGI:5452128	snRNA gene	Gm22351	predicted gene, 22351	
+X	154711258	154711365		+	MGI:5452136	snRNA gene	Gm22359	predicted gene, 22359	
+X	36409610	36409707		-	MGI:5452141	snRNA gene	Gm22364	predicted gene, 22364	
+X	101242738	101242871		+	MGI:5452249	snRNA gene	Gm22472	predicted gene, 22472	
+X	48299579	48299682		+	MGI:5452305	snRNA gene	Gm22528	predicted gene, 22528	
+X	54118995	54119101		+	MGI:5452327	snRNA gene	Gm22550	predicted gene, 22550	
+X	83536031	83536137		+	MGI:5452357	snRNA gene	Gm22580	predicted gene, 22580	
+X	48307043	48307143		+	MGI:5452389	snRNA gene	Gm22612	predicted gene, 22612	
+X	157053955	157054118		+	MGI:5452443	snRNA gene	Gm22666	predicted gene, 22666	
+X	82187682	82187781		+	MGI:5452463	snRNA gene	Gm22686	predicted gene, 22686	
+X	163150391	163150497		-	MGI:5452523	snRNA gene	Gm22746	predicted gene, 22746	
+X	19355001	19355107		+	MGI:5452560	snRNA gene	Gm22783	predicted gene, 22783	
+X					MGI:5452741	snRNA gene	Gm22964	predicted gene, 22964	
+X	66728415	66728553		+	MGI:5452777	snRNA gene	Gm23000	predicted gene, 23000	
+X	77579487	77579659		+	MGI:5452898	snRNA gene	Gm23121	predicted gene, 23121	
+X	134496810	134496916		+	MGI:5452901	snRNA gene	Gm23124	predicted gene, 23124	
+X	168581891	168582002		-	MGI:5452974	snRNA gene	Gm23197	predicted gene, 23197	
+X	140679696	140679802		+	MGI:5452976	snRNA gene	Gm23199	predicted gene, 23199	
+X	56750010	56750115		+	MGI:5453035	snRNA gene	Gm23258	predicted gene, 23258	
+X	109009681	109009847		-	MGI:5453099	snRNA gene	Gm23322	predicted gene, 23322	
+X	104001373	104001479		-	MGI:5453155	snRNA gene	Gm23378	predicted gene, 23378	
+X	72611803	72611909		+	MGI:5453238	snRNA gene	Gm23461	predicted gene, 23461	
+X	15896663	15896769		-	MGI:5453293	snRNA gene	Gm23516	predicted gene, 23516	
+X	20614523	20614695		-	MGI:5453405	snRNA gene	Gm23628	predicted gene, 23628	
+X	105873824	105873935		+	MGI:5453433	snRNA gene	Gm23656	predicted gene, 23656	
+X	19762668	19762774		-	MGI:5453455	snRNA gene	Gm23678	predicted gene, 23678	
+X	162114238	162114341		+	MGI:5453571	snRNA gene	Gm23794	predicted gene, 23794	
+X	162850158	162850264		-	MGI:5453678	snRNA gene	Gm23901	predicted gene, 23901	
+X	138422715	138422819		-	MGI:5453735	snRNA gene	Gm23958	predicted gene, 23958	
+X	48230286	48230444		+	MGI:5453815	snRNA gene	Gm24038	predicted gene, 24038	
+X	155046610	155046719		+	MGI:5454045	snRNA gene	Gm24268	predicted gene, 24268	
+X					MGI:5454256	snRNA gene	Gm24479	predicted gene, 24479	
+X	106649913	106650019		-	MGI:5454268	snRNA gene	Gm24491	predicted gene, 24491	
+X	128700546	128700653		+	MGI:5454299	snRNA gene	Gm24522	predicted gene, 24522	
+X	21901732	21901838		-	MGI:5454312	snRNA gene	Gm24535	predicted gene, 24535	
+X	101005821	101005883		+	MGI:5454354	snRNA gene	Gm24577	predicted gene, 24577	
+X	106587481	106587642		-	MGI:5454399	snRNA gene	Gm24622	predicted gene, 24622	
+X	116345732	116345895		+	MGI:5454401	snRNA gene	Gm24624	predicted gene, 24624	
+X	43254046	43254235		+	MGI:5454540	snRNA gene	Gm24763	predicted gene, 24763	
+X	121914560	121914659		+	MGI:5454560	snRNA gene	Gm24783	predicted gene, 24783	
+X	113332100	113332225		-	MGI:5454608	snRNA gene	Gm24831	predicted gene, 24831	
+X					MGI:5454683	snRNA gene	Gm24906	predicted gene, 24906	
+X	88192617	88192723		+	MGI:5454783	snRNA gene	Gm25006	predicted gene, 25006	
+X	57989473	57989579		+	MGI:5454800	snRNA gene	Gm25023	predicted gene, 25023	
+X	36363899	36364002		+	MGI:5454824	snRNA gene	Gm25047	predicted gene, 25047	
+X	127906453	127906559		-	MGI:5454838	snRNA gene	Gm25061	predicted gene, 25061	
+X	45795361	45795467		-	MGI:5454855	snRNA gene	Gm25078	predicted gene, 25078	
+X	145160477	145160621		+	MGI:5454874	snRNA gene	Gm25097	predicted gene, 25097	
+X	14315401	14315591		-	MGI:5454979	snRNA gene	Gm25202	predicted gene, 25202	
+X	15685285	15685391		-	MGI:5454984	snRNA gene	Gm25207	predicted gene, 25207	
+X	154979339	154979448		+	MGI:5455034	snRNA gene	Gm25257	predicted gene, 25257	
+X	92882451	92882555		+	MGI:5455109	snRNA gene	Gm25332	predicted gene, 25332	
+X	115373841	115373964		-	MGI:5455143	snRNA gene	Gm25366	predicted gene, 25366	
+X	164268071	164268176		-	MGI:5455144	snRNA gene	Gm25367	predicted gene, 25367	
+X	61938891	61938997		+	MGI:5455189	snRNA gene	Gm25412	predicted gene, 25412	
+X	75578808	75578971		-	MGI:5455198	snRNA gene	Gm25421	predicted gene, 25421	
+X	9317819	9317976		+	MGI:5455258	snRNA gene	Gm25481	predicted gene, 25481	
+X	13985385	13985475		-	MGI:5455329	snRNA gene	Gm25552	predicted gene, 25552	
+X	74997577	74997683		-	MGI:5455406	snRNA gene	Gm25629	predicted gene, 25629	
+X	9532511	9532669		-	MGI:5455505	snRNA gene	Gm25728	predicted gene, 25728	
+X	153576488	153576594		-	MGI:5455570	snRNA gene	Gm25793	predicted gene, 25793	
+X	109023356	109023462		-	MGI:5455574	snRNA gene	Gm25797	predicted gene, 25797	
+X	22434414	22434516		+	MGI:5455589	snRNA gene	Gm25812	predicted gene, 25812	
+X	101912630	101912724		-	MGI:5455605	snRNA gene	Gm25828	predicted gene, 25828	
+X	58357952	58358058		-	MGI:5455628	snRNA gene	Gm25851	predicted gene, 25851	
+X	153915116	153915215		-	MGI:5455672	snRNA gene	Gm25895	predicted gene, 25895	
+X	98814775	98814881		+	MGI:5455777	snRNA gene	Gm26000	predicted gene, 26000	
+X	163388772	163388891		-	MGI:5455784	snRNA gene	Gm26007	predicted gene, 26007	
+X	105819883	105820065		+	MGI:5455797	snRNA gene	Gm26020	predicted gene, 26020	
+X	20800332	20800436		-	MGI:5455842	snRNA gene	Gm26065	predicted gene, 26065	
+X	37060246	37060354		-	MGI:5455876	snRNA gene	Gm26099	predicted gene, 26099	
+X	110622832	110623022		-	MGI:5455885	snRNA gene	Gm26108	predicted gene, 26108	
+X	64800511	64800616		+	MGI:5455888	snRNA gene	Gm26111	predicted gene, 26111	
+X	74534285	74534391		+	MGI:5455902	snRNA gene	Gm26125	predicted gene, 26125	
+X	22861936	22862045		+	MGI:5455908	snRNA gene	Gm26131	predicted gene, 26131	
+X	146293776	146293835		-	MGI:5455928	snRNA gene	Gm26151	predicted gene, 26151	
+X	56725073	56725237		+	MGI:5456089	snRNA gene	Gm26312	predicted gene, 26312	
+X	11850484	11850590		+	MGI:5456091	snRNA gene	Gm26314	predicted gene, 26314	
+X	162069457	162069563		+	MGI:5456094	snRNA gene	Gm26317	predicted gene, 26317	
+X	39305377	39305481		-	MGI:5456214	snRNA gene	Gm26437	predicted gene, 26437	
+X	151261918	151262021		-	MGI:5456218	snRNA gene	Gm26441	predicted gene, 26441	
+X	59190773	59190866		+	MGI:5456264	snRNA gene	Gm26487	predicted gene, 26487	
+X	101005896	101005959		+	MGI:5530892	snRNA gene	Gm27510	predicted gene, 27510	
+X	145666973	145667070		-	MGI:5531041	snRNA gene	Gm27659	predicted gene, 27659	
+X	20098851	20102137			MGI:2147890	unclassified non-coding RNA gene	6330509M05Rik	RIKEN cDNA 6330509M05 gene	
+X	134076787	134079680			MGI:2443073	unclassified non-coding RNA gene	9330119M13Rik	RIKEN cDNA 9330119M13 gene	
+X	104508411	104512226			MGI:2443279	unclassified non-coding RNA gene	D830012I24Rik	RIKEN cDNA D830012I24 gene	
+X					MGI:2444836	unclassified non-coding RNA gene	9330168M11Rik	RIKEN cDNA 9330168M11 gene	
+X	87680714	87681826			MGI:1920111	unclassified non-coding RNA gene	2900005I04Rik	RIKEN cDNA 2900005I04 gene	
+X	159534484	159538528			MGI:1920271	unclassified non-coding RNA gene	Panct1	pluripotency-associated noncoding transcript 1	
+X	56381198	56382576			MGI:1923462	unclassified non-coding RNA gene	6530403M18Rik	RIKEN cDNA 6530403M18 gene	
+X	8097087	8106701	3.66	+	MGI:3646481	unclassified non-coding RNA gene	Gm6787	predicted gene 6787	
+X	169975043	169978917	79.33	-	MGI:3603513	unclassified non-coding RNA gene	G530011O06Rik	RIKEN cDNA G530011O06 gene	
+X					MGI:5594947	unclassified non-coding RNA gene	Gm35788	predicted gene, 35788	
+X					MGI:5594315	unclassified non-coding RNA gene	Gm35156	predicted gene, 35156	
+X					MGI:5595204	unclassified non-coding RNA gene	Gm36045	predicted gene, 36045	
+X					MGI:5595254	unclassified non-coding RNA gene	Gm36095	predicted gene, 36095	
+X	101295839	101321348		+	MGI:5439455	unclassified non-coding RNA gene	Gm21986	predicted gene 21986	
+X	140641960	140642261		-	MGI:5451802	unclassified non-coding RNA gene	Gm22025	predicted gene, 22025	
+X	132681887	132682089		+	MGI:5451920	unclassified non-coding RNA gene	Gm22143	predicted gene, 22143	
+X	100749421	100749748		+	MGI:5451937	unclassified non-coding RNA gene	Gm22160	predicted gene, 22160	
+X	129304796	129305073		-	MGI:5452002	unclassified non-coding RNA gene	Gm22225	predicted gene, 22225	
+X	162687880	162688180		+	MGI:5452034	unclassified non-coding RNA gene	Gm22257	predicted gene, 22257	
+X	133376217	133376553		-	MGI:5452329	unclassified non-coding RNA gene	Gm22552	predicted gene, 22552	
+X	127408430	127408704		+	MGI:5452413	unclassified non-coding RNA gene	Gm22636	predicted gene, 22636	
+X	66448166	66448430		+	MGI:5452805	unclassified non-coding RNA gene	Gm23028	predicted gene, 23028	
+X	136704178	136704470		+	MGI:5452845	unclassified non-coding RNA gene	Gm23068	predicted gene, 23068	
+X	50022621	50022915		+	MGI:5453162	unclassified non-coding RNA gene	Gm23385	predicted gene, 23385	
+X	163069614	163069869		-	MGI:5453278	unclassified non-coding RNA gene	Gm23501	predicted gene, 23501	
+X	82897397	82897499		-	MGI:5453448	unclassified non-coding RNA gene	Gm23671	predicted gene, 23671	
+X	53306177	53306483		+	MGI:5453495	unclassified non-coding RNA gene	Gm23718	predicted gene, 23718	
+X	162305029	162305302		-	MGI:5453644	unclassified non-coding RNA gene	Gm23867	predicted gene, 23867	
+X	139654294	139654617		-	MGI:5454157	unclassified non-coding RNA gene	Gm24380	predicted gene, 24380	
+X	138145382	138145640		-	MGI:5454452	unclassified non-coding RNA gene	Gm24675	predicted gene, 24675	
+X	37071992	37072262		-	MGI:5454586	unclassified non-coding RNA gene	Gm24809	predicted gene, 24809	
+X	87899205	87899488		-	MGI:5454589	unclassified non-coding RNA gene	Gm24812	predicted gene, 24812	
+X	137815156	137815440		-	MGI:5455170	unclassified non-coding RNA gene	Gm25393	predicted gene, 25393	
+X	162693249	162693563		+	MGI:5455334	unclassified non-coding RNA gene	Gm25557	predicted gene, 25557	
+X					MGI:5455468	unclassified non-coding RNA gene	Gm25691	predicted gene, 25691	
+X					MGI:5455786	unclassified non-coding RNA gene	Gm26009	predicted gene, 26009	
+X	144820187	144820508		+	MGI:5455801	unclassified non-coding RNA gene	Gm26024	predicted gene, 26024	
+X	152923453	152923760		-	MGI:5455812	unclassified non-coding RNA gene	Gm26035	predicted gene, 26035	
+X	109115225	109115516		-	MGI:5456192	unclassified non-coding RNA gene	Gm26415	predicted gene, 26415	
+X					MGI:5456236	unclassified non-coding RNA gene	Gm26459	predicted gene, 26459	
+X			43.9		MGI:5011948	unclassified non-coding RNA gene	Gm19763	predicted gene, 19763	
+X			21.49		MGI:5012084	unclassified non-coding RNA gene	Gm19899	predicted gene, 19899	
+X			68.46		MGI:5012364	unclassified non-coding RNA gene	Gm20179	predicted gene, 20179	
+X	73097187	73104886	37.29	+	MGI:5141920	unclassified non-coding RNA gene	Gm20455	predicted gene 20455	
+X	7558602	7605381		-	MGI:5610223	unclassified non-coding RNA gene	Gm36995	predicted gene, 36995	
+X	103606323	103606449		+	MGI:5530667	unclassified non-coding RNA gene	Gm27285	predicted gene, 27285	
+X	88759659	88759755		-	MGI:5530717	unclassified non-coding RNA gene	Gm27335	predicted gene, 27335	
+X	103480946	103481026		+	MGI:5530902	unclassified non-coding RNA gene	Gm27520	predicted gene, 27520	
+X	103461218	103461285		-	MGI:5531115	unclassified non-coding RNA gene	Gm27733	predicted gene, 27733	
+X	103595938	103596008		+	MGI:5531180	unclassified non-coding RNA gene	Gm27798	predicted gene, 27798	
+X	68678485	68678612		+	MGI:5531220	unclassified non-coding RNA gene	Gm27838	predicted gene, 27838	
+X	103493574	103493696		+	MGI:5531257	unclassified non-coding RNA gene	Gm27875	predicted gene, 27875	
+X	103469671	103469796		-	MGI:5531309	unclassified non-coding RNA gene	Gm27927	predicted gene, 27927	
+X	68676848	68676903		+	MGI:5531361	unclassified non-coding RNA gene	Gm27979	predicted gene, 27979	
+X	169295009	169295177		+	MGI:5531362	unclassified non-coding RNA gene	Gm27980	predicted gene, 27980	
+X	103605225	103605317		+	MGI:5531369	unclassified non-coding RNA gene	Gm27987	predicted gene, 27987	
+X	135329761	135349127	56.88	+	MGI:3841236	unclassified non-coding RNA gene	Gm15017	predicted gene 15017	
+X	100736983	100740929	43.72	-	MGI:3704514	unclassified non-coding RNA gene	Gm14866	predicted gene 14866	
+X	39870500	40475561	23.19	+	MGI:3705095	unclassified non-coding RNA gene	Gm14643	predicted gene 14643	
+X	53969437	53975000	30.06	-	MGI:3705142	unclassified non-coding RNA gene	Gm15482	predicted gene 15482	
+X	73795215	73797616	37.41	+	MGI:3705159	unclassified non-coding RNA gene	Gm14817	predicted gene 14817	
+X	135122878	135152596	56.57	-	MGI:3708106	unclassified non-coding RNA gene	Gm15020	predicted gene 15020	
+X	169320622	169368190	79.02	+	MGI:3708120	unclassified non-coding RNA gene	Gm15246	predicted gene 15246	
+X	135519591	135549316	57.16	+	MGI:3709319	unclassified non-coding RNA gene	Gm15015	predicted gene 15015	
+X	57391448	57391509	31.66	-	MGI:2148805	snoRNA gene	Snord61	small nucleolar RNA, C/D box 61	
+X	37082912	37083033	21.5	-	MGI:2148180	snoRNA gene	Snora69	small nucleolar RNA, H/ACA box 69	
+X	74272492	74272620	37.94	+	MGI:2148178	snoRNA gene	Snora70	small nucleolar RNA, H/ACA box 70	
+X	146994390	146994508	68.46	+	MGI:3819503	snoRNA gene	Snora35	small nucleolar RNA, H/ACA box 35	
+X	135384915	135385028		-	MGI:5451783	snoRNA gene	Gm22006	predicted gene, 22006	
+X					MGI:5451794	snoRNA gene	Gm22017	predicted gene, 22017	
+X	164283096	164283225		+	MGI:5451800	snoRNA gene	Gm22023	predicted gene, 22023	
+X					MGI:5451805	snoRNA gene	Gm22028	predicted gene, 22028	
+X					MGI:5451826	snoRNA gene	Gm22049	predicted gene, 22049	
+X	135506257	135506370		-	MGI:5452010	snoRNA gene	Gm22233	predicted gene, 22233	
+X					MGI:5452021	snoRNA gene	Gm22244	predicted gene, 22244	
+X	104070189	104070326		-	MGI:5452043	snoRNA gene	Gm22266	predicted gene, 22266	
+X					MGI:5452057	snoRNA gene	Gm22280	predicted gene, 22280	
+X	68563127	68563252		+	MGI:5452109	snoRNA gene	Gm22332	predicted gene, 22332	
+X	104616865	104616971		+	MGI:5452207	snoRNA gene	Gm22430	predicted gene, 22430	
+X	68684148	68684275		-	MGI:5452212	snoRNA gene	Gm22435	predicted gene, 22435	
+X	158373082	158373232		+	MGI:5452299	snoRNA gene	Gm22522	predicted gene, 22522	
+X	51844685	51844801		+	MGI:5452316	snoRNA gene	Gm22539	predicted gene, 22539	
+X	121011835	121011962		+	MGI:5452367	snoRNA gene	Gm22590	predicted gene, 22590	
+X	21500366	21500496		-	MGI:5452369	snoRNA gene	Gm22592	predicted gene, 22592	
+X	70693476	70693607		+	MGI:5452562	snoRNA gene	Gm22785	predicted gene, 22785	
+X	78550746	78550879		-	MGI:5452620	snoRNA gene	Gm22843	predicted gene, 22843	
+X					MGI:5452638	snoRNA gene	Gm22861	predicted gene, 22861	
+X					MGI:5452696	snoRNA gene	Gm22919	predicted gene, 22919	
+X					MGI:5452781	snoRNA gene	Gm23004	predicted gene, 23004	
+X	7547348	7547480		-	MGI:5452859	snoRNA gene	Gm23082	predicted gene, 23082	
+X					MGI:5452927	snoRNA gene	Gm23150	predicted gene, 23150	
+X	121712089	121712224		+	MGI:5453054	snoRNA gene	Gm23277	predicted gene, 23277	
+X	76830034	76830172		+	MGI:5453057	snoRNA gene	Gm23280	predicted gene, 23280	
+X	75886083	75886209		+	MGI:5453097	snoRNA gene	Gm23320	predicted gene, 23320	
+X	143413898	143414026		+	MGI:5453102	snoRNA gene	Gm23325	predicted gene, 23325	
+X	156455999	156456095		-	MGI:5453181	snoRNA gene	Gm23404	predicted gene, 23404	
+X	93251474	93251606		+	MGI:5453231	snoRNA gene	Gm23454	predicted gene, 23454	
+X	93573731	93573868		-	MGI:5453334	snoRNA gene	Gm23557	predicted gene, 23557	
+X	126900896	126901018		+	MGI:5453363	snoRNA gene	Gm23586	predicted gene, 23586	
+X	36776619	36776705		+	MGI:5453390	snoRNA gene	Gm23613	predicted gene, 23613	
+X	73809417	73809481		+	MGI:5453392	snoRNA gene	Gm23615	predicted gene, 23615	
+X	137150815	137150933		+	MGI:5453456	snoRNA gene	Gm23679	predicted gene, 23679	
+X					MGI:5453470	snoRNA gene	Gm23693	predicted gene, 23693	
+X	42681757	42681886		-	MGI:5453482	snoRNA gene	Gm23705	predicted gene, 23705	
+X	132553714	132553844		-	MGI:5453545	snoRNA gene	Gm23768	predicted gene, 23768	
+X	162748556	162748674		+	MGI:5453563	snoRNA gene	Gm23786	predicted gene, 23786	
+X					MGI:5453602	snoRNA gene	Gm23825	predicted gene, 23825	
+X	113878331	113878454		-	MGI:5453762	snoRNA gene	Gm23985	predicted gene, 23985	
+X					MGI:5453775	snoRNA gene	Gm23998	predicted gene, 23998	
+X	101141433	101141552		-	MGI:5453838	snoRNA gene	Gm24061	predicted gene, 24061	
+X					MGI:5453871	snoRNA gene	Gm24094	predicted gene, 24094	
+X	93164902	93164984		+	MGI:5453900	snoRNA gene	Gm24123	predicted gene, 24123	
+X	37667233	37667376		-	MGI:5453924	snoRNA gene	Gm24147	predicted gene, 24147	
+X	157430604	157430739		+	MGI:5454058	snoRNA gene	Gm24281	predicted gene, 24281	
+X					MGI:5454078	snoRNA gene	Gm24301	predicted gene, 24301	
+X					MGI:5454086	snoRNA gene	Gm24309	predicted gene, 24309	
+X					MGI:5454163	snoRNA gene	Gm24386	predicted gene, 24386	
+X	135445519	135445632		-	MGI:5454193	snoRNA gene	Gm24416	predicted gene, 24416	
+X	116748842	116748956		+	MGI:5454215	snoRNA gene	Gm24438	predicted gene, 24438	
+X	151539700	151539805		-	MGI:5454237	snoRNA gene	Gm24460	predicted gene, 24460	
+X	82692239	82692370		-	MGI:5454247	snoRNA gene	Gm24470	predicted gene, 24470	
+X	37632205	37632347		-	MGI:5454270	snoRNA gene	Gm24493	predicted gene, 24493	
+X					MGI:5454306	snoRNA gene	Gm24529	predicted gene, 24529	
+X	94455010	94455119		-	MGI:5454372	snoRNA gene	Gm24595	predicted gene, 24595	
+X	64496584	64496657		+	MGI:5454375	snoRNA gene	Gm24598	predicted gene, 24598	
+X					MGI:5454396	snoRNA gene	Gm24619	predicted gene, 24619	
+X	82401091	82401227		-	MGI:5454483	snoRNA gene	Gm24706	predicted gene, 24706	
+X	96150837	96150972		-	MGI:5454495	snoRNA gene	Gm24718	predicted gene, 24718	
+X	150807859	150807986		-	MGI:5454684	snoRNA gene	Gm24907	predicted gene, 24907	
+X					MGI:5454733	snoRNA gene	Gm24956	predicted gene, 24956	
+X					MGI:5454844	snoRNA gene	Gm25067	predicted gene, 25067	
+X	147484293	147484421		-	MGI:5454884	snoRNA gene	Gm25107	predicted gene, 25107	
+X	130915299	130915427		-	MGI:5454947	snoRNA gene	Gm25170	predicted gene, 25170	
+X	73752674	73752796		+	MGI:5455003	snoRNA gene	Gm25226	predicted gene, 25226	
+X	155139896	155140027		+	MGI:5455206	snoRNA gene	Gm25429	predicted gene, 25429	
+X					MGI:5455280	snoRNA gene	Gm25503	predicted gene, 25503	
+X	75101409	75101526		+	MGI:5455297	snoRNA gene	Gm25520	predicted gene, 25520	
+X	35838127	35838401		+	MGI:5455401	snoRNA gene	Gm25624	predicted gene, 25624	
+X	169695781	169695899		-	MGI:5455428	snoRNA gene	Gm25651	predicted gene, 25651	
+X					MGI:5455520	snoRNA gene	Gm25743	predicted gene, 25743	
+X	137093612	137093726		-	MGI:5455547	snoRNA gene	Gm25770	predicted gene, 25770	
+X	157299490	157299621		-	MGI:5455572	snoRNA gene	Gm25795	predicted gene, 25795	
+X	121308217	121308340		-	MGI:5455602	snoRNA gene	Gm25825	predicted gene, 25825	
+X	135165848	135165961		+	MGI:5455645	snoRNA gene	Gm25868	predicted gene, 25868	
+X	142485322	142485447		-	MGI:5455692	snoRNA gene	Gm25915	predicted gene, 25915	
+X	135314316	135314429		-	MGI:5455713	snoRNA gene	Gm25936	predicted gene, 25936	
+X					MGI:5455717	snoRNA gene	Gm25940	predicted gene, 25940	
+X					MGI:5455723	snoRNA gene	Gm25946	predicted gene, 25946	
+X	129156754	129156885		-	MGI:5455806	snoRNA gene	Gm26029	predicted gene, 26029	
+X	119526544	119526659		-	MGI:5455959	snoRNA gene	Gm26182	predicted gene, 26182	
+X	67595330	67595438		-	MGI:5456053	snoRNA gene	Gm26276	predicted gene, 26276	
+X					MGI:5456071	snoRNA gene	Gm26294	predicted gene, 26294	
+X	167364180	167364297		-	MGI:5456145	snoRNA gene	Gm26368	predicted gene, 26368	
+X					MGI:5456162	snoRNA gene	Gm26385	predicted gene, 26385	
+X	7229775	7229850		+	MGI:5456178	snoRNA gene	Gm26401	predicted gene, 26401	
+X	132507131	132507254		+	MGI:5456183	snoRNA gene	Gm26406	predicted gene, 26406	
+X	74624426	74624560		+	MGI:5456194	snoRNA gene	Gm26417	predicted gene, 26417	
+X	37499317	37499459		+	MGI:5456271	snoRNA gene	Gm26494	predicted gene, 26494	
+X					MGI:5456280	snoRNA gene	Gm26503	predicted gene, 26503	
+X	115398815	115399195		+	MGI:5530796	snoRNA gene	Gm27414	predicted gene, 27414	
+X	151912346	151912428	68.46	+	MGI:2676799	miRNA gene	Mirlet7f-2	microRNA let7f-2	
+X	52741983	52742066	29.15	-	MGI:2676868	miRNA gene	Mir19b-2	microRNA 19b-2	
+X	7247989	7248056	3.25	-	MGI:2676852	miRNA gene	Mir188	microRNA 188	
+X	67988096	67988161	34.81	-	MGI:2676876	miRNA gene	Mir201	microRNA 201	
+X	96242817	96242926	42.69	+	MGI:2684360	miRNA gene	Mir223	microRNA 223	
+X	7807101	7807221	3.52	+	MGI:3783371	miRNA gene	Mir1198	microRNA 1198	
+X	52742113	52742192	29.15	-	MGI:3618748	miRNA gene	Mir20b	microRNA 20b	
+X	19146294	19146388	14.52	-	MGI:3619066	miRNA gene	Mir221	microRNA 221	
+X	19146893	19146971	14.52	-	MGI:3619118	miRNA gene	Mir222	microRNA 222	
+X	52742503	52742567	29.15	-	MGI:3619120	miRNA gene	Mir106a	microRNA 106a	
+X	72261031	72261112	37.21	-	MGI:3619129	miRNA gene	Mir224	microRNA 224	
+X	53054255	53054349	29.31	-	MGI:3619333	miRNA gene	Mir322	microRNA 322	
+X	105379082	105379179	46.9	-	MGI:3619336	miRNA gene	Mir325	microRNA 325	
+X	53053255	53053353	29.31	-	MGI:3619367	miRNA gene	Mir351	microRNA 351	
+X	113074824	113074893	48.94	-	MGI:3619368	miRNA gene	Mir361	microRNA 361	
+X	7241982	7242046	3.25	-	MGI:3619369	miRNA gene	Mir362	microRNA 362	
+X	52741693	52741767	29.15	-	MGI:3619370	miRNA gene	Mir363	microRNA 363	
+X	105344282	105344369	46.89	-	MGI:3619394	miRNA gene	Mir384	microRNA 384	
+X	147158210	147158321	68.46	+	MGI:3619406	miRNA gene	Mir448	microRNA 448	
+X	53048154	53048244	29.31	-	MGI:3619410	miRNA gene	Mir450-1	microRNA 450-1	
+X	53048299	53048367	29.31	-	MGI:3619411	miRNA gene	Mir450-2	microRNA 450-2	
+X	66813951	66814025	34.81	-	MGI:3619418	miRNA gene	Mir470	microRNA 470	
+X	66792595	66792661	34.81	-	MGI:3619419	miRNA gene	Mir471	microRNA 471	
+X	53053984	53054054	29.31	-	MGI:3619428	miRNA gene	Mir503	microRNA 503	
+X	53049403	53049487	29.31	-	MGI:3619431	miRNA gene	Mir542	microRNA 542	
+X	67988374	67988451	34.81	-	MGI:3619434	miRNA gene	Mir547	microRNA 547	
+X	52741838	52741928	29.15	-	MGI:3619438	miRNA gene	Mir92-2	microRNA 92-2	
+X	151913214	151913321	68.46	+	MGI:3619441	miRNA gene	Mir98	microRNA 98	
+X	72262224	72262308	37.21	-	MGI:3619450	miRNA gene	Mir452	microRNA 452	
+X	66799223	66799297	34.81	-	MGI:3619451	miRNA gene	Mir463	microRNA 463	
+X	66839052	66839125	34.81	-	MGI:3619453	miRNA gene	Mir465	microRNA 465	
+X	7237683	7237774	3.25	-	MGI:3624341	miRNA gene	Mir500	microRNA 500	
+X	142739000	142739097	63.61	+	MGI:3624350	miRNA gene	Mir652	microRNA 652	
+X	103573060	103573154	46.22	-	MGI:3629958	miRNA gene	Mir374b	microRNA 374b	
+X	53047997	53048078	29.31	-	MGI:3629953	miRNA gene	Mir450b	microRNA 450b	
+X	7241243	7241351	3.25	-	MGI:3629949	miRNA gene	Mir501	microRNA 501	
+X	60394403	60394492	33.5	-	MGI:3629955	miRNA gene	Mir505	microRNA 505	
+X	7248402	7248497	3.25	-	MGI:3629950	miRNA gene	Mir532	microRNA 532	
+X	104116175	104116274	46.5	-	MGI:3629959	miRNA gene	Mir672	microRNA 672	
+X	100381097	100381185	43.71	+	MGI:3629957	miRNA gene	Mir676	microRNA 676	
+X	144297790	144297899	65.4	+	MGI:3629961	miRNA gene	Mir680-2	microRNA 680-2	
+X	52422407	52422515	28.91	-	MGI:3629951	miRNA gene	Mir717	microRNA 717	
+X	74023849	74023936	37.63	-	MGI:3629956	miRNA gene	Mir718	microRNA 718	
+X	72992079	72992144	37.29	+	MGI:4358923	miRNA gene	Mir2137	microRNA 2137	
+X	72589988	72590094	37.27	-	MGI:4358946	miRNA gene	Mir767	microRNA 767	
+X	72591500	72591579	37.27	-	MGI:3718453	miRNA gene	Mir105	microRNA 105	
+X	52742331	52742413	29.15	-	MGI:3718454	miRNA gene	Mir18b	microRNA 18b	
+X	103572921	103572996	46.22	-	MGI:3718516	miRNA gene	Mir421	microRNA 421	
+X	66789890	66789967	34.81	-	MGI:3718576	miRNA gene	Mir883b	microRNA 883b	
+X	66780758	66780833	34.81	-	MGI:3718574	miRNA gene	Mir883a	microRNA 883a	
+X	66801944	66802021	34.81	-	MGI:3718572	miRNA gene	Mir881	microRNA 881	
+X	66800530	66800607	34.81	-	MGI:3718571	miRNA gene	Mir880	microRNA 880	
+X	66801508	66801585	34.81	-	MGI:3718569	miRNA gene	Mir878	microRNA 878	
+X	66810428	66810504	34.81	-	MGI:3718561	miRNA gene	Mir871	microRNA 871	
+X	66777256	66777332	34.81	-	MGI:3718560	miRNA gene	Mir743b	microRNA 743b	
+X	68010105	68010179	34.81	-	MGI:3718545	miRNA gene	Mir509	microRNA 509	
+X	59097658	59097736	33.35	-	MGI:3718543	miRNA gene	Mir504	microRNA 504	
+X	66832517	66832597	34.81	-	MGI:3718525	miRNA gene	Mir465c-2	microRNA 465c-2	
+X	66825955	66826035	34.81	-	MGI:3718524	miRNA gene	Mir465c-1	microRNA 465c-1	
+X	66835764	66835842	34.81	-	MGI:3718521	miRNA gene	Mir465b-2	microRNA 465b-2	
+X	66829202	66829280	34.81	-	MGI:3718520	miRNA gene	Mir465b-1	microRNA 465b-1	
+X	106697078	106697198		+	MGI:5451879	miRNA gene	Gm22102	predicted gene, 22102	
+X	56070664	56070784		+	MGI:5451880	miRNA gene	Gm22103	predicted gene, 22103	
+X					MGI:5452424	miRNA gene	Gm22647	predicted gene, 22647	
+X	167028889	167028997		-	MGI:5452145	miRNA gene	Gm22368	predicted gene, 22368	
+X	41654234	41654318		+	MGI:5452190	miRNA gene	Gm22413	predicted gene, 22413	
+X	15707782	15707845		+	MGI:5452241	miRNA gene	Gm22464	predicted gene, 22464	
+X					MGI:5452244	miRNA gene	Gm22467	predicted gene, 22467	
+X					MGI:5452264	miRNA gene	Gm22487	predicted gene, 22487	
+X	146999405	146999509		+	MGI:5452427	miRNA gene	Gm22650	predicted gene, 22650	
+X					MGI:5452701	miRNA gene	Gm22924	predicted gene, 22924	
+X					MGI:5452707	miRNA gene	Gm22930	predicted gene, 22930	
+X					MGI:5452806	miRNA gene	Gm23029	predicted gene, 23029	
+X	51219110	51219192		-	MGI:5453194	miRNA gene	Gm23417	predicted gene, 23417	
+X	78908549	78908640		-	MGI:5453333	miRNA gene	Gm23556	predicted gene, 23556	
+X	157191659	157191760		+	MGI:5453575	miRNA gene	Gm23798	predicted gene, 23798	
+X					MGI:5453645	miRNA gene	Gm23868	predicted gene, 23868	
+X	71531285	71531376		-	MGI:5453722	miRNA gene	Gm23945	predicted gene, 23945	
+X					MGI:5453867	miRNA gene	Gm24090	predicted gene, 24090	
+X					MGI:5454043	miRNA gene	Gm24266	predicted gene, 24266	
+X	61145362	61145454		+	MGI:5454173	miRNA gene	Gm24396	predicted gene, 24396	
+X	147106939	147107076		+	MGI:5454404	miRNA gene	Gm24627	predicted gene, 24627	
+X	116123900	116123987		+	MGI:5454460	miRNA gene	Gm24683	predicted gene, 24683	
+X	20823737	20823814		-	MGI:5454601	miRNA gene	Gm24824	predicted gene, 24824	
+X	91252637	91252747		-	MGI:5454612	miRNA gene	Gm24835	predicted gene, 24835	
+X	89849394	89849503		-	MGI:5454731	miRNA gene	Gm24954	predicted gene, 24954	
+X	92989095	92989195		-	MGI:5454750	miRNA gene	Gm24973	predicted gene, 24973	
+X	104076971	104077061		+	MGI:5454770	miRNA gene	Gm24993	predicted gene, 24993	
+X	12870269	12870362		-	MGI:5454840	miRNA gene	Gm25063	predicted gene, 25063	
+X	20863126	20863182		-	MGI:5454969	miRNA gene	Mir5617	microRNA 5617	
+X	13653381	13653449		+	MGI:5455023	miRNA gene	Gm25246	predicted gene, 25246	
+X	23982185	23982286		+	MGI:5455076	miRNA gene	Gm25299	predicted gene, 25299	
+X					MGI:5455133	miRNA gene	Gm25356	predicted gene, 25356	
+X					MGI:5455393	miRNA gene	Gm25616	predicted gene, 25616	
+X	38752062	38752127		-	MGI:5455419	miRNA gene	Gm25642	predicted gene, 25642	
+X	39976301	39976371		-	MGI:5455971	miRNA gene	Gm26194	predicted gene, 26194	
+X	130887669	130887778		-	MGI:5455986	miRNA gene	Gm26209	predicted gene, 26209	
+X	26229981	26230066		+	MGI:5456079	miRNA gene	Gm26302	predicted gene, 26302	
+X	102255430	102255525		-	MGI:5456095	miRNA gene	Gm26318	predicted gene, 26318	
+X					MGI:5456157	miRNA gene	Gm26380	predicted gene, 26380	
+X	128522689	128522809		-	MGI:5456252	miRNA gene	Gm26475	predicted gene, 26475	
+X	29977576	29977661		-	MGI:5690690	miRNA gene	Gm44298	predicted gene, 44298	
+X	59854661	59854729		+	MGI:5690710	miRNA gene	Gm44318	predicted gene, 44318	
+X	58794731	58794837		+	MGI:5690725	miRNA gene	Gm44333	predicted gene, 44333	
+X	142962603	142962697		-	MGI:5690743	miRNA gene	Gm44351	predicted gene, 44351	
+X	166957099	166957226		+	MGI:5690768	miRNA gene	Gm44376	predicted gene, 44376	
+X	85588977	85589059		+	MGI:5690770	miRNA gene	Gm44378	predicted gene, 44378	
+X	27598618	27598703		+	MGI:5690799	miRNA gene	Gm44407	predicted gene, 44407	
+X	27493556	27493641		+	MGI:5690844	miRNA gene	Gm44452	predicted gene, 44452	
+X	94394818	94394927		-	MGI:5690869	miRNA gene	Gm44477	predicted gene, 44477	
+X	24969994	24970079		+	MGI:5690872	miRNA gene	Gm44480	predicted gene, 44480	
+X	36381117	36381253		-	MGI:5690877	miRNA gene	Gm44485	predicted gene, 44485	
+X	41948832	41948958		+	MGI:5690882	miRNA gene	Gm44490	predicted gene, 44490	
+X	29646631	29646715		+	MGI:5690888	miRNA gene	Gm44496	predicted gene, 44496	
+X	28606514	28606599		+	MGI:5690891	miRNA gene	Gm44499	predicted gene, 44499	
+X	59693450	59693549		-	MGI:5690892	miRNA gene	Gm44500	predicted gene, 44500	
+X	56587852	56587914	30.06	-	MGI:4950436	miRNA gene	Mir5116	microRNA 5116	
+X	74023528	74023598	37.63	-	MGI:4950457	miRNA gene	Mir5132	microRNA 5132	
+X	52378121	52378181		-	MGI:5562785	miRNA gene	Mir6384	microRNA 6384	
+X	66822656	66822713		-	MGI:5562786	miRNA gene	Mir465d	microRNA 465d	
+X	74317362	74317429		+	MGI:5562787	miRNA gene	Mir7092	microRNA 7092	
+X	135746716	135746769		+	MGI:5562788	miRNA gene	Mir7646	microRNA 7646	
+X	106309826	106309935		+	MGI:5530701	miRNA gene	Mir6382	microRNA 6382	
+X	26579877	26579982		-	MGI:5530723	miRNA gene	Gm27341	predicted gene, 27341	
+X	6071478	6071557		+	MGI:5530742	miRNA gene	Gm27360	predicted gene, 27360	
+X	74274027	74274105		-	MGI:5530763	miRNA gene	Mir7091	microRNA 7091	
+X	106426057	106426166		+	MGI:5530810	miRNA gene	Gm27428	predicted gene, 27428	
+X	134757631	134757731		+	MGI:5530835	miRNA gene	Mir7093	microRNA 7093	
+X	98727315	98727412		-	MGI:5530936	miRNA gene	Gm27554	predicted gene, 27554	
+X	94274574	94274637		+	MGI:5530951	miRNA gene	Mir7673	microRNA 7673	
+X	136183245	136183360		+	MGI:5531071	miRNA gene	Mir6383	microRNA 6383	
+X	48644340	48644458		+	MGI:5531210	miRNA gene	Gm27828	predicted gene, 27828	
+X	24617213	24617318		-	MGI:5531221	miRNA gene	Gm27839	predicted gene, 27839	
+X	102013049	102013152		-	MGI:5531225	miRNA gene	Gm27843	predicted gene, 27843	
+X	25679415	25679520		-	MGI:5531274	miRNA gene	Gm27892	predicted gene, 27892	
+X	24617011	24617117		-	MGI:5531292	miRNA gene	Gm27910	predicted gene, 27910	
+X	150547385	150547445		-	MGI:5531366	miRNA gene	Mir3620	microRNA 3620	
+X	135786114	135786217	57.28	-	MGI:3837218	miRNA gene	Mir1970	microRNA 1970	
+X	147010601	147010686	68.46	+	MGI:4834216	miRNA gene	Mir1264	microRNA 1264	
+X	147064905	147065002	68.46	+	MGI:4834221	miRNA gene	Mir1298	microRNA 1298	
+X	38210441	38210520	22.47	+	MGI:4834329	miRNA gene	Mir3110	microRNA 3110	
+X	103573085	103573133	46.22	+	MGI:4834330	miRNA gene	Mir374c	microRNA 374c	
+X	134075316	134075397	55.66	+	MGI:4834331	miRNA gene	Mir3112	microRNA 3112	
+X	147009441	147009527	68.46	+	MGI:4834332	miRNA gene	Mir1912	microRNA 1912	
+X	151859562	151859637	68.46	+	MGI:4834361	miRNA gene	Mir3113	microRNA 3113	
+X	88759474	88759553	39.95	-	MGI:4441422	miRNA gene	Mir1906-2	microRNA 1906-2	
+X	145039344	145039414	66.25	+	MGI:4441439	miRNA gene	Mir3472	microRNA 3472	
+X	162874918	162874995	75.07	-	MGI:4441440	miRNA gene	Mir3473a	microRNA 3473a	
+X	140310948	140311012	61.35	+	MGI:4441442	miRNA gene	Mir3475	microRNA 3475	
+X	147002259	147002366	68.46	+	MGI:3691610	miRNA gene	Mir764	microRNA 764	
+X	66796805	66796875	34.81	-	MGI:3709839	miRNA gene	Mir741	microRNA 741	
+X	66780373	66780437	34.81	-	MGI:3709840	miRNA gene	Mir742	microRNA 742	
+X	66776757	66776818	34.81	-	MGI:3709841	miRNA gene	Mir743	microRNA 743	
+X	143827223	143827344		-	MGI:6096161	miRNA gene	Gm47298	predicted gene, 47298	
+X					MGI:103145	heritable phenotypic marker	Tpe2	tear protein electrophoretic 2	
+X					MGI:98876	heritable phenotypic marker	Ty	trembly	
+X					MGI:98877	heritable phenotypic marker	Tyl	trembly-like	
+X					MGI:99136	heritable phenotypic marker	Xpl	X-linked polydactyly	
+X					MGI:99149	heritable phenotypic marker	Ym	yellow mottled	
+X					MGI:95839	heritable phenotypic marker	Gs	greasy	
+X					MGI:88160	heritable phenotypic marker	Bhd	broad headed	
+X					MGI:88510	heritable phenotypic marker	Crm	cream	
+X	146673077	159645105			MGI:1202297	heritable phenotypic marker	Stpy	stripey	
+X	36795651	48683972			MGI:1309996	heritable phenotypic marker	Fnld	faint-lined	
+X					MGI:1310006	heritable phenotypic marker	wfd	wide-faced	
+X	82948870	94123702			MGI:1313145	heritable phenotypic marker	exma	exencephaly and severe microphthalmia/anophthalmia	
+X					MGI:2670667	heritable phenotypic marker	tmgc17	Tennessee Mouse Genome Consortium 17	
+X					MGI:2670669	heritable phenotypic marker	Tmgc16	Tennessee Mouse Genome Consortium 16	
+X					MGI:96291	heritable phenotypic marker	Hxa	histocompatibility X	
+X					MGI:96419	heritable phenotypic marker	Ie	eye-ear reduction	
+X					MGI:96430	heritable phenotypic marker	Ifx	NDV-induced circulating interferon, X-linked	
+X					MGI:96598	heritable phenotypic marker	It	irregular teeth	
+X	159644928	163549527			MGI:96786	heritable phenotypic marker	Li	lined	
+X					MGI:96894	heritable phenotypic marker	Lyx1	lymphocyte antigen X 1	
+X					MGI:96895	heritable phenotypic marker	Lyx2	lymphocyte antigen X 2	
+X					MGI:96896	heritable phenotypic marker	Lyx3	lymphocyte antigen X 3	
+X					MGI:97472	heritable phenotypic marker	Paf	patchy fur	
+X					MGI:97792	heritable phenotypic marker	ptd	palate-tail-digits abnormality	
+X					MGI:98276	heritable phenotypic marker	Segr	segregation reversal	
+X					MGI:98318	heritable phenotypic marker	sll1	sex linked lethal 1	
+X					MGI:98319	heritable phenotypic marker	sll2	sex linked lethal 2	
+X					MGI:98428	heritable phenotypic marker	Sta	autosomal striping	
+X					MGI:98456	heritable phenotypic marker	Sxa	sex chromosome association	
+X					MGI:1861997	heritable phenotypic marker	Strg	striped greasy	
+X					MGI:1861998	heritable phenotypic marker	Nano	nanomouse	
+X	66047855	133764341			MGI:3029925	heritable phenotypic marker	Stol	stripy oily	
+X					MGI:3033898	heritable phenotypic marker	gro53	growth/size 53	
+X					MGI:3797603	heritable phenotypic marker	Xlch	X-linked cardiac hypertrophy	
+X					MGI:3589216	heritable phenotypic marker	tmgc47	Tennessee Mouse Genome Consortium 47	
+X					MGI:96260	heritable phenotypic marker	Hst3	hybrid sterility 3	
+X					MGI:4354094	heritable phenotypic marker	Mter	modifier of ter	
+X					MGI:3764933	heritable phenotypic marker	Bhrd	bad hair day	
+X					MGI:3686741	heritable phenotypic marker	Gena31	Genetics Harwell, 31	
+X					MGI:3686747	heritable phenotypic marker	Gena287	Genetics Harwell, 287	
+X					MGI:5708407	heritable phenotypic marker	Tabl	tabby-like	
+X					MGI:5450855	heritable phenotypic marker	Muth1	Muth1	
+X					MGI:5585402	heritable phenotypic marker	Xlhl	X-linked hair loss	
+X					MGI:5510537	heritable phenotypic marker	Tal44H	tabby-like 44 Harwell	
+X					MGI:3832061	heritable phenotypic marker	jpl	jimpy-like	
+X					MGI:5318193	heritable phenotypic marker	Xpna	X-linked pre- and neonatal anemia	
+X					MGI:5288350	heritable phenotypic marker	Ta33Hl	tabby 33 Harwell-like	
+X					MGI:1928976	heritable phenotypic marker	Strx2	striated, X-linked 2	
+X					MGI:1928977	heritable phenotypic marker	Strx3	striated, X-linked 3	
+X					MGI:1928978	heritable phenotypic marker	Strx4	striated, X-linked 4	
+X					MGI:2150632	heritable phenotypic marker	Xmo2	X-linked mottled 2	
+X					MGI:2150633	heritable phenotypic marker	Xmo3	X-linked mottled 3	
+X					MGI:2150634	heritable phenotypic marker	Xmo4	X-linked mottled 4	
+X					MGI:2150635	heritable phenotypic marker	Xmo5	X-linked mottled 5	
+X					MGI:3689052	heritable phenotypic marker	Xmo6	X-linked mottled 6	
+X					MGI:3052637	heritable phenotypic marker	Xls	X-linked stripe	
+X	103431517	103484957	46.13	+	MGI:1336196	antisense lncRNA gene	Tsix	X (inactive)-specific transcript, opposite strand	
+X	52575843	52619047	29.02	+	MGI:2442968	antisense lncRNA gene	A630012P03Rik	RIKEN cDNA A630012P03 gene	
+X	8145429	8147964	3.68	+	MGI:1917476	antisense lncRNA gene	Rbm3os	RNA binding motif protein 3, opposite strand	
+X	7573600	7581016	3.41	+	MGI:1925435	antisense lncRNA gene	Flicr	Foxp3 regulating long intergenic noncoding RNA	
+X	69929260	70143588	35.8	-	MGI:1921555	antisense lncRNA gene	1700111N16Rik	RIKEN cDNA 1700111N16 gene	
+X	46267559	46328911	24.52	-	MGI:1922383	antisense lncRNA gene	4930515L19Rik	RIKEN cDNA 4930515L19 gene	
+X	56371620	56374790	30.06	-	MGI:3780324	antisense lncRNA gene	Gm2155	predicted gene 2155	
+X	169979047	169985232	79.33	-	MGI:3783169	antisense lncRNA gene	Gm15726	predicted gene 15726	
+X	71439714	71469851	36.85	+	MGI:3801760	antisense lncRNA gene	Gm16189	predicted gene 16189	
+X			41.99		MGI:3801996	antisense lncRNA gene	Gm14818	predicted gene 14818	
+X	60799436	60808323	33.5	+	MGI:3641636	antisense lncRNA gene	Gm14661	predicted gene 14661	
+X	96239926	96243636	42.69	+	MGI:3641813	antisense lncRNA gene	F630028O10Rik	RIKEN cDNA F630028O10 gene	
+X	151313335	151341879	68.46	-	MGI:3603753	antisense lncRNA gene	A230072E10Rik	RIKEN cDNA A230072E10 gene	
+X	73402211	73411436		-	MGI:5477220	antisense lncRNA gene	Gm26726	predicted gene, 26726	
+X	153721157	153723881		-	MGI:5753598	antisense lncRNA gene	Gm45022	predicted gene 45022	
+X	103381957	103383169		-	MGI:5504067	antisense lncRNA gene	Gm26952	predicted gene, 26952	
+X	94028854	94099304	41.47	+	MGI:3705098	antisense lncRNA gene	Gm14798	predicted gene 14798	
+X	36910834	36911985	21.32	+	MGI:3705107	antisense lncRNA gene	Gm15008	predicted gene 15008	
+X	57200643	57204378	31.18	+	MGI:3705113	antisense lncRNA gene	Gm14718	predicted gene 14718	
+X	160527501	160533045	73.95	-	MGI:3705116	antisense lncRNA gene	Gm15243	predicted gene 15243	
+X	160488703	160499818	73.95	-	MGI:3705127	antisense lncRNA gene	Gm15241	predicted gene 15241	
+X	76246984	76261392	38.3	-	MGI:3705148	antisense lncRNA gene	Gm14717	predicted gene 14717	
+X	69356596	69361269	35.53	-	MGI:3705152	antisense lncRNA gene	Gm14705	predicted gene 14705	
+X	7651106	7657258	3.45	-	MGI:3705165	antisense lncRNA gene	Gm14703	predicted gene 14703	
+X	75573452	75575268	38.26	+	MGI:3705169	antisense lncRNA gene	Gm15063	predicted gene 15063	
+X	36814771	36817200	21.22	+	MGI:3705175	antisense lncRNA gene	Gm14549	predicted gene 14549	
+X	52296181	52333679	28.79	+	MGI:3705178	antisense lncRNA gene	Gm14582	predicted gene 14582	
+X	169985801	169986939	79.33	-	MGI:3705183	antisense lncRNA gene	Gm15247	predicted gene 15247	
+X	167361455	167364421	78.33	+	MGI:3705189	antisense lncRNA gene	Gm15239	predicted gene 15239	
+X	169037674	169106536	78.88	-	MGI:3705201	antisense lncRNA gene	Gm15261	predicted gene 15261	
+X	157757180	157759273	72.71	-	MGI:3705215	antisense lncRNA gene	Gm15169	predicted gene 15169	
+X	149097219	149097920	68.46	-	MGI:3705242	antisense lncRNA gene	Gm15092	predicted gene 15092	
+X	149593838	149594538	68.46	-	MGI:3705246	antisense lncRNA gene	Gm15086	predicted gene 15086	
+X	85744348	85749764	39.32	+	MGI:3705248	antisense lncRNA gene	Gm14764	predicted gene 14764	
+X	75551117	75551824	38.25	+	MGI:3705249	antisense lncRNA gene	Gm15384	predicted gene 15384	
+X	99459025	99460753	43.37	+	MGI:3705252	antisense lncRNA gene	Gm14808	predicted gene 14808	
+X	76243690	76244272	38.3	-	MGI:3705259	antisense lncRNA gene	Gm14707	predicted gene 14707	
+X	148881844	148882544	68.46	-	MGI:3705260	antisense lncRNA gene	Gm15099	predicted gene 15099	
+X	161908223	161908777	74.23	+	MGI:3705278	antisense lncRNA gene	Gm15202	predicted gene 15202	
+X	49332409	49447972	25.9	-	MGI:3705281	antisense lncRNA gene	Gm14697	predicted gene 14697	
+X	141724838	141726163	62.44	+	MGI:3705286	antisense lncRNA gene	Gm15295	predicted gene 15295	
+X	155622789	155623361	72.38	+	MGI:3705293	antisense lncRNA gene	Gm15156	predicted gene 15156	
+X	149446885	149447585	68.46	-	MGI:3705305	antisense lncRNA gene	Gm15100	predicted gene 15100	
+X	60893653	60898067	33.67	+	MGI:3705311	antisense lncRNA gene	Gm14662	predicted gene 14662	
+X	10717473	10718710	5.4	-	MGI:3705313	antisense lncRNA gene	Gm14493	predicted gene 14493	
+X	8042943	8074619	3.64	+	MGI:3713695	antisense lncRNA gene	Gm14820	predicted gene 14820	
+X					MGI:107512	unclassified gene	Dcsx4	distortion controlling, chromosome X, locus 4	
+X					MGI:107513	unclassified gene	Dcsx3	distortion controlling, chromosome X, locus 3	
+X					MGI:107514	unclassified gene	Dcsx2	distortion controlling, chromosome X, locus 2	
+X					MGI:107515	unclassified gene	Dcsx1	distortion controlling, chromosome X, locus 1	
+X					MGI:1096870	unclassified gene	Ihpd	interspecific hybrid placental dysplasia	
+X	135763398	135766373			MGI:3026932	unclassified gene	E430010N07Rik	RIKEN cDNA E430010N07 gene	
+X	105897558	105898875			MGI:2442015	unclassified gene	E030036C24Rik	RIKEN cDNA E030036C24 gene	
+X					MGI:2442024	unclassified gene	E230023K05Rik	RIKEN cDNA E230023K05 gene	
+X					MGI:2442041	unclassified gene	F630036E10Rik	RIKEN cDNA F630036E10 gene	
+X	102315276	102319212			MGI:2442475	unclassified gene	4732468M13Rik	RIKEN cDNA 4732468M13 gene	
+X	42177346	42179235			MGI:2147829	unclassified gene	A130057A22Rik	RIKEN cDNA A130057A22 gene	
+X	130898863	130899590			MGI:2148077	unclassified gene	C86400	expressed sequence C86400	
+X	135982662	135983644			MGI:1916155	unclassified gene	1110065H08Rik	RIKEN cDNA 1110065H08 gene	
+X	20931853	20932757			MGI:1916275	unclassified gene	1500032P08Rik	RIKEN cDNA 1500032P08 gene	
+X	52350174	52351809			MGI:2442623	unclassified gene	D230050J18Rik	RIKEN cDNA D230050J18 gene	
+X	101201851	101204838			MGI:2443382	unclassified gene	D030036P13Rik	RIKEN cDNA D030036P13 gene	
+X	41660673	41664187			MGI:2443712	unclassified gene	A230058F20Rik	RIKEN cDNA A230058F20 gene	
+X	78574533	78577524			MGI:2444497	unclassified gene	B930042K01Rik	RIKEN cDNA B930042K01 gene	
+X	74291022	74295316			MGI:2444570	unclassified gene	B230340J04Rik	RIKEN cDNA B230340J04 gene	
+X	135910996	135915353			MGI:2444964	unclassified gene	B930008F14Rik	RIKEN cDNA B930008F14 gene	
+X	57376888	57381353			MGI:2445061	unclassified gene	4732460I02Rik	RIKEN cDNA 4732460I02 gene	
+X	130000156	130001226			MGI:1919165	unclassified gene	2310058F05Rik	RIKEN cDNA 2310058F05 gene	
+X	69409225	69411189			MGI:1919689	unclassified gene	2610007B07Rik	RIKEN cDNA 2610007B07 gene	
+X	51682088	51683754			MGI:1920151	unclassified gene	2900011F02Rik	RIKEN cDNA 2900011F02 gene	
+X					MGI:1920241	unclassified gene	2900075N08Rik	RIKEN cDNA 2900075N08 gene	
+X	160801392	160802750			MGI:1920299	unclassified gene	2900054C01Rik	RIKEN cDNA 2900054C01 gene	
+X	130531340	130532049			MGI:1920490	unclassified gene	3110056K14Rik	RIKEN cDNA 3110056K14 gene	
+X	147155432	147155984			MGI:1920798	unclassified gene	1700094I16Rik	RIKEN cDNA 1700094I16 gene	
+X	96934091	96934660			MGI:1920891	unclassified gene	1700125M20Rik	RIKEN cDNA 1700125M20 gene	
+X	3191238	3252328			MGI:1921228	unclassified gene	4930442B02Rik	RIKEN cDNA 4930442B02 gene	
+X	95159095	95160855			MGI:1917727	unclassified gene	5730407O05Rik	RIKEN cDNA 5730407O05 gene	
+X	151542314	151543084			MGI:1917812	unclassified gene	5730419A17Rik	RIKEN cDNA 5730419A17 gene	
+X	155300711	155302689			MGI:1918129	unclassified gene	4921511E18Rik	RIKEN cDNA 4921511E18 gene	
+X	117709405	117869618			MGI:1918460	unclassified gene	4933434C23Rik	RIKEN cDNA 4933434C23 gene	
+X	101644522	101645345			MGI:1918751	unclassified gene	8430425A16Rik	RIKEN cDNA 8430425A16 gene	
+X	77342329	77343999			MGI:1923293	unclassified gene	5830424K16Rik	RIKEN cDNA 5830424K16 gene	
+X	159559977	159561973			MGI:1924121	unclassified gene	4930422N03Rik	RIKEN cDNA 4930422N03 gene	
+X	109509236	109510177			MGI:1924508	unclassified gene	9430014K20Rik	RIKEN cDNA 9430014K20 gene	
+X	59092638	59093867			MGI:1924624	unclassified gene	9430082L08Rik	RIKEN cDNA 9430082L08 gene	
+X	103016124	103016612			MGI:1924719	unclassified gene	C030034E14Rik	RIKEN cDNA C030034E14 gene	
+X	43367690	43368333			MGI:1925010	unclassified gene	A230106O10Rik	RIKEN cDNA A230106O10 gene	
+X	163925976	163926554			MGI:1925154	unclassified gene	9230113A04Rik	RIKEN cDNA 9230113A04 gene	
+X	101131600	101132989			MGI:1925245	unclassified gene	E130102C15Rik	RIKEN cDNA E130102C15 gene	
+X	11493925	11494290			MGI:1925397	unclassified gene	8430439B09Rik	RIKEN cDNA 8430439B09 gene	
+X	133898699	133901213	55.47	-	MGI:1925475	unclassified gene	4930570D08Rik	RIKEN cDNA 4930570D08 gene	
+X	152750899	152751590			MGI:1925785	unclassified gene	C430004N12Rik	RIKEN cDNA C430004N12 gene	
+X	41627628	41628504			MGI:1925794	unclassified gene	C030001C17Rik	RIKEN cDNA C030001C17 gene	
+X	130393673	130394502			MGI:1925917	unclassified gene	9530062E16Rik	RIKEN cDNA 9530062E16 gene	
+X	85733875	85736831			MGI:1925980	unclassified gene	E130114A11Rik	RIKEN cDNA E130114A11 gene	
+X					MGI:97393	unclassified gene	O<hv>	organizer, high variegation	
+X					MGI:98202	unclassified gene	Opn1lw	opsin 1 (cone pigments), long-wave-sensitive	
+X	119932217	119935014			MGI:3028034	unclassified gene	9330184L24Rik	RIKEN cDNA 9330184L24 gene	
+X	142692261	142693567			MGI:3028062	unclassified gene	6030487A22Rik	RIKEN cDNA 6030487A22 gene	
+X					MGI:1922048	unclassified gene	4930544C05Rik	RIKEN cDNA 4930544C05 gene	
+X	22638327	22686846			MGI:1922547	unclassified gene	4930554N03Rik	RIKEN cDNA 4930554N03 gene	
+X	48441481	48443110			MGI:1923211	unclassified gene	5033418A18Rik	RIKEN cDNA 5033418A18 gene	
+X	106060224	106062215			MGI:3779377	unclassified gene	Gm11123	predicted gene 11123	
+X	101818196	101821816		-	MGI:3782030	unclassified gene	Gm3858	predicted gene 3858	
+X	110734150	110736752			MGI:3782539	unclassified gene	Gm4354	predicted gene 4354	
+X	78531001	78534033			MGI:3641679	unclassified gene	3426406K10Rik	RIKEN cDNA 3426406K10 gene	
+X					MGI:3642443	unclassified gene	Gm10452	predicted gene 10452	
+X					MGI:3642583	unclassified gene	Gm9927	predicted gene 9927	
+X	134745495	134746913	56.25	-	MGI:3642672	unclassified gene	Gm10344	predicted gene 10344	
+X			23.21		MGI:3642894	unclassified gene	Gm10483	predicted gene 10483	
+X	150838363	150842025			MGI:3642915	unclassified gene	Gm10437	predicted gene 10437	
+X	47433043	47436541	25.08	-	MGI:3645717	unclassified gene	Gm5636	predicted gene 5636	
+X	57812770	57813179			MGI:3528211	unclassified gene	AI606141	cDNA sequence AI606141	
+X	13028060	13028276			MGI:2686395	unclassified gene	Gm1549	predicted gene 1549	
+X	16233372	16234018			MGI:3616454	unclassified gene	Cypt11	cysteine-rich perinuclear theca 11	
+X	78861771	78862276			MGI:3616457	unclassified gene	Cypt13	cysteine-rich perinuclear theca 13	
+X	42147988	42150181		-	MGI:5610792	unclassified gene	Gm37564	predicted gene, 37564	
+X	73407676	73408931		+	MGI:5610969	unclassified gene	Gm37741	predicted gene, 37741	
+X	103771646	103773655		-	MGI:5611184	unclassified gene	Gm37956	predicted gene, 37956	
+X	103576426	103581101		-	MGI:5611248	unclassified gene	Gm38020	predicted gene, 38020	
+X	128375907	128376971		+	MGI:5613628	unclassified gene	Gm38390	predicted gene, 38390	
+X					MGI:5508037	unclassified gene	Gm27086	predicted gene 27086	
+X					MGI:5508065	unclassified gene	Gm27114	predicted gene 27114	
+X					MGI:5508073	unclassified gene	Gm27122	predicted gene 27122	
+X					MGI:5508097	unclassified gene	Gm27146	predicted gene 27146	
+X	103460373	103483233	46.15	-	MGI:98974	lincRNA gene	Xist	inactive X specific transcripts	
+X	15922304	15939249	11.03	-	MGI:1298401	lincRNA gene	Drr1	developmentally regulated repeat element-containing transcript 1	
+X	161817734	161819587	74.15	-	MGI:2684893	lincRNA gene	Scml1	Scm polycomb group protein like 1	
+X	103493558	103506425	46.17	+	MGI:2180008	lincRNA gene	Jpx	Jpx transcript, Xist activator (non-protein coding)	
+X	140776288	140796880	61.47	+	MGI:2446636	lincRNA gene	Eif2c5	eukaryotic translation initiation factor 2C, 5	
+X	53696922	53716578	29.96	-	MGI:2148030	lincRNA gene	AW822252	expressed sequence AW822252	
+X	144153695	144166274	65.23	+	MGI:2442684	lincRNA gene	A730046J19Rik	RIKEN cDNA A730046J19 gene	
+X	56317608	56320664	30.06	+	MGI:1919280	lincRNA gene	1600025M17Rik	RIKEN cDNA 1600025M17 gene	
+X	13234641	13247733		-	MGI:1919372	lincRNA gene	2010308F09Rik	RIKEN cDNA 2010308F09 gene	
+X	152294828	152327495	68.46	-	MGI:1920247	lincRNA gene	Kantr	Kdm5c adjacent non-coding transcript	
+X	67458196	67459203	34.81	+	MGI:1920512	lincRNA gene	1700036O09Rik	RIKEN cDNA 1700036O09 gene	
+X	93156221	93156873	40.96	+	MGI:1916607	lincRNA gene	1700003E24Rik	RIKEN cDNA 1700003E24 gene	
+X	36814771	36817185	21.22	-	MGI:1916841	lincRNA gene	Mdrl	mitochondrial dynamic related lncRNA	
+X	95732590	95733265	42.18	-	MGI:1923636	lincRNA gene	1700010D01Rik	RIKEN cDNA 1700010D01 gene	
+X	104816776	104842455		+	MGI:1923893	lincRNA gene	1700121L16Rik	RIKEN cDNA 1700121L16 gene	
+X	114926989	114928597	49.47	+	MGI:1925336	lincRNA gene	4930555B12Rik	RIKEN cDNA 4930555B12 gene	
+X	105372994	105391754	46.89	-	MGI:1925519	lincRNA gene	5330434G04Rik	RIKEN cDNA 5330434G04 gene	
+X	103560910	103623754	46.21	-	MGI:1926128	lincRNA gene	Ftx	Ftx transcript, Xist regulator (non-protein coding)	
+X	30071643	30087912	19.1	+	MGI:3041207	lincRNA gene	E330016L19Rik	RIKEN cDNA E330016L19 gene	
+X	25917944	25954696	17.97	-	MGI:3041230	lincRNA gene	E330010L02Rik	RIKEN cDNA E330010L02 gene	
+X	21206580	21221665	16.63	-	MGI:1921933	lincRNA gene	4930453H23Rik	RIKEN cDNA 4930453H23 gene	
+X	129064297	129067146	51.49	+	MGI:1922524	lincRNA gene	4930558G05Rik	RIKEN cDNA 4930558G05 gene	
+X	62510539	62527011	34.57	-	MGI:1922795	lincRNA gene	Tslrn1	testis specific long noncoding RNA 1	
+X	30407381	30423672	19.2	+	MGI:3779747	lincRNA gene	Gm7437	predicted gene 7437	
+X	27658190	27691942	18.45	+	MGI:3780269	lincRNA gene	Gm2101	predicted gene 2101	
+X	28005050	28047399	18.55	+	MGI:3780287	lincRNA gene	Gm2117	predicted gene 2117	
+X	28666150	28700879	18.75	+	MGI:3780335	lincRNA gene	Gm2165	predicted gene 2165	
+X	29012994	29046381	18.85	+	MGI:3780370	lincRNA gene	Gm2200	predicted gene 2200	
+X	35162846	35179061	20.13	+	MGI:3780480	lincRNA gene	Gm2309	predicted gene 2309	
+X	29881290	29916031	19.06	-	MGI:3781845	lincRNA gene	Gm3669	predicted gene 3669	
+X	35294189	35348739	20.18	-	MGI:3801869	lincRNA gene	Gm14553	predicted gene 14553	
+X	34974042	35009265	20.08	-	MGI:3801915	lincRNA gene	Gm14552	predicted gene 14552	
+X	30587056	30621275	19.25	-	MGI:3802032	lincRNA gene	Gm14974	predicted gene 14974	
+X	161821366	161832112	74.16	-	MGI:3826535	lincRNA gene	Gm15205	predicted gene 15205	
+X	99405331	99443797	43.35	-	MGI:3642165	lincRNA gene	Gm14812	predicted gene 14812	
+X	68667514	68678399	34.83	-	MGI:3642368	lincRNA gene	Fmr1os	fragile X mental retardation 1, opposite strand	
+X	91155168	91155791	40.29	+	MGI:3642821	lincRNA gene	Gm14773	predicted gene 14773	
+X	38479543	38480835	22.75	+	MGI:3644312	lincRNA gene	Gm7598	predicted gene 7598	
+X	167063449	167070370	78.24	-	MGI:3648637	lincRNA gene	Gm8817	predicted gene 8817	
+X	21312210	21334727	16.66	-	MGI:3648987	lincRNA gene	Gm6938	predicted gene 6938	
+X	166662025	166689812	78.05	+	MGI:2686566	lincRNA gene	Gm1720	predicted gene 1720	
+X	93183227	93183946	40.98	+	MGI:4361273	lincRNA gene	BC061195	cDNA sequence BC061195	
+X	94731399	94745359		+	MGI:5622411	lincRNA gene	Gm39526	predicted gene, 39526	
+X	21360865	21364622		-	MGI:5477087	lincRNA gene	Gm26593	predicted gene, 26593	
+X	94793103	94798237		+	MGI:5477111	lincRNA gene	Gm26617	predicted gene, 26617	
+X	19224789	19237856		-	MGI:5477146	lincRNA gene	Gm26652	predicted gene, 26652	
+X	81070694	81073102		-	MGI:5477269	lincRNA gene	Gm26775	predicted gene, 26775	
+X	29150251	29151825		-	MGI:5477312	lincRNA gene	Gm26818	predicted gene, 26818	
+X	133687780	133707262		+	MGI:5477345	lincRNA gene	Gm26851	predicted gene, 26851	
+X	110634586	110812324		-	MGI:5753169	lincRNA gene	Gm44593	predicted gene 44593	
+X	123483317	123483814	49.81	-	MGI:4937046	lincRNA gene	Gm17412	predicted gene, 17412	
+X	125888197	125888724	49.81	+	MGI:4937156	lincRNA gene	Gm17522	predicted gene, 17522	
+X	21751379	21761733		+	MGI:5578974	lincRNA gene	Gm28268	predicted gene 28268	
+X	117534546	117534914		+	MGI:5579285	lincRNA gene	Gm28579	predicted gene 28579	
+X	53051194	53053159		-	MGI:5579436	lincRNA gene	Gm28730	predicted gene 28730	
+X	46473585	46774099		-	MGI:5579948	lincRNA gene	Gm29242	predicted gene 29242	
+X	150848838	150849378		-	MGI:5521034	lincRNA gene	Gm27191	predicted gene 27191	
+X	24422751	24424779		-	MGI:5521035	lincRNA gene	Gm27192	predicted gene 27192	
+X					MGI:5504073	lincRNA gene	Gm26958	predicted gene, 26958	
+X	88759471	88760312		-	MGI:5504115	lincRNA gene	Gm27000	predicted gene, 27000	
+X	48276792	48285426	25.6	-	MGI:4820557	lincRNA gene	9530027J09Rik	RIKEN cDNA 9530027J09 gene	
+X	10707176	10717242	5.39	-	MGI:3704505	lincRNA gene	Gm10489	predicted gene 10489	
+X	100740995	100748671	43.72	+	MGI:3705109	lincRNA gene	Gm14902	predicted gene 14902	
+X	169447830	169475913	79.08	+	MGI:3705110	lincRNA gene	Gm15245	predicted gene 15245	
+X	167088093	167102090	78.24	-	MGI:3705117	lincRNA gene	Gm15232	predicted gene 15232	
+X	167164097	167171278	78.27	+	MGI:3705118	lincRNA gene	Gm15228	predicted gene 15228	
+X	166857669	166864449	78.17	-	MGI:3705131	lincRNA gene	Gm15230	predicted gene 15230	
+X	123890522	123893407	49.81	-	MGI:3705133	lincRNA gene	Astx5	amplified spermatogenic transcripts X encoded 5	
+X	123210420	123213303	49.81	-	MGI:3705134	lincRNA gene	Astx6	amplified spermatogenic transcripts X encoded 6	
+X	12339782	12354996	7.16	-	MGI:3705138	lincRNA gene	Gm14635	predicted gene 14635	
+X	119747626	119749677	49.58	-	MGI:3705167	lincRNA gene	Gm14929	predicted gene 14929	
+X	123664062	123666949	49.81	-	MGI:3705168	lincRNA gene	Gm14950	predicted gene 14950	
+X	14796735	14839980	9.81	+	MGI:3705173	lincRNA gene	Gm14505	predicted gene 14505	
+X	123449004	123451890	49.81	-	MGI:3705176	lincRNA gene	Astx2	amplified spermatogenic transcripts X encoded 2	
+X	99407579	99414219	43.35	-	MGI:3705177	lincRNA gene	Gm14809	predicted gene 14809	
+X	166618102	166621542	77.93	-	MGI:3705187	lincRNA gene	Gm15226	predicted gene 15226	
+X	94442732	94447727	41.56	+	MGI:3705192	lincRNA gene	Gm14827	predicted gene 14827	
+X	112980864	113009754	48.94	-	MGI:3705196	lincRNA gene	Gm14936	predicted gene 14936	
+X	150312601	150333065	68.46	-	MGI:3705199	lincRNA gene	Gm15104	predicted gene 15104	
+X	85825236	85827656	39.34	+	MGI:3705212	lincRNA gene	Gm14762	predicted gene 14762	
+X	125917810	125920696	49.81	+	MGI:3705250	lincRNA gene	Astx4d	amplified spermatogenic transcripts X encoded 4D	
+X	123253138	123260815	49.81	+	MGI:3705251	lincRNA gene	Gm14951	predicted gene 14951	
+X	140178698	140277862	61.35	-	MGI:3705253	lincRNA gene	Gm15046	predicted gene 15046	
+X	151169700	151171764	68.46	+	MGI:3705255	lincRNA gene	Gm15138	predicted gene 15138	
+X	49313319	49345237	25.9	-	MGI:3705257	lincRNA gene	Gm14696	predicted gene 14696	
+X	124407642	124410527	49.81	+	MGI:3705265	lincRNA gene	Astx1a	amplified spermatogenic transcripts X encoded 1A	
+X	125605682	125608567	49.81	+	MGI:3705270	lincRNA gene	Astx4c	amplified spermatogenic transcripts X encoded 4C	
+X	72981823	72982344	37.29	+	MGI:3705272	lincRNA gene	Gm14684	predicted gene 14684	
+X	126042545	126045431	49.81	+	MGI:3705273	lincRNA gene	Astx3	amplified spermatogenic transcripts X encoded 3	
+X	141900582	141902455	62.64	-	MGI:3705276	lincRNA gene	Gm15298	predicted gene 15298	
+X	124911237	124914122	49.81	+	MGI:3705283	lincRNA gene	Astx1b	amplified spermatogenic transcripts X encoded 1B	
+X	75916131	75930227	38.3	-	MGI:3705290	lincRNA gene	Gm14715	predicted gene 14715	
+X	77802351	77803280	38.32	-	MGI:3705303	lincRNA gene	Gm14742	predicted gene 14742	
+X	38705481	38737762	22.98	-	MGI:3705304	lincRNA gene	Gm14565	predicted gene 14565	
+X	61041741	61076068	34.01	+	MGI:3705306	lincRNA gene	Gm14664	predicted gene 14664	
+X	124659500	124662385	49.81	+	MGI:3705312	lincRNA gene	Astx4b	amplified spermatogenic transcripts X encoded 4B	
+X	125735043	125737928	49.81	+	MGI:3705323	lincRNA gene	Astx1c	amplified spermatogenic transcripts X encoded 1C	
+X	124530162	124533047	49.81	+	MGI:3705324	lincRNA gene	Astx4a	amplified spermatogenic transcripts X encoded 4A	
+X	50563120	50635321	26.53	-	MGI:2147989	lncRNA gene	Firre	functional intergenic repeating RNA element	
+X	153037629	153072915	68.46	+	MGI:2442715	lncRNA gene	9530051G07Rik	RIKEN cDNA 9530051G07 gene	
+X	61191293	61194165	34.34	+	MGI:2443661	lncRNA gene	C030023E24Rik	RIKEN cDNA C030023E24 gene	
+X	135022734	135060336	56.42	-	MGI:2444359	lncRNA gene	3632454L22Rik	RIKEN cDNA 3632454L22 gene	
+X	20961684	20986737	16.48	+	MGI:2444644	lncRNA gene	A230072C01Rik	RIKEN cDNA A230072C01 gene	
+X	102928372	102929094		+	MGI:1916638	lncRNA gene	1700018G05Rik	RIKEN cDNA 1700018G05 gene	
+X	108834478	108886896	47.9	+	MGI:1917214	lncRNA gene	2810403D21Rik	RIKEN cDNA 2810403D21 gene	
+X	13042015	13045295	7.92	+	MGI:1917739	lncRNA gene	5730405O15Rik	RIKEN cDNA 5730405O15 gene	
+X	136104603	136115420	57.39	+	MGI:1917741	lncRNA gene	5730412P04Rik	RIKEN cDNA 5730412P04 gene	
+X	6452376	6574663		-	MGI:1918672	lncRNA gene	5430428K19Rik	RIKEN cDNA 5430428K19 gene	
+X	105040854	105070124	46.82	-	MGI:1918695	lncRNA gene	5530601H04Rik	RIKEN cDNA 5530601H04 gene	
+X	53055046	53057190	29.31	-	MGI:1924903	lncRNA gene	C430049B03Rik	RIKEN cDNA C430049B03 gene	
+X	134684562	134686462	56.23	-	MGI:1925233	lncRNA gene	B230119M05Rik	RIKEN cDNA B230119M05 gene	
+X	42381014	42406629		+	MGI:1925541	lncRNA gene	B230118I11Rik	RIKEN cDNA B230118I11 gene	
+X	139240226	139357738	61.3	-	MGI:1925776	lncRNA gene	Platr21	pluripotency associated transcript 21	
+X	75725458	75764699	38.29	-	MGI:1921646	lncRNA gene	4933407K13Rik	RIKEN cDNA 4933407K13 gene	
+X	12977854	12994980		+	MGI:1922287	lncRNA gene	4930500G05Rik	RIKEN cDNA 4930500G05 gene	
+X	24971459	25404966		+	MGI:1922540	lncRNA gene	4930557B15Rik	RIKEN cDNA 4930557B15 gene	
+X	7411817	7422988	3.33	-	MGI:1922859	lncRNA gene	2010204K13Rik	RIKEN cDNA 2010204K13 gene	
+X	152368573	152416698	68.46	+	MGI:1922943	lncRNA gene	3010001F23Rik	RIKEN cDNA 3010001F23 gene	
+X	102686292	102686972	45.64	-	MGI:3782053	lncRNA gene	Gm3880	predicted pseudogene 3880	
+X	17111320	17115627		-	MGI:3782380	lncRNA gene	Gm4203	predicted gene 4203	
+X	19156981	19167241	14.53	-	MGI:3641976	lncRNA gene	Gm14636	predicted gene 14636	
+X	102932047	102934223	45.86	-	MGI:3649150	lncRNA gene	Gm5126	predicted pseudogene 5126	
+X	7375925	7378042	3.31	+	MGI:3649346	lncRNA gene	Gm14379	predicted gene 14379	
+X	136742957	136803364	59.1	+	MGI:3584520	lncRNA gene	BC065397	cDNA sequence BC065397	
+X	52742563	52744593	29.15	-	MGI:3617487	lncRNA gene	Kis2	Kaplan integration site 2	
+X	166868858	166884582		-	MGI:5589513	lncRNA gene	Gm30354	predicted gene, 30354	
+X					MGI:5589562	lncRNA gene	Gm30403	predicted gene, 30403	
+X	96105199	96109114		+	MGI:5589586	lncRNA gene	Gm30427	predicted gene, 30427	
+X	120282377	120290214		-	MGI:5589736	lncRNA gene	Gm30577	predicted gene, 30577	
+X	99288557	99291600		-	MGI:5589808	lncRNA gene	Gm30649	predicted gene, 30649	
+X	99330146	99334710		-	MGI:5589863	lncRNA gene	Gm30704	predicted gene, 30704	
+X	99454173	99457728		+	MGI:5589957	lncRNA gene	Gm30798	predicted gene, 30798	
+X	66147486	66169839		+	MGI:5590073	lncRNA gene	Gm30914	predicted gene, 30914	
+X	66850419	66852904		-	MGI:5590152	lncRNA gene	Gm30993	predicted gene, 30993	
+X					MGI:5590220	lncRNA gene	Gm31061	predicted gene, 31061	
+X	99557333	99562946		+	MGI:5590314	lncRNA gene	Gm31155	predicted gene, 31155	
+X	53855069	53856216		-	MGI:5590330	lncRNA gene	Gm31171	predicted gene, 31171	
+X	135970767	135983650		+	MGI:5590373	lncRNA gene	Gm31214	predicted gene, 31214	
+X	101338088	101341552		+	MGI:5590544	lncRNA gene	Gm31385	predicted gene, 31385	
+X	31243190	31244722		-	MGI:5590715	lncRNA gene	Gm31556	predicted gene, 31556	
+X	140333846	140387121		-	MGI:5591272	lncRNA gene	Gm32113	predicted gene, 32113	
+X	73320718	73333675		-	MGI:5591309	lncRNA gene	Gm32150	predicted gene, 32150	
+X	73669001	73673049		-	MGI:5591420	lncRNA gene	Gm32261	predicted gene, 32261	
+X	102302336	102504960		+	MGI:5591421	lncRNA gene	Gm32262	predicted gene, 32262	
+X	7458613	7473975		-	MGI:5591988	lncRNA gene	Gm32829	predicted gene, 32829	
+X	7500488	7505561		-	MGI:5592033	lncRNA gene	Gm32874	predicted gene, 32874	
+X	36020387	36027644		-	MGI:5592063	lncRNA gene	Gm32904	predicted gene, 32904	
+X	143942083	143949732		-	MGI:5592198	lncRNA gene	Gm33039	predicted gene, 33039	
+X	8205707	8217912		+	MGI:5592294	lncRNA gene	Gm33135	predicted gene, 33135	
+X	144314446	144317677		-	MGI:5592394	lncRNA gene	Gm33235	predicted gene, 33235	
+X					MGI:5592423	lncRNA gene	Gm33264	predicted gene, 33264	
+X	37172741	37178138		+	MGI:5592498	lncRNA gene	Gm33339	predicted gene, 33339	
+X	105001441	105003896		-	MGI:5592645	lncRNA gene	Gm33486	predicted gene, 33486	
+X	105146942	105152370		-	MGI:5592764	lncRNA gene	Gm33605	predicted gene, 33605	
+X	6092424	6229711		+	MGI:5592892	lncRNA gene	Gm33733	predicted gene, 33733	
+X	9480573	9484526		+	MGI:5592943	lncRNA gene	Gm33784	predicted gene, 33784	
+X	10117838	10120004		+	MGI:5593003	lncRNA gene	Gm33844	predicted gene, 33844	
+X					MGI:5593112	lncRNA gene	Gm33953	predicted gene, 33953	
+X	10884060	10912210		+	MGI:5593143	lncRNA gene	Gm33984	predicted gene, 33984	
+X	150710574	150712406		+	MGI:5593150	lncRNA gene	Gm33991	predicted gene, 33991	
+X	11395860	11418640		-	MGI:5593236	lncRNA gene	Gm34077	predicted gene, 34077	
+X	11434263	11437179		-	MGI:5593297	lncRNA gene	Gm34138	predicted gene, 34138	
+X	11528393	11533441		-	MGI:5593346	lncRNA gene	Gm34187	predicted gene, 34187	
+X	12001761	12004263		+	MGI:5593460	lncRNA gene	Gm34301	predicted gene, 34301	
+X	109183646	109191799		-	MGI:5593623	lncRNA gene	Gm34464	predicted gene, 34464	
+X	37816375	37817607		-	MGI:5593681	lncRNA gene	Gm34522	predicted gene, 34522	
+X	13343546	13348150		-	MGI:5593820	lncRNA gene	Gm34661	predicted gene, 34661	
+X					MGI:5593824	lncRNA gene	Gm34665	predicted gene, 34665	
+X					MGI:5593874	lncRNA gene	Gm34715	predicted gene, 34715	
+X	13569631	13586837		+	MGI:5593995	lncRNA gene	Gm34836	predicted gene, 34836	
+X	17251541	17454628		+	MGI:5594264	lncRNA gene	Gm35105	predicted gene, 35105	
+X	48884949	48906068		+	MGI:5594266	lncRNA gene	Gm35107	predicted gene, 35107	
+X	154767593	154768808		+	MGI:5594295	lncRNA gene	Gm35136	predicted gene, 35136	
+X	55971903	55972766		-	MGI:5594646	lncRNA gene	Gm35487	predicted gene, 35487	
+X	18100250	18105623		-	MGI:5594665	lncRNA gene	Gm35506	predicted gene, 35506	
+X	55920006	55925907		-	MGI:5594695	lncRNA gene	Gm35536	predicted gene, 35536	
+X	93401285	93434706		+	MGI:5594746	lncRNA gene	Gm35587	predicted gene, 35587	
+X	50537389	50562598		+	MGI:5594771	lncRNA gene	Gm35612	predicted gene, 35612	
+X	93715634	93745418		-	MGI:5594800	lncRNA gene	Gm35641	predicted gene, 35641	
+X	51681824	51864066		+	MGI:5594886	lncRNA gene	Gm35727	predicted gene, 35727	
+X	51972854	51974700		+	MGI:5594949	lncRNA gene	Gm35790	predicted gene, 35790	
+X	56223150	56226516		-	MGI:5595052	lncRNA gene	Gm35893	predicted gene, 35893	
+X	53063860	53167728		+	MGI:5595147	lncRNA gene	Gm35988	predicted gene, 35988	
+X	53459784	53464672		+	MGI:5595205	lncRNA gene	Gm36046	predicted gene, 36046	
+X	94417773	94441811		+	MGI:5595290	lncRNA gene	Gm36131	predicted gene, 36131	
+X	56598192	56599656		+	MGI:5595398	lncRNA gene	Gm36239	predicted gene, 36239	
+X	56720384	56723608		-	MGI:5595448	lncRNA gene	Gm36289	predicted gene, 36289	
+X	58121145	58127580		+	MGI:5595625	lncRNA gene	Gm36466	predicted gene, 36466	
+X	58135157	58177146		+	MGI:5595681	lncRNA gene	Gm36522	predicted gene, 36522	
+X	166802175	166824521		-	MGI:5595706	lncRNA gene	Gm36547	predicted gene, 36547	
+X	59178629	59191608		+	MGI:5595729	lncRNA gene	Gm36570	predicted gene, 36570	
+X	59589288	59692078		+	MGI:5595790	lncRNA gene	Gm36631	predicted gene, 36631	
+X	94827768	94858939		+	MGI:5595854	lncRNA gene	Gm36695	predicted gene, 36695	
+X	166839965	166841005		-	MGI:5596026	lncRNA gene	Gm36867	predicted gene, 36867	
+X	166841656	166852490		-	MGI:5596077	lncRNA gene	Gm36918	predicted gene, 36918	
+X	105127958	105136223		-	MGI:5825583	lncRNA gene	Gm45946	predicted gene, 45946	
+X	99198691	99203088		+	MGI:5826311	lncRNA gene	Gm46674	predicted gene, 46674	
+X	4496082	4515309		-	MGI:5826312	lncRNA gene	Gm46675	predicted gene, 46675	
+X	70569347	70571209		+	MGI:5826316	lncRNA gene	Gm46679	predicted gene, 46679	
+X	73624480	73636167		-	MGI:5826317	lncRNA gene	Gm46680	predicted gene, 46680	
+X	150490010	150496271		-	MGI:5826321	lncRNA gene	Gm46684	predicted gene, 46684	
+X	6238400	6241113		+	MGI:5826322	lncRNA gene	Gm46685	predicted gene, 46685	
+X	126911261	126915314		-	MGI:5826323	lncRNA gene	Gm46686	predicted gene, 46686	
+X	12080671	12120206		+	MGI:5826324	lncRNA gene	Gm46687	predicted gene, 46687	
+X	93702182	93715505		-	MGI:5826325	lncRNA gene	Gm46688	predicted gene, 46688	
+X	93826008	93827308		-	MGI:5826326	lncRNA gene	Gm46689	predicted gene, 46689	
+X	151041242	151046015		-	MGI:5826327	lncRNA gene	Gm46690	predicted gene, 46690	
+X	94125249	94140487		-	MGI:5826328	lncRNA gene	Gm46691	predicted gene, 46691	
+X	3957210	4006834		+	MGI:5826330	lncRNA gene	Gm46693	predicted gene, 46693	
+X	3443898	3517210		+	MGI:5826331	lncRNA gene	Gm46694	predicted gene, 46694	
+X	32041070	32047512		-	MGI:5826332	lncRNA gene	Gm46695	predicted gene, 46695	
+X	37567741	37581396		-	MGI:5621525	lncRNA gene	Gm38640	predicted gene, 38640	
+X	92934936	93057944		-	MGI:5621542	lncRNA gene	Gm38657	predicted gene, 38657	
+X					MGI:5621567	lncRNA gene	Gm38682	predicted gene, 38682	
+X	7772603	7789949		-	MGI:5622372	lncRNA gene	Gm39487	predicted gene, 39487	
+X	7948101	8033483		+	MGI:5622373	lncRNA gene	Gm39488	predicted gene, 39488	
+X	5730162	5749677		-	MGI:5622374	lncRNA gene	Gm39489	predicted gene, 39489	
+X	9933835	9939308		-	MGI:5622378	lncRNA gene	Gm39493	predicted gene, 39493	
+X	10989143	10991957		-	MGI:5622379	lncRNA gene	Gm39494	predicted gene, 39494	
+X	11362034	11363510		+	MGI:5622380	lncRNA gene	Gm39495	predicted gene, 39495	
+X	11487873	11525733		-	MGI:5622381	lncRNA gene	Gm39496	predicted gene, 39496	
+X	17393298	17516990		-	MGI:5622382	lncRNA gene	Gm39497	predicted gene, 39497	
+X	17776754	17809103		-	MGI:5622383	lncRNA gene	Gm39498	predicted gene, 39498	
+X	20709590	20711621		+	MGI:5622384	lncRNA gene	Gm39499	predicted gene, 39499	
+X	35751562	35766930		+	MGI:5622387	lncRNA gene	Gm39502	predicted gene, 39502	
+X	37154190	37172730		+	MGI:5622388	lncRNA gene	Gm39503	predicted gene, 39503	
+X	38121869	38158422		-	MGI:5622391	lncRNA gene	Gm39506	predicted gene, 39506	
+X	38226965	38233654		+	MGI:5622392	lncRNA gene	Gm39507	predicted gene, 39507	
+X	45152250	45154246		-	MGI:5622393	lncRNA gene	Gm39508	predicted gene, 39508	
+X					MGI:5622394	lncRNA gene	Gm39509	predicted gene, 39509	
+X	47465791	47466863		-	MGI:5622395	lncRNA gene	Gm39510	predicted gene, 39510	
+X	48254336	48256792		-	MGI:5622396	lncRNA gene	Gm39511	predicted gene, 39511	
+X	48513644	48516787		+	MGI:5622397	lncRNA gene	Gm39512	predicted gene, 39512	
+X	49288215	49315605		+	MGI:5622398	lncRNA gene	Gm39513	predicted gene, 39513	
+X	56389268	56395835		+	MGI:5622399	lncRNA gene	Gm39514	predicted gene, 39514	
+X	56682477	56684891		+	MGI:5622400	lncRNA gene	Gm39515	predicted gene, 39515	
+X	57742398	57749951		-	MGI:5622401	lncRNA gene	Gm39516	predicted gene, 39516	
+X	57857628	57866710		-	MGI:5622402	lncRNA gene	Gm39517	predicted gene, 39517	
+X	59306935	59327018		-	MGI:5622403	lncRNA gene	Gm39518	predicted gene, 39518	
+X	72218854	72220804		+	MGI:5622404	lncRNA gene	Gm39519	predicted gene, 39519	
+X	74319203	74328949		-	MGI:5622405	lncRNA gene	Gm39520	predicted gene, 39520	
+X	74856438	74860177		-	MGI:5622406	lncRNA gene	Gm39521	predicted gene, 39521	
+X	75561475	75565216		-	MGI:5622407	lncRNA gene	Gm39522	predicted gene, 39522	
+X	85609354	85614228		-	MGI:5622408	lncRNA gene	Gm39523	predicted gene, 39523	
+X	86713268	86722630		-	MGI:5622409	lncRNA gene	Gm39524	predicted gene, 39524	
+X					MGI:5622410	lncRNA gene	Gm39525	predicted gene, 39525	
+X	96966832	96991054		+	MGI:5622412	lncRNA gene	Gm39527	predicted gene, 39527	
+X	99287089	99320843		+	MGI:5622413	lncRNA gene	Gm39528	predicted gene, 39528	
+X	103025176	103027086		-	MGI:5622414	lncRNA gene	Gm39529	predicted gene, 39529	
+X	104667419	104719612		+	MGI:5622415	lncRNA gene	Gm39530	predicted gene, 39530	
+X	105176119	105257485		-	MGI:5622416	lncRNA gene	Gm39531	predicted gene, 39531	
+X	134723285	134729919		+	MGI:5622419	lncRNA gene	Gm39534	predicted gene, 39534	
+X	136242830	136244986		-	MGI:5622420	lncRNA gene	Gm39535	predicted gene, 39535	
+X	136703535	136708517		-	MGI:5622421	lncRNA gene	Gm39536	predicted gene, 39536	
+X	140127729	140139265		-	MGI:5622422	lncRNA gene	Gm39537	predicted gene, 39537	
+X	140525541	140534432		-	MGI:5622423	lncRNA gene	Gm39538	predicted gene, 39538	
+X	141182900	141188927		+	MGI:5622424	lncRNA gene	Gm39539	predicted gene, 39539	
+X	152009635	152014306		+	MGI:5622425	lncRNA gene	Gm39540	predicted gene, 39540	
+X					MGI:5622426	lncRNA gene	Gm39541	predicted gene, 39541	
+X					MGI:5622427	lncRNA gene	Gm39542	predicted gene, 39542	
+X	153568014	153623291		-	MGI:5622428	lncRNA gene	Gm39543	predicted gene, 39543	
+X	154733207	154738779		+	MGI:5622429	lncRNA gene	Gm39544	predicted gene, 39544	
+X	155355287	155392524		+	MGI:5622430	lncRNA gene	Gm39545	predicted gene, 39545	
+X	159507549	159516568		-	MGI:5622431	lncRNA gene	Gm39546	predicted gene, 39546	
+X	160134585	160138247		-	MGI:5622432	lncRNA gene	Gm39547	predicted gene, 39547	
+X	160328737	160338598		-	MGI:5622433	lncRNA gene	Gm39548	predicted gene, 39548	
+X	167160158	167170088		-	MGI:5622434	lncRNA gene	Gm39549	predicted gene, 39549	
+X	168623830	168624815		-	MGI:5622435	lncRNA gene	Gm39550	predicted gene, 39550	
+X	169816763	169842263		-	MGI:5622436	lncRNA gene	Gm39551	predicted gene, 39551	
+X					MGI:5622465	lncRNA gene	Gm39580	predicted gene, 39580	
+X					MGI:5624773	lncRNA gene	Gm41888	predicted gene, 41888	
+X					MGI:5624774	lncRNA gene	Gm41889	predicted gene, 41889	
+X	12967588	12994484		-	MGI:5624775	lncRNA gene	Gm41890	predicted gene, 41890	
+X	18115964	18147122		-	MGI:5624776	lncRNA gene	Gm41891	predicted gene, 41891	
+X	19236085	19242458		+	MGI:5624777	lncRNA gene	Gm41892	predicted gene, 41892	
+X					MGI:5624778	lncRNA gene	Gm41893	predicted gene, 41893	
+X	24597569	24599023		+	MGI:5624779	lncRNA gene	Gm41894	predicted gene, 41894	
+X	76273647	76275280		+	MGI:5624781	lncRNA gene	Gm41896	predicted gene, 41896	
+X	95981913	95986705		-	MGI:5624782	lncRNA gene	Gm41897	predicted gene, 41897	
+X	99711306	99730825		+	MGI:5624783	lncRNA gene	Gm41898	predicted gene, 41898	
+X					MGI:5624785	lncRNA gene	Gm41900	predicted gene, 41900	
+X	136189900	136200652		-	MGI:5624786	lncRNA gene	Gm41901	predicted gene, 41901	
+X	152506553	152514599		-	MGI:5624787	lncRNA gene	Gm41902	predicted gene, 41902	
+X	29473876	29475372		+	MGI:5624982	lncRNA gene	Gm42097	predicted gene, 42097	
+X	29722251	29744063		+	MGI:5624983	lncRNA gene	Gm42098	predicted gene, 42098	
+X					MGI:5624984	lncRNA gene	Gm42099	predicted gene, 42099	
+X	30293306	30294681		-	MGI:5624985	lncRNA gene	Gm42100	predicted gene, 42100	
+X	27383478	27399767		-	MGI:5624986	lncRNA gene	Gm42101	predicted gene, 42101	
+X	25660194	25661726		+	MGI:5625053	lncRNA gene	Gm42168	predicted gene, 42168	
+X	25990801	25992379		-	MGI:5625054	lncRNA gene	Gm42169	predicted gene, 42169	
+X	26065799	26067381		+	MGI:5625055	lncRNA gene	Gm42170	predicted gene, 42170	
+X	26324958	26326466		+	MGI:5625056	lncRNA gene	Gm42171	predicted gene, 42171	
+X	27028143	27029639		+	MGI:5625057	lncRNA gene	Gm42172	predicted gene, 42172	
+X	27829724	27851511		-	MGI:5625058	lncRNA gene	Gm42173	predicted gene, 42173	
+X					MGI:5625059	lncRNA gene	Gm42174	predicted gene, 42174	
+X	28183124	28199245		-	MGI:5625060	lncRNA gene	Gm42175	predicted gene, 42175	
+X	28328661	28330036		+	MGI:5625061	lncRNA gene	Gm42176	predicted gene, 42176	
+X	28496223	28512522		-	MGI:5625062	lncRNA gene	Gm42177	predicted gene, 42177	
+X					MGI:5625063	lncRNA gene	Gm42178	predicted gene, 42178	
+X	28837504	28859266		-	MGI:5625064	lncRNA gene	Gm42179	predicted gene, 42179	
+X					MGI:5625065	lncRNA gene	Gm42180	predicted gene, 42180	
+X	29183375	29199472		-	MGI:5625066	lncRNA gene	Gm42181	predicted gene, 42181	
+X	30737143	30753445		-	MGI:5625067	lncRNA gene	Gm42182	predicted gene, 42182	
+X	30878547	30879922		+	MGI:5625068	lncRNA gene	Gm42183	predicted gene, 42183	
+X	25068487	25084772		+	MGI:5625103	lncRNA gene	Gm42218	predicted gene, 42218	
+X	34821944	34838246		+	MGI:5625288	lncRNA gene	Gm42403	predicted gene, 42403	
+X					MGI:5625289	lncRNA gene	Gm42404	predicted gene, 42404	
+X	35367202	35369094		-	MGI:5625290	lncRNA gene	Gm42405	predicted gene, 42405	
+X	36137892	36196095		-	MGI:5625291	lncRNA gene	Gm42406	predicted gene, 42406	
+X	52760995	52763973		+	MGI:5625292	lncRNA gene	Gm42407	predicted gene, 42407	
+X	60893764	61076111		+	MGI:5621323	lncRNA gene	Gm38438	predicted gene, 38438	
+X	74726307	74728075		+	MGI:5621359	lncRNA gene	Gm38474	predicted gene, 38474	
+X					MGI:5621363	lncRNA gene	Gm38478	predicted gene, 38478	
+X	163975332	163983833		+	MGI:5621446	lncRNA gene	Gm38561	predicted gene, 38561	
+X	71020781	71028296		+	MGI:5621480	lncRNA gene	Gm38595	predicted gene, 38595	
+X	56344120	56346215		-	MGI:5621510	lncRNA gene	Gm38625	predicted gene, 38625	
+X			42.59		MGI:5011876	lncRNA gene	Gm19691	predicted gene, 19691	
+X	103623551	103623755		+	MGI:5530703	lncRNA gene	Gm27321	predicted gene, 27321	
+X	102252651	102257689	45.25	+	MGI:3705120	lncRNA gene	Gm14858	predicted gene 14858	
+X	12762278	12821492	7.61	+	MGI:3705147	lncRNA gene	Gm14634	predicted gene 14634	
+X	162735078	162736613	74.95	-	MGI:3705207	lncRNA gene	Gm15201	predicted gene 15201	
+X	36874295	36884222	21.28	+	MGI:102959	protein coding gene	Ube2a	ubiquitin-conjugating enzyme E2A	
+X	13280970	13294052	8.17	+	MGI:103064	protein coding gene	Ddx3x	DEAD/H (Asp-Glu-Ala-Asp/His) box polypeptide 3, X-linked	
+X	105797615	105929403	47.26	-	MGI:103067	protein coding gene	Atrx	ATRX, chromatin remodeler	
+X	163935443	163958661	75.99	-	MGI:103287	protein coding gene	Zrsr2	zinc finger (CCCH type), RNA binding motif and serine/arginine rich 2	
+X	9272784	9313245	4.22	+	MGI:103569	protein coding gene	Xk	X-linked Kx blood group	
+X	162961992	162964599	75.15	-	MGI:104528	protein coding gene	S100g	S100 calcium binding protein G	
+X	159255696	159368244	73.27	+	MGI:104557	protein coding gene	Rps6ka3	ribosomal protein S6 kinase polypeptide 3	
+X	151046150	151089521	68.46	+	MGI:104566	protein coding gene	Fgd1	FYVE, RhoGEF and PH domain containing 1	
+X	75785654	75875178	38.3	-	MGI:104807	protein coding gene	Pls3	plastin 3 (T-isoform)	
+X	52053021	52165252	28.33	-	MGI:104902	protein coding gene	Gpc4	glypican 4	
+X	52272426	52613950	28.74	-	MGI:104903	protein coding gene	Gpc3	glypican 3	
+X	145446425	145505181	66.72	-	MGI:108440	protein coding gene	Amot	angiomotin	
+X	59062145	59568071	33.31	-	MGI:109178	protein coding gene	Fgf13	fibroblast growth factor 13	
+X	157443852	157492046	72.48	-	MGI:109490	protein coding gene	Sms	spermine synthase	
+X	73192207	73202930	37.29	+	MGI:109505	protein coding gene	Xlr3b	X-linked lymphocyte-regulated 3B	
+X	73086293	73097095	37.29	-	MGI:109506	protein coding gene	Xlr3a	X-linked lymphocyte-regulated 3A	
+X	144381671	144688180	65.49	-	MGI:109524	protein coding gene	Trpc5	transient receptor potential cation channel, subfamily C, member 5	
+X	104280657	104413856	46.58	-	MGI:109533	protein coding gene	Abcb7	ATP-binding cassette, sub-family B (MDR/TAP), member 7	
+X	136245080	136247139	57.53	+	MGI:109567	protein coding gene	Tceal9	transcription elongation factor A like 9	
+X	47912387	47965868	25.43	+	MGI:109589	protein coding gene	Ocrl	OCRL, inositol polyphosphate-5-phosphatase	
+X	113040593	113185517	48.94	-	MGI:892979	protein coding gene	Chm	choroidermia (RAB escort protein 1)	
+X	18162575	18279936	13.45	+	MGI:1095419	protein coding gene	Kdm6a	lysine (K)-specific demethylase 6A	
+X	99136130	99148991	43.22	+	MGI:102708	protein coding gene	Efnb1	ephrin B1	
+X	77511013	77662983	38.31	+	MGI:1336172	protein coding gene	Tbl1x	transducin (beta)-like 1 X-linked	
+X	160768013	160799663	73.95	+	MGI:1336189	protein coding gene	Rs1	retinoschisis (X-linked, juvenile) 1 (human)	
+X	101532734	101601789	44.29	+	MGI:1336878	protein coding gene	Taf1	TATA-box binding protein associated factor 1	
+X	102247381	102252181	45.25	-	MGI:108023	protein coding gene	Cited1	Cbp/p300-interacting transactivator with Glu/Asp-rich carboxy-terminal domain 1	
+X	141710998	141725217	62.43	-	MGI:1338009	protein coding gene	Irs4	insulin receptor substrate 4	
+X	136270253	136271978	57.64	+	MGI:1338016	protein coding gene	Bex3	brain expressed X-linked 3	
+X	136066565	136068236	57.37	-	MGI:1338017	protein coding gene	Bex2	brain expressed X-linked 2	
+X	74393290	74453854	38.0	+	MGI:1338074	protein coding gene	Ikbkg	inhibitor of kappaB kinase gamma	
+X	101640060	101684351	44.45	+	MGI:1339639	protein coding gene	Ogt	O-linked N-acetylglucosamine (GlcNAc) transferase (UDP-N-acetylglucosamine:polypeptide-N-acetylglucosaminyl transferase)	
+X	143518591	143797796	64.5	+	MGI:1339656	protein coding gene	Pak3	p21 (RAC1) activated kinase 3	
+X	8061171	8074760	3.64	-	MGI:1099440	protein coding gene	Suv39h1	suppressor of variegation 3-9 1	
+X	161117193	161258213	73.95	+	MGI:1340042	protein coding gene	Scml2	Scm polycomb group protein like 2	
+X	7067519	7078609	3.17	+	MGI:102794	protein coding gene	Akap4	A kinase (PRKA) anchor protein 4	
+X	168654117	168673898	78.73	-	MGI:1341851	protein coding gene	Msl3	MSL complex subunit 3	
+X	103957163	103981284	46.42	-	MGI:1342291	protein coding gene	Rlim	ring finger protein, LIM domain interacting	
+X	57383530	57393036	31.64	-	MGI:1343044	protein coding gene	Rbmx	RNA binding motif protein, X chromosome	
+X	134059187	134086819	55.63	+	MGI:1343054	protein coding gene	Cstf2	cleavage stimulation factor, 3' pre-RNA subunit 2	
+X	7899336	7907652	3.56	+	MGI:1343176	protein coding gene	Timm17b	translocase of inner mitochondrial membrane 17b	
+X	10158216	10216795	4.62	-	MGI:1344037	protein coding gene	Rpgr	retinitis pigmentosa GTPase regulator	
+X	140664599	140767715	61.35	+	MGI:1344333	protein coding gene	Mid2	midline 2	
+X	152016428	152061973	68.46	+	MGI:1344345	protein coding gene	Smc1a	structural maintenance of chromosomes 1A	
+X	161717069	161779496	74.07	+	MGI:1344378	protein coding gene	Rai2	retinoic acid induced 2	
+X	139333683	139338169	61.35	+	MGI:98818	protein coding gene	Trap1a	tumor rejection antigen P1A	
+X	20658326	20683179	16.15	+	MGI:98890	protein coding gene	Uba1	ubiquitin-like modifier activating enzyme 1	
+X	53777118	53797706	30.06	-	MGI:98976	protein coding gene	Xlr	X-linked lymphocyte-regulated	
+X	94074631	94123702	41.48	-	MGI:99211	protein coding gene	Zfx	zinc finger protein X-linked	
+X	106027276	106124926	47.36	+	MGI:99400	protein coding gene	Atp7a	ATPase, Cu++ transporting, alpha polypeptide	
+X	164419787	164433916	76.49	+	MGI:99461	protein coding gene	Piga	phosphatidylinositol glycan anchor biosynthesis, class A	
+X	167207093	167209315	78.28	-	MGI:99510	protein coding gene	Tmsb4x	thymosin, beta 4, X chromosome	
+X	26522657	26545565	18.15	-	MGI:99543	protein coding gene	Slx	Sycp3 like X-linked	
+X	93304767	93632155	41.06	-	MGI:99660	protein coding gene	Pola1	polymerase (DNA directed), alpha 1	
+X	152233020	152274535	68.46	+	MGI:99781	protein coding gene	Kdm5c	lysine (K)-specific demethylase 5C	
+X	74305012	74311867	37.97	+	MGI:99846	protein coding gene	Gdi1	guanosine diphosphate (GDP) dissociation inhibitor 1	
+X	73137232	73149450	37.29	-	MGI:99870	protein coding gene	DXBay18	DNA segment, Chr X, Baylor 18	
+X	74026592	74085690	37.63	-	MGI:99918	protein coding gene	Mecp2	methyl CpG binding protein 2	
+X	20933395	20950608	16.45	-	MGI:101833	protein coding gene	Elk1	ELK1, member of ETS oncogene family	
+X	110814280	110817207	48.2	+	MGI:101894	protein coding gene	Pou3f4	POU domain, class 3, transcription factor 4	
+X	36112110	36171259	20.49	+	MGI:105052	protein coding gene	Il13ra1	interleukin 13 receptor, alpha 1	
+X	8081466	8090491	3.65	-	MGI:105059	protein coding gene	Was	Wiskott-Aldrich syndrome	
+X	142081160	142196931	62.85	-	MGI:105119	protein coding gene	Gucy2f	guanylate cyclase 2f	
+X	73922121	73930850	37.49	-	MGI:105940	protein coding gene	Renbp	renin binding protein	
+X	75109733	75131016	38.15	-	MGI:105941	protein coding gene	Mpp1	membrane protein, palmitoylated	
+X	73942792	73966357	37.52	-	MGI:105942	protein coding gene	Hcfc1	host cell factor C1	
+X	74270816	74273135	37.94	+	MGI:105943	protein coding gene	Rpl10	ribosomal protein L10	
+X	74409486	74429161	38.0	-	MGI:105979	protein coding gene	G6pdx	glucose-6-phosphate dehydrogenase X-linked	
+X	152336852	152342425	68.46	-	MGI:106244	protein coding gene	Tspyl2	TSPY-like 2	
+X	85701937	85776819	39.32	-	MGI:106594	protein coding gene	Gk	glycerol kinase	
+X	103184176	103186640	45.97	-	MGI:106654	protein coding gene	Nap1l2	nucleosome assembly protein 1-like 2	
+X	58022700	58041736	32.56	+	MGI:106676	protein coding gene	Zic3	zinc finger protein of the cerebellum 3	
+X	169311530	169320371	78.98	-	MGI:106911	protein coding gene	Hccs	holocytochrome c synthetase	
+X	152781921	152808646	68.46	+	MGI:107193	protein coding gene	Gpr143	G protein-coupled receptor 143	
+X	152609509	152769465	68.46	-	MGI:107194	protein coding gene	Shroom2	shroom family member 2	
+X	134404628	134456574	56.18	+	MGI:107432	protein coding gene	Drp2	dystrophin related protein 2	
+X	157162075	157415286	72.38	-	MGI:107489	protein coding gene	Phex	phosphate regulating endopeptidase homolog, X-linked	
+X	149097952	149138152	68.46	+	MGI:107573	protein coding gene	Ott	ovary testis transcribed	
+X	166238911	166388988	76.86	+	MGI:107672	protein coding gene	Gpm6b	glycoprotein m6b	
+X	74329066	74344689	38.0	+	MGI:107683	protein coding gene	Plxna3	plexin A3	
+X	107397195	107403360	47.52	-	MGI:107706	protein coding gene	Itm2a	integral membrane protein 2A	
+X	82948870	85206141	38.38	+	MGI:94909	protein coding gene	Dmd	dystrophin, muscular dystrophy	
+X	74369217	74373349	38.0	-	MGI:95048	protein coding gene	Slc10a3	solute carrier family 10 (sodium/bile acid cotransporter family), member 3	
+X	74365718	74368548	38.0	-	MGI:95049	protein coding gene	Ubl4a	ubiquitin-like 4A	
+X	73228306	73230795	37.29	+	MGI:95474	protein coding gene	F8a	factor 8-associated gene A	
+X	68678541	68717963	34.83	+	MGI:95564	protein coding gene	Fmr1	fragile X mental retardation 1	
+X	72432681	72656848	37.24	-	MGI:95615	protein coding gene	Gabra3	gamma-aminobutyric acid (GABA) A receptor, subunit alpha 3	
+X	7959260	7976682	3.59	-	MGI:95661	protein coding gene	Gata1	GATA binding protein 1	
+X	160902116	160907052	73.95	-	MGI:95717	protein coding gene	Gja6	gap junction protein, alpha 6	
+X	101376378	101385629	44.06	+	MGI:95719	protein coding gene	Gjb1	gap junction protein, beta 1	
+X	165129017	165327393	76.75	-	MGI:95748	protein coding gene	Glra2	glycine receptor, alpha 2 subunit	
+X	136757674	136780141	59.1	-	MGI:95750	protein coding gene	Glra4	glycine receptor, alpha 4 subunit	
+X	41401118	41678601	23.19	+	MGI:95810	protein coding gene	Gria3	glutamate receptor, ionotropic, AMPA3 (alpha 3)	
+X	163513904	163549677	75.63	-	MGI:95836	protein coding gene	Grpr	gastrin releasing peptide receptor	
+X	137115397	137122083	59.1	-	MGI:1096388	protein coding gene	Esx1	extraembryonic, spermatogenesis, homeobox 1	
+X					MGI:1096399	protein coding gene	Vamp7	vesicle-associated membrane protein 7	
+X	74013914	74023918	37.61	-	MGI:107420	protein coding gene	Irak1	interleukin-1 receptor-associated kinase 1	
+X	160623094	160735765	73.95	-	MGI:1097157	protein coding gene	Ppef1	protein phosphatase with EF hand calcium-binding domain 1	
+X	74127466	74150756	37.76	+	MGI:1097692	protein coding gene	Opn1mw	opsin 1 (cone pigments), medium-wave-sensitive (color blindness, deutan)	
+X	93286507	93298357	41.05	+	MGI:1097716	protein coding gene	Arx	aristaless related homeobox	
+X	71555917	71560673	36.92	+	MGI:1098219	protein coding gene	Hmgb3	high mobility group box 3	
+X	42149319	42277186	23.19	+	MGI:1098583	protein coding gene	Stag2	stromal antigen 2	
+X	72918557	72958514	37.29	+	MGI:1099438	protein coding gene	Nsdhl	NAD(P) dependent steroid dehydrogenase-like	
+X	71210767	71315413	36.55	+	MGI:1099452	protein coding gene	Mtm1	X-linked myotubular myopathy gene 1	
+X	8138975	8145880	3.68	-	MGI:1099460	protein coding gene	Rbm3	RNA binding motif (RNP1, RRM) protein 3	
+X	73778963	73786897	37.41	-	MGI:1099463	protein coding gene	Idh3g	isocitrate dehydrogenase 3 (NAD+), gamma	
+X	73787028	73790828	37.41	+	MGI:1099464	protein coding gene	Ssr4	signal sequence receptor, delta	
+X	57043074	57048758	30.78	+	MGI:1100501	protein coding gene	Brs3	bombesin-like receptor 3	
+X	101079210	101086020	43.72	-	MGI:1100521	protein coding gene	Slc7a3	solute carrier family 7 (cationic amino acid transporter, y+ system), member 3	
+X	169685199	169990798	79.19	+	MGI:1100537	protein coding gene	Mid1	midline 1	
+X	143802236	143827412	64.83	-	MGI:1100850	protein coding gene	Capn6	calpain 6	
+X	99465734	99471268	43.38	-	MGI:1101765	protein coding gene	Pja1	praja ring finger ubiquitin ligase 1	
+X	164192842	164258193	76.12	-	MGI:1101778	protein coding gene	Bmx	BMX non-receptor tyrosine kinase	
+X	83486678	83487924	38.38	-	MGI:1194903	protein coding gene	Tsga8	testis specific gene A8	
+X	162760402	162779092	74.97	+	MGI:1194910	protein coding gene	Rbbp7	retinoblastoma binding protein 7, chromatin remodeling factor	
+X	99975606	100400760	43.59	+	MGI:1195272	protein coding gene	Eda	ectodysplasin-A	
+X	140539528	140600522	61.35	-	MGI:1196284	protein coding gene	Tsc22d3	TSC22 domain family, member 3	
+X	168795099	169304435	78.77	+	MGI:1196332	protein coding gene	Arhgap6	Rho GTPase activating protein 6	
+X	42059679	42109656	23.19	+	MGI:107572	protein coding gene	Xiap	X-linked inhibitor of apoptosis	
+X	21484549	21488833	16.71	+	MGI:87966	protein coding gene	Agtr2	angiotensin II receptor, type 2	
+X	150547417	150570622	68.46	+	MGI:87990	protein coding gene	Alas2	aminolevulinic acid synthase 2, erythroid	
+X	169176114	169187200	78.95	-	MGI:88005	protein coding gene	Amelx	amelogenin, X-linked	
+X	98148769	98323215	42.82	+	MGI:88064	protein coding gene	Ar	androgen receptor	
+X	20797814	20860519	16.3	+	MGI:88065	protein coding gene	Araf	Araf proto-oncogene, serine/threonine kinase	
+X	73891798	73894428	37.46	+	MGI:88123	protein coding gene	Avpr2	arginine vasopressin receptor 2	
+X	73483602	73495933	37.33	+	MGI:88158	protein coding gene	Bgn	biglycan	
+X	134542336	134583570	56.18	-	MGI:88216	protein coding gene	Btk	Bruton agammaglobulinemia tyrosine kinase	
+X	61184005	61185558	34.33	-	MGI:88359	protein coding gene	Cdr1	cerebellar degeneration related antigen 1	
+X	103321398	103330224	46.06	+	MGI:88362	protein coding gene	Cdx4	caudal type homeobox 4	
+X	141475385	141689234	62.16	+	MGI:88456	protein coding gene	Col4a5	collagen, type IV, alpha 5	
+X	9435252	9487766	4.3	-	MGI:88574	protein coding gene	Cybb	cytochrome b-245, beta polypeptide	
+X	134601179	134607060	56.2	+	MGI:1201779	protein coding gene	Hnrnph2	heterogeneous nuclear ribonucleoprotein H2	
+X	134585654	134588062	56.2	+	MGI:1201789	protein coding gene	Rpl36a	ribosomal protein L36A	
+X	69360294	69868037	35.53	+	MGI:1202294	protein coding gene	Aff2	AF4/FMR2 family, member 2	
+X	37827055	37829857	22.08	+	MGI:1202888	protein coding gene	Rhox6	reproductive homeobox 6	
+X	103697414	103821983	46.29	-	MGI:1203732	protein coding gene	Slc16a2	solute carrier family 16 (monocarboxylic acid transporters), member 2	
+X	139800828	139811386	61.35	+	MGI:1276110	protein coding gene	Cldn2	claudin 2	
+X	74281912	74290151	37.95	+	MGI:109626	protein coding gene	Taz	tafazzin	
+X	74297097	74304721	37.96	+	MGI:109629	protein coding gene	Atp6ap1	ATPase, H+ transporting, lysosomal accessory protein 1	
+X	74273217	74282333	37.94	-	MGI:109628	protein coding gene	Dnase1l1	deoxyribonuclease 1-like 1	
+X	143855842	143933275	64.89	-	MGI:1277171	protein coding gene	Dcx	doublecortin	
+X	101731535	101734147	44.58	-	MGI:1277207	protein coding gene	Cxcr3	chemokine (C-X-C motif) receptor 3	
+X	78186808	78192242	38.33	+	MGI:1277948	protein coding gene	Obp1b	odorant binding protein IB	
+X	78085505	78091374	38.33	-	MGI:1277949	protein coding gene	Obp1a	odorant binding protein IA	
+X	20364481	20405653	15.83	+	MGI:1277953	protein coding gene	Rp2	retinitis pigmentosa 2 homolog	
+X	147383478	147429192	68.46	-	MGI:1277954	protein coding gene	Il13ra2	interleukin 13 receptor, alpha 2	
+X	20951665	20962034	16.46	-	MGI:1277988	protein coding gene	Uxt	ubiquitously expressed prefoldin like chaperone	
+X	160784308	160994681	73.95	-	MGI:1278336	protein coding gene	Cdkl5	cyclin-dependent kinase-like 5	
+X	7667941	7671390	3.45	-	MGI:1298382	protein coding gene	Plp2	proteolipid protein 2	
+X	56731787	56793346	30.06	+	MGI:1298387	protein coding gene	Fhl1	four and a half LIM domains 1	
+X	10485158	10596605	4.85	+	MGI:1298407	protein coding gene	Tspan7	tetraspanin 7	
+X	75172715	75382615	38.17	-	MGI:88383	protein coding gene	F8	coagulation factor VIII	
+X	59999464	60030759	33.5	+	MGI:88384	protein coding gene	F9	coagulation factor IX	
+X	7153810	7319358	3.21	-	MGI:99486	protein coding gene	Clcn5	chloride channel, voltage-sensitive 5	
+X	89403848	89409689	39.95	-	MGI:101758	protein coding gene	Pet2	plasmacytoma expressed transcript 2	
+X	13517080	13846784	8.43	-	MGI:1309489	protein coding gene	Cask	calcium/calmodulin-dependent serine protein kinase (MAGUK family)	
+X	74223461	74249820	37.89	-	MGI:95556	protein coding gene	Flna	filamin, alpha	
+X	77761411	77796278	38.32	-	MGI:1309999	protein coding gene	Prkx	protein kinase, X-linked	
+X	57212143	57224042	31.21	+	MGI:88337	protein coding gene	Cd40lg	CD40 ligand	
+X	94636069	94638562	41.63	+	MGI:1316727	protein coding gene	Gspt2	G1 to S phase transition 2	
+X	6314107	6320721	2.81	-	MGI:1316745	protein coding gene	Bmp15	bone morphogenetic protein 15	
+X	136213972	136215513	57.4	-	MGI:1328321	protein coding gene	Bex1	brain expressed X-linked 1	
+X	42502565	42522097	23.2	+	MGI:1328352	protein coding gene	Sh2d1a	SH2 domain containing 1A	
+X	13071498	13173328	7.95	+	MGI:894681	protein coding gene	Usp9x	ubiquitin specific peptidase 9, X chromosome	
+X	72256926	72274822	37.21	-	MGI:1330235	protein coding gene	Gabre	gamma-aminobutyric acid (GABA) A receptor, subunit epsilon	
+X	48519285	48530232	25.68	+	MGI:109493	protein coding gene	Rab33a	RAB33A, member RAS oncogene family	
+X	48623418	48662298	25.69	+	MGI:1330823	protein coding gene	Slc25a14	solute carrier family 25 (mitochondrial carrier, brain), member 14	
+X	96455436	96574485	42.69	+	MGI:1332240	protein coding gene	Heph	hephaestin	
+X	5466904	5469265	2.4	-	MGI:1332242	protein coding gene	Mycs	myc-like oncogene, s-myc protein	
+X	91331905	91332897	40.35	+	MGI:105117	protein coding gene	Mageb2	melanoma antigen, family B, 2	
+X	92015191	92016333	40.59	-	MGI:105118	protein coding gene	Mageb1	melanoma antigen, family B, 1	
+X	7930120	7947889	3.58	-	MGI:1333752	protein coding gene	Hdac6	histone deacetylase 6	
+X	155027201	155033313	72.38	-	MGI:1333793	protein coding gene	Magea2	melanoma antigen, family A, 2	
+X	75514299	75534942	38.25	+	MGI:1333804	protein coding gene	Vbp1	von Hippel-Lindau binding protein 1	
+X	154985775	154995850	72.38	-	MGI:1333827	protein coding gene	Magea8	melanoma antigen, family A, 8	
+X	154948543	154949505	72.38	-	MGI:1333832	protein coding gene	Magea3	melanoma antigen, family A, 3	
+X	155088686	155089793	72.38	-	MGI:1333834	protein coding gene	Magea1	melanoma antigen, family A, 1	
+X	154924012	154935987	72.38	-	MGI:1333837	protein coding gene	Magea6	melanoma antigen, family A, 6	
+X	155053061	155063145	72.38	-	MGI:1333838	protein coding gene	Magea5	melanoma antigen, family A, 5	
+X	72222017	72222964	37.2	+	MGI:1333839	protein coding gene	Magea4	melanoma antigen, family A, 4	
+X	152001896	152004442	68.46	+	MGI:1333871	protein coding gene	Hsd17b10	hydroxysteroid (17-beta) dehydrogenase 10	
+X	71663667	71669257	36.98	+	MGI:1333877	protein coding gene	Gpr50	G-protein-coupled receptor 50	
+X	162411954	162643649	74.67	-	MGI:2663511	protein coding gene	Reps2	RALBP1 associated Eps domain containing protein 2	
+X	159988433	160123351	73.95	+	MGI:2448588	protein coding gene	Map3k15	mitogen-activated protein kinase kinase kinase 15	
+X	7924276	7928607	3.58	-	MGI:2665023	protein coding gene	Eras	ES cell-expressed Ras	
+X	136707969	136709873	59.1	+	MGI:2385317	protein coding gene	Tceal1	transcription elongation factor A (SII)-like 1	
+X	164980592	164997272	76.75	+	MGI:2448558	protein coding gene	Fancb	Fanconi anemia, complementation group B	
+X	48667979	48674478	25.69	-	MGI:2668412	protein coding gene	Gpr119	G-protein coupled receptor 119	
+X	9885622	9994543	4.62	+	MGI:2668451	protein coding gene	Sytl5	synaptotagmin-like 5	
+X	99003248	99074728	43.19	+	MGI:2448556	protein coding gene	Stard8	START domain containing 8	
+X	68761839	68804561	34.86	+	MGI:2672032	protein coding gene	Fmr1nb	Fmr1 neighbor	
+X	105499772	105500639	46.93	+	MGI:2676331	protein coding gene	Cypt2	cysteine-rich perinuclear theca 2	
+X	97072596	97082104	42.71	+	MGI:2676330	protein coding gene	Pgr15l	G protein-coupled receptor 15-like	
+X	66649318	66661393	34.81	+	MGI:2679449	protein coding gene	Slitrk2	SLIT and NTRK-like family, member 2	
+X	96247203	96293438	42.69	-	MGI:2679720	protein coding gene	Vsig4	V-set and immunoglobulin domain containing 4	
+X	151344175	151471842	68.46	+	MGI:2387687	protein coding gene	Fam120c	family with sequence similarity 120, member C	
+X	21118414	21122088	16.61	+	MGI:2446782	protein coding gene	Ssxa1	synovial sarcoma, X member A1	
+X					MGI:2446781	protein coding gene	Ssxb12	synovial sarcoma, X member B12	
+X					MGI:2446780	protein coding gene	Ssxb11	synovial sarcoma, X member B11	
+X	8327424	8336235	3.77	+	MGI:2446779	protein coding gene	Ssxb10	synovial sarcoma, X member B10	
+X	8366978	8375388	3.79	+	MGI:2446778	protein coding gene	Ssxb9	synovial sarcoma, X member B9	
+X	8684887	8690844	3.94	-	MGI:2446777	protein coding gene	Ssxb8	synovial sarcoma, X member B8	
+X	8542608	8548255	3.87	-	MGI:2446775	protein coding gene	Ssxb6	synovial sarcoma, X member B6	
+X	8803691	8809386	4.0	+	MGI:2446774	protein coding gene	Ssxb5	synovial sarcoma, X member B5	
+X	8748432	8754587	3.97	+	MGI:2446773	protein coding gene	Ssx9	synovial sarcoma, X 9	
+X	8583404	8591810	3.89	-	MGI:2446772	protein coding gene	Ssxb3	synovial sarcoma, X member B3	
+X	8454345	8461726	3.83	-	MGI:2446771	protein coding gene	Ssxb2	synovial sarcoma, X member B2	
+X	151198078	151320152	68.46	+	MGI:2652875	protein coding gene	Wnk3	WNK lysine deficient protein kinase 3	
+X	95639193	95658509	41.99	-	MGI:2679294	protein coding gene	Zc4h2	zinc finger, C4H2 domain containing	
+X	38076598	38085139	22.33	-	MGI:2681831	protein coding gene	Rhox11	reproductive homeobox 11	
+X	86747242	88115623	39.89	-	MGI:2687319	protein coding gene	Il1rapl1	interleukin 1 receptor accessory protein-like 1	
+X	136954988	136976869	59.1	-	MGI:3026988	protein coding gene	Tmsb15l	thymosin beta 15b like	
+X	36743659	36777202	21.15	+	MGI:2684854	protein coding gene	Slc25a43	solute carrier family 25, member 43	
+X	37209348	37211041	21.63	-	MGI:2684855	protein coding gene	Gm9	predicted gene 9	
+X	90892142	90893134	40.19	+	MGI:2684890	protein coding gene	Gm44	predicted gene 44	
+X	161833290	162159441	74.17	-	MGI:2684894	protein coding gene	Nhs	NHS actin remodeling regulator	
+X	43591160	43593532	23.58	+	MGI:2685208	protein coding gene	Tex13c1	TEX13 family member C1	
+X	57409154	57488767	31.71	+	MGI:2685210	protein coding gene	Gm364	predicted gene 364	
+X	57496668	57503757	31.93	-	MGI:2685211	protein coding gene	Gpr101	G protein-coupled receptor 101	
+X	61709616	61710950	34.57	+	MGI:2685212	protein coding gene	Ldoc1	regulator of NFKB signaling	
+X	56894234	56980270	30.34	+	MGI:2685213	protein coding gene	Adgrg4	adhesion G protein-coupled receptor G4	
+X	71962624	71972722	37.15	+	MGI:2685214	protein coding gene	Prrg3	proline rich Gla (G-carboxyglutamic acid) 3 (transmembrane)	
+X	106837082	106840643	47.37	-	MGI:2685221	protein coding gene	Rtl3	retrotransposon Gag like 3	
+X	107255878	107296769	47.48	+	MGI:2685222	protein coding gene	Gpr174	G protein-coupled receptor 174	
+X	107792590	107872909	47.62	+	MGI:2685223	protein coding gene	Tent5d	terminal nucleotidyltransferase 5D	
+X	111575204	111697079	48.29	-	MGI:2685226	protein coding gene	Hdx	highly divergent homeobox	
+X	127039972	127063986	49.81	+	MGI:2685228	protein coding gene	Gm382	predicted gene 382	
+X	127394293	127395898	49.81	+	MGI:2685229	protein coding gene	4921511C20Rik	RIKEN cDNA 4921511C20 gene	
+X	136072099	136085255	57.38	-	MGI:2685230	protein coding gene	Nxf3	nuclear RNA export factor 3	
+X	143099594	143104297	64.02	+	MGI:2685231	protein coding gene	Rtl9	retrotransposon Gag like 9	
+X	155573455	155623814	72.38	-	MGI:2685233	protein coding gene	Ptchd1	patched domain containing 1	
+X	157818435	157820369	72.76	+	MGI:2685234	protein coding gene	Klhl34	kelch-like 34	
+X	166499812	166518567	77.59	-	MGI:2685236	protein coding gene	Tceanc	transcription elongation factor A (SII) N-terminal and central domain containing	
+X	105764279	105774939	47.2	+	MGI:1931627	protein coding gene	Fgf16	fibroblast growth factor 16	
+X	143285674	143394262	64.24	-	MGI:1933172	protein coding gene	Chrdl1	chordin-like 1	
+X	9033493	9034333	4.1	+	MGI:1933180	protein coding gene	Fthl17e	ferritin, heavy polypeptide-like 17, member E	
+X	162901238	163032508	75.09	+	MGI:1933185	protein coding gene	Ctps2	cytidine 5'-triphosphate synthase 2	
+X	134944526	134964754	56.31	-	MGI:1933192	protein coding gene	Nxf2	nuclear RNA export factor 2	
+X	135302307	135312652	56.84	+	MGI:1890657	protein coding gene	Pramel3	preferentially expressed antigen in melanoma-like 3	
+X	140808307	140813433	61.5	-	MGI:1890544	protein coding gene	Tex13b	testis expressed 13B	
+X	112011007	112127326	48.76	+	MGI:1890545	protein coding gene	Tex16	testis expressed gene 16	
+X	100838648	101059639	43.72	-	MGI:1933237	protein coding gene	Tex11	testis expressed gene 11	
+X	74177259	74208498	37.83	+	MGI:1933244	protein coding gene	Tktl1	transketolase-like 1	
+X	51753959	51801233	28.31	-	MGI:1933247	protein coding gene	Usp26	ubiquitin specific peptidase 26	
+X	150806421	150814340	68.46	-	MGI:1933391	protein coding gene	Maged2	melanoma antigen, family D, 2	
+X	73774405	73778925	37.41	+	MGI:1891338	protein coding gene	Srpk3	serine/arginine-rich protein specific kinase 3	
+X	47809370	47892575	25.41	-	MGI:1935127	protein coding gene	Smarca1	SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily a, member 1	
+X	113297510	113836386	49.13	+	MGI:1890446	protein coding gene	Dach2	dachshund family transcription factor 2	
+X	119927196	119930165	49.58	+	MGI:2136401	protein coding gene	Pabpc5	poly(A) binding protein, cytoplasmic 5	
+X	94535474	94542074	41.56	-	MGI:1930187	protein coding gene	Maged1	melanoma antigen, family D, 1	
+X	48108725	48136981	25.52	+	MGI:2180001	protein coding gene	Xpnpep2	X-prolyl aminopeptidase (aminopeptidase P) 2, membrane-bound	
+X					MGI:2180203	protein coding gene	Tmlhe	trimethyllysine hydroxylase, epsilon	
+X	6979652	7041619	3.13	-	MGI:2183443	protein coding gene	Ccnb3	cyclin B3	
+X	93764616	93832095	41.34	-	MGI:2384308	protein coding gene	Pdk3	pyruvate dehydrogenase kinase, isoenzyme 3	
+X	20617503	20650901	16.11	+	MGI:2384310	protein coding gene	Rbm10	RNA binding motif protein 10	
+X	20703906	20720539	16.2	+	MGI:2384312	protein coding gene	Usp11	ubiquitin specific peptidase 11	
+X	56585512	56597919	30.06	-	MGI:2384305	protein coding gene	Mmgt1	membrane magnesium transporter 1	
+X	137049594	137082503	59.1	+	MGI:2384304	protein coding gene	Fam199x	family with sequence similarity 199, X-linked	
+X	166170454	166190512	76.75	+	MGI:2384300	protein coding gene	Gemin8	gem nuclear organelle associated protein 8	
+X	74988545	75084905	38.12	-	MGI:2387324	protein coding gene	Gab3	growth factor receptor bound protein 2-associated protein 3	
+X	49009707	49288244	25.79	-	MGI:2384799	protein coding gene	Enox2	ecto-NOX disulfide-thiol exchanger 2	
+X	118479708	118480729	49.58	-	MGI:2387796	protein coding gene	Tgif2lx1	TGFB-induced factor homeobox 2-like, X-linked 1	
+X	73639419	73643514	37.37	+	MGI:2387107	protein coding gene	Dusp9	dual specificity phosphatase 9	
+X	107667964	107688978	47.59	+	MGI:2389465	protein coding gene	Tbx22	T-box 22	
+X	75416628	75454001	38.22	+	MGI:2389572	protein coding gene	Brcc3	BRCA1/BRCA2-containing complex, subunit 3	
+X	160390690	160498070	73.95	+	MGI:2446854	protein coding gene	Adgrg2	adhesion G protein-coupled receptor G2	
+X	13661363	13667433	8.59	+	MGI:2441734	protein coding gene	Gpr82	G protein-coupled receptor 82	
+X	107148927	107173661	47.45	+	MGI:2441814	protein coding gene	P2ry10b	purinergic receptor P2Y, G-protein coupled 10B	
+X	135839034	135844730	57.3	+	MGI:2442071	protein coding gene	Gprasp2	G protein-coupled receptor associated sorting protein 2	
+X	95711678	95932637	42.14	+	MGI:2442133	protein coding gene	Zc3h12b	zinc finger CCCH-type containing 12B	
+X	21028939	21062316	16.55	-	MGI:2442220	protein coding gene	Zfp182	zinc finger protein 182	
+X	95048930	95196851	41.85	-	MGI:2442233	protein coding gene	Arhgef9	CDC42 guanine nucleotide exchange factor (GEF) 9	
+X	134971372	135009209	56.35	-	MGI:2442284	protein coding gene	Zmat1	zinc finger, matrin type 1	
+X	41794992	41911919	23.19	-	MGI:2442413	protein coding gene	Thoc2	THO complex 2	
+X	153237466	153396132	68.46	+	MGI:2442430	protein coding gene	Klf8	Kruppel-like factor 8	
+X	136858151	136868540	59.1	-	MGI:2442454	protein coding gene	Rab9b	RAB9B, member RAS oncogene family	
+X	64264885	64276996	34.57	-	MGI:2442509	protein coding gene	Slitrk4	SLIT and NTRK-like family, member 4	
+X	134222955	134277026	55.95	-	MGI:2442530	protein coding gene	Trmt2b	TRM2 tRNA methyltransferase 2B	
+X	56454857	56507843	30.06	+	MGI:2442593	protein coding gene	Ints6l	integrator complex subunit 6 like	
+X	73673150	73682502	37.38	+	MGI:2147834	protein coding gene	Slc6a8	solute carrier family 6 (neurotransmitter transporter, creatine), member 8	
+X	139480367	139554582	61.35	+	MGI:2147848	protein coding gene	Radx	RPA1 related single stranded DNA binding protein, X-linked	
+X	147470375	147554081	68.46	-	MGI:2147870	protein coding gene	Lrch2	leucine-rich repeats and calponin homology (CH) domain containing 2	
+X	134686519	134696757	56.23	+	MGI:2147887	protein coding gene	Armcx4	armadillo repeat containing, X-linked 4	
+X	134308084	134362639	56.08	+	MGI:2147897	protein coding gene	Cenpi	centromere protein I	
+X	140956907	141164270	61.67	+	MGI:2147903	protein coding gene	Atg4a	autophagy related 4A, cysteine peptidase	
+X	49782536	49797749	26.06	-	MGI:2147913	protein coding gene	Igsf1	immunoglobulin superfamily, member 1	
+X	142226770	142239692	63.02	+	MGI:2147914	protein coding gene	Nxt2	nuclear transport factor 2-like export factor 2	
+X	8892382	8894964	4.04	+	MGI:2147918	protein coding gene	B630019K06Rik	RIKEN cDNA B630019K06 gene	
+X	6168696	6173015	2.74	-	MGI:2147931	protein coding gene	Nudt10	nudix (nucleoside diphosphate linked moiety X)-type motif 10	
+X	93968659	93975470	41.45	+	MGI:2147954	protein coding gene	AU015836	expressed sequence AU015836	
+X	6081219	6083419	2.7	-	MGI:2147968	protein coding gene	AU022751	expressed sequence AU022751	
+X	93654863	93749951	41.28	+	MGI:2147987	protein coding gene	Pcyt1b	phosphate cytidylyltransferase 1, choline, beta isoform	
+X	134748461	134751417	56.25	-	MGI:2147993	protein coding gene	Armcx6	armadillo repeat containing, X-linked 6	
+X	20425688	20519939	15.9	+	MGI:2148019	protein coding gene	Jade3	jade family PHD finger 3	
+X	142681406	142843494	63.54	+	MGI:2148020	protein coding gene	Tmem164	transmembrane protein 164	
+X	135742733	135747322	57.26	+	MGI:2148026	protein coding gene	Armcx5	armadillo repeat containing, X-linked 5	
+X	104077434	104201185	46.48	-	MGI:2148050	protein coding gene	Nexmif	neurite extension and migration factor	
+X	8271381	8280179	3.74	+	MGI:2148066	protein coding gene	Slc38a5	solute carrier family 38, member 5	
+X	105120378	105123927	46.84	+	MGI:2148149	protein coding gene	Magee1	melanoma antigen, family E, 1	
+X	91779608	91782976	40.5	-	MGI:2148169	protein coding gene	Mageb5	melanoma antigen, family B, 5	
+X	104854952	104857267	46.77	-	MGI:2148316	protein coding gene	Magee2	melanoma antigen, family E, 2	
+X	86250256	86256219	39.71	-	MGI:2148568	protein coding gene	Mageb4	melanoma antigen, family B, 4	
+X	98554277	98891025	42.94	-	MGI:2151070	protein coding gene	Ophn1	oligophrenin 1	
+X	141165403	141474076	61.8	-	MGI:2152695	protein coding gene	Col4a6	collagen, type IV, alpha 6	
+X	73757090	73772514	37.4	+	MGI:2154240	protein coding gene	Plxnb3	plexin B3	
+X	73894352	73911346	37.45	-	MGI:2159577	protein coding gene	Arhgap4	Rho GTPase activating protein 4	
+X	100605497	100618493	43.72	+	MGI:2159617	protein coding gene	Arr3	arrestin 3, retinal	
+X	111110418	111125854	48.2	+	MGI:1914657	protein coding gene	Cylc1	cylicin, basic protein of sperm head cytoskeleton 1	
+X	8123301	8132858	3.67	-	MGI:1914661	protein coding gene	Wdr13	WD repeat domain 13	
+X	134804145	134809221	56.27	-	MGI:1914666	protein coding gene	Armcx2	armadillo repeat containing, X-linked 2	
+X	23219271	23365082	17.22	-	MGI:1914705	protein coding gene	Klhl13	kelch-like 13	
+X	134295225	134305969	56.06	+	MGI:1914814	protein coding gene	Tmem35a	transmembrane protein 35A	
+X	144317966	144374450	65.42	+	MGI:1914824	protein coding gene	Alg13	asparagine-linked glycosylation 13	
+X	105079756	105117090	46.83	+	MGI:1914933	protein coding gene	Pbdc1	polysaccharide biosynthesis domain containing 1	
+X	112495274	112558343	48.76	+	MGI:1914965	protein coding gene	2010106E10Rik	RIKEN cDNA 2010106E10 gene	
+X	75572046	75578231	38.26	-	MGI:1915040	protein coding gene	Rab39b	RAB39B, member RAS oncogene family	
+X	38316184	38336769	22.58	+	MGI:1915071	protein coding gene	Atp1b4	ATPase, (Na+)/K+ transporting, beta 4 polypeptide	
+X	138208165	138209580	60.22	-	MGI:1915194	protein coding gene	Tex13a	testis expressed 13A	
+X	8413305	8422157	3.81	+	MGI:1915235	protein coding gene	Ssxb1	synovial sarcoma, X member B1	
+X	73916873	73921944	37.49	-	MGI:1915255	protein coding gene	Naa10	N(alpha)-acetyltransferase 10, NatA catalytic subunit	
+X	10717365	10719702	5.4	+	MGI:1915291	protein coding gene	Mid1ip1	Mid1 interacting protein 1 (gastrulation specific G12-like (zebrafish))	
+X	104536969	104671064	46.69	-	MGI:1915336	protein coding gene	Zdhhc15	zinc finger, DHHC domain containing 15	
+X	112311352	112372755	48.76	+	MGI:1915367	protein coding gene	Apool	apolipoprotein O-like	
+X	37091678	37110322	21.51	-	MGI:1915384	protein coding gene	Upf3b	UPF3 regulator of nonsense transcripts homolog B (yeast)	
+X	94367117	94417093	41.56	+	MGI:1915566	protein coding gene	Apoo	apolipoprotein O	
+X	136214914	136226100	57.4	+	MGI:1915746	protein coding gene	Tceal7	transcription elongation factor A (SII)-like 7	
+X	70385913	70389416	36.02	+	MGI:1915868	protein coding gene	1110012L19Rik	RIKEN cDNA 1110012L19 gene	
+X	133908426	133932446	55.47	+	MGI:1916042	protein coding gene	Srpx2	sushi-repeat-containing protein, X-linked 2	
+X	45090904	45092791	24.11	+	MGI:1916050	protein coding gene	Prr32	proline rich 32	
+X	164436994	164459170	76.53	+	MGI:1916104	protein coding gene	Asb11	ankyrin repeat and SOCS box-containing 11	
+X	38600578	38613426	22.88	+	MGI:1916245	protein coding gene	Mcts1	malignant T cell amplified sequence 1	
+X	12654879	12673668	7.5	-	MGI:1916405	protein coding gene	1810030O07Rik	RIKEN cDNA 1810030O07 gene	
+X	114474333	114560829	49.47	+	MGI:2442829	protein coding gene	Klhl4	kelch-like 4	
+X	120290318	120910622	49.58	+	MGI:2442849	protein coding gene	Pcdh11x	protocadherin 11 X-linked	
+X	97333840	97377216	42.74	-	MGI:2442860	protein coding gene	Eda2r	ectodysplasin A2 receptor	
+X	9199973	9268085	4.18	+	MGI:2443335	protein coding gene	Lancl3	LanC lantibiotic synthetase component C-like 3 (bacterial)	
+X	73793359	73824969	37.41	-	MGI:2443483	protein coding gene	Pdzd4	PDZ domain containing 4	
+X	56609757	56664230	30.06	+	MGI:2443511	protein coding gene	Slc9a6	solute carrier family 9 (sodium/hydrogen exchanger), member 6	
+X	56374586	56377799	30.06	+	MGI:2443645	protein coding gene	Smim10l2a	small integral membrane protein 10 like 2A	
+X	36608314	36645395	21.01	-	MGI:2443758	protein coding gene	Akap17b	A kinase (PRKA) anchor protein 17B	
+X	48341358	48408049	25.64	+	MGI:2443910	protein coding gene	Bcorl1	BCL6 co-repressor-like 1	
+X	151520672	151633859	68.46	+	MGI:2444341	protein coding gene	Phf8	PHD finger protein 8	
+X	48171967	48208702	25.55	-	MGI:2444393	protein coding gene	Zdhhc9	zinc finger, DHHC domain containing 9	
+X	44786570	44790197	24.0	-	MGI:2444462	protein coding gene	Dcaf12l1	DDB1 and CUL4 associated factor 12-like 1	
+X	157547822	157598715	72.55	-	MGI:2444506	protein coding gene	Mbtps2	membrane-bound transcription factor peptidase, site 2	
+X	20105754	20291807	15.55	-	MGI:2444530	protein coding gene	Slc9a7	solute carrier family 9 (sodium/hydrogen exchanger), member 7	
+X	101299179	101321350	43.95	+	MGI:2444609	protein coding gene	Nlgn3	neuroligin 3	
+X	153685154	153696386	71.79	-	MGI:2444667	protein coding gene	Kctd12b	potassium channel tetramerisation domain containing 12b	
+X	8154472	8176181	3.69	-	MGI:2444862	protein coding gene	Tbc1d25	TBC1 domain family, member 25	
+X	51117269	51206532	28.03	-	MGI:2444912	protein coding gene	Mbnl3	muscleblind like splicing factor 3	
+X	139889511	139998595	61.35	-	MGI:2444923	protein coding gene	Rbm41	RNA binding motif protein 41	
+X	95022510	95026682	41.83	-	MGI:2444925	protein coding gene	Spin4	spindlin family, member 4	
+X	56797858	56822326	30.16	-	MGI:2445051	protein coding gene	Map7d3	MAP7 domain containing 3	
+X	139210042	139238335	61.29	+	MGI:2445062	protein coding gene	Pwwp3b	PWWP domain containing 3B	
+X	44365457	44368337	23.85	-	MGI:2445178	protein coding gene	Dcaf12l2	DDB1 and CUL4 associated factor 12-like 2	
+X	13466110	13489313	8.37	+	MGI:2448607	protein coding gene	Nyx	nyctalopin	
+X	136590844	136668377	59.1	+	MGI:1913354	protein coding gene	Tceal3	transcription elongation factor A (SII)-like 3	
+X	157698973	157752591	72.67	+	MGI:1913356	protein coding gene	Smpx	small muscle protein, X-linked	
+X	106015700	106022450	47.36	+	MGI:1913392	protein coding gene	Cox7b	cytochrome c oxidase subunit 7B	
+X	53642488	53643682	29.87	-	MGI:1913408	protein coding gene	Rtl8a	retrotransposon Gag like 8A	
+X	74352162	74353618	38.0	-	MGI:1913442	protein coding gene	Lage3	L antigen family, member 3	
+X	166440736	166453140	77.43	+	MGI:1913476	protein coding gene	Trappc2	trafficking protein particle complex 2	
+X	159372195	159385699	73.41	+	MGI:1913485	protein coding gene	Eif1ax	eukaryotic translation initiation factor 1A, X-linked	
+X	142304753	142306198	63.11	-	MGI:1913490	protein coding gene	Kcne1l	potassium voltage-gated channel, Isk-related family, member 1-like, pseudogene	
+X	38630785	38635087	22.91	-	MGI:1913493	protein coding gene	C1galt1c1	C1GALT1-specific chaperone 1	
+X	74384719	74393272	38.0	-	MGI:1913544	protein coding gene	Fam3a	family with sequence similarity 3, member A	
+X	152004582	152016295	68.46	-	MGI:1913861	protein coding gene	Ribc1	RIB43A domain with coiled-coils 1	
+X	136168984	136172251	57.4	-	MGI:1913934	protein coding gene	Tceal8	transcription elongation factor A (SII)-like 8	
+X	85574022	85634469	39.32	+	MGI:1913974	protein coding gene	Tab3	TGF-beta activated kinase 1/MAP3K7 binding protein 3	
+X	169776378	169779635	79.23	-	MGI:1913997	protein coding gene	4933400A11Rik	RIKEN cDNA 4933400A11 gene	
+X	67919864	67921450	34.81	-	MGI:1914030	protein coding gene	4933436I01Rik	RIKEN cDNA 4933436I01 gene	
+X	139563340	139673145	61.35	+	MGI:1914139	protein coding gene	Rnf128	ring finger protein 128	
+X	136992379	136996923	59.1	+	MGI:1914245	protein coding gene	Zcchc18	zinc finger, CCHC domain containing 18	
+X	107782751	107816334	47.62	-	MGI:1914278	protein coding gene	2610002M06Rik	RIKEN cDNA 2610002M06 gene	
+X	162857057	162888447	75.06	-	MGI:1914293	protein coding gene	Syap1	synapse associated protein 1	
+X	71812753	71824706	37.07	+	MGI:1914298	protein coding gene	Vma21	VMA21 vacuolar H+-ATPase homolog (S. cerevisiae)	
+X	37126795	37150746	21.54	+	MGI:1914300	protein coding gene	Nkap	NFKB activating protein	
+X	136981116	137038302	59.1	-	MGI:1914312	protein coding gene	Slc25a53	solute carrier family 25, member 53	
+X	111388192	111537959	48.2	-	MGI:1914321	protein coding gene	Rps6ka6	ribosomal protein S6 kinase polypeptide 6	
+X	105968084	106011899	47.36	-	MGI:1914325	protein coding gene	Magt1	magnesium transporter 1	
+X	9654270	9662983	4.47	-	MGI:1914367	protein coding gene	Dynlt3	dynein light chain Tctex-type 3	
+X	37082518	37085222	21.5	-	MGI:1914498	protein coding gene	Rpl39	ribosomal protein L39	
+X	9846947	9847500	4.61	+	MGI:1914584	protein coding gene	Hypm	huntingtin interacting protein M	
+X	75382399	75396459	38.22	+	MGI:1914641	protein coding gene	Fundc2	FUN14 domain containing 2	
+X	135654698	135693790	57.26	-	MGI:1919091	protein coding gene	Tcp11x2	t-complex 11 family, X-linked 2	
+X	32560055	32562009	19.56	+	MGI:1919097	protein coding gene	Btbd35f1	BTB domain containing 35, family member 1	
+X	79623231	79671435	38.38	-	MGI:1919217	protein coding gene	Mageb16	melanoma antigen family B, 16	
+X	85249679	85270288	39.32	+	MGI:1919246	protein coding gene	Fthl17a	ferritin, heavy polypeptide-like 17, member A	
+X	17556564	17572325	12.8	-	MGI:1919268	protein coding gene	Fundc1	FUN14 domain containing 1	
+X	51003912	51018018	28.03	-	MGI:1919315	protein coding gene	Rap2c	RAP2C, member of RAS oncogene family	
+X	101097786	101222563	43.72	-	MGI:1919331	protein coding gene	Snx12	sorting nexin 12	
+X	48695004	48710719	25.69	+	MGI:1919414	protein coding gene	Rbmx2	RNA binding motif protein, X-linked 2	
+X	95420313	95444840	41.99	-	MGI:1919595	protein coding gene	Amer1	APC membrane recruitment 1	
+X	23693051	23806025	17.36	+	MGI:1919654	protein coding gene	Wdr44	WD repeat domain 44	
+X	57053583	57067183	30.81	+	MGI:1919709	protein coding gene	Htatsf1	HIV TAT specific factor 1	
+X	48256934	48282450	25.59	+	MGI:1919804	protein coding gene	Utp14a	UTP14A small subunit processome component	
+X	38533274	38576196	22.81	-	MGI:1919834	protein coding gene	Cul4b	cullin 4B	
+X	100622880	100625974	43.72	-	MGI:1919871	protein coding gene	Pdzd11	PDZ domain containing 11	
+X	36195904	36199158	20.58	+	MGI:1919943	protein coding gene	Zcchc12	zinc finger, CCHC domain containing 12	
+X	53608032	53608432	29.82	+	MGI:1920115	protein coding gene	Rtl8c	retrotransposon Gag like 8C	
+X	123103523	123145654	49.81	+	MGI:1920311	protein coding gene	Cldn34c1	claudin 34C1	
+X	102859166	102866353	45.76	-	MGI:1920550	protein coding gene	1700031F05Rik	RIKEN cDNA 1700031F05 gene	
+X	57231485	57338729	31.26	-	MGI:1920591	protein coding gene	Arhgef6	Rac/Cdc42 guanine nucleotide exchange factor (GEF) 6	
+X	155124917	155128412	72.38	-	MGI:1920597	protein coding gene	Cldn34b2	claudin 34B2	
+X	46329007	46330345	24.54	+	MGI:1920610	protein coding gene	Actrt1	actin-related protein T1	
+X	91575210	91575911	40.43	-	MGI:1920737	protein coding gene	1700084M14Rik	RIKEN cDNA 1700084M14 gene	
+X	86044199	86047313	39.55	+	MGI:1920745	protein coding gene	Samt3	spermatogenesis associated multipass transmembrane protein 3	
+X	18145870	18146694	13.44	+	MGI:1920797	protein coding gene	Dusp21	dual specificity phosphatase 21	
+X	38121219	38129967	22.38	+	MGI:1920864	protein coding gene	Rhox13	reproductive homeobox 13	
+X	73437315	73459029	37.32	-	MGI:1920988	protein coding gene	Haus7	HAUS augmin-like complex, subunit 7	
+X	112384305	112406779	48.76	-	MGI:1921059	protein coding gene	Satl1	spermidine/spermine N1-acetyl transferase-like 1	
+X	53273424	53331185	29.45	+	MGI:1921116	protein coding gene	Fam122c	family with sequence similarity 122, member C	
+X	127721182	127736554	49.81	-	MGI:1921184	protein coding gene	Cldn34c4	claudin 34C4	
+X	48146436	48161565	25.54	+	MGI:1921381	protein coding gene	Sash3	SAM and SH3 domain containing 3	
+X	164506327	164539752	76.73	+	MGI:1916549	protein coding gene	Asb9	ankyrin repeat and SOCS box-containing 9	
+X	153558593	153559429	68.65	+	MGI:1916611	protein coding gene	Cypt3	cysteine-rich perinuclear theca 3	
+X	136927325	136928373	59.1	+	MGI:1916639	protein coding gene	H2bfm	H2B histone family, member M	
+X	151087094	151096543	68.46	-	MGI:1916749	protein coding gene	Tsr2	TSR2 20S rRNA accumulation	
+X	53434918	53443576	29.64	+	MGI:1916751	protein coding gene	Etd	embryonic testis differentiation	
+X	164269431	164373013	76.12	+	MGI:1916906	protein coding gene	Pir	pirin	
+X	112638431	112698651	48.76	-	MGI:1916943	protein coding gene	Pof1b	premature ovarian failure 1B	
+X	102119465	102127673	45.14	+	MGI:1916963	protein coding gene	Pin4	protein (peptidyl-prolyl cis/trans isomerase) NIMA-interacting, 4 (parvulin)	
+X	8004201	8018492	3.61	-	MGI:1917074	protein coding gene	Glod5	glyoxalase domain containing 5	
+X	37191245	37192467	21.61	+	MGI:1917192	protein coding gene	Rnf113a1	ring finger protein 113A1	
+X	164139342	164188418	76.12	+	MGI:1917258	protein coding gene	Ace2	angiotensin I converting enzyme (peptidyl-dipeptidase A) 2	
+X	65047644	65049014	34.64	+	MGI:1917312	protein coding gene	Ctag2	cancer/testis antigen 2	
+X	78449613	78583896	38.34	-	MGI:1917364	protein coding gene	Prrg1	proline rich Gla (G-carboxyglutamic acid) 1	
+X	153723554	153741296	72.38	+	MGI:1917373	protein coding gene	Nbdy	negative regulator of P-body association	
+X	135742733	135803474	57.26	+	MGI:1917418	protein coding gene	Gprasp1	G protein-coupled receptor associated sorting protein 1	
+X	159414572	159498757	73.45	+	MGI:1917474	protein coding gene	Map7d2	MAP7 domain containing 2	
+X	135841639	135891081	57.31	+	MGI:1917487	protein coding gene	Bhlhb9	basic helix-loop-helix domain containing, class B9	
+X	102284639	102505359	45.28	-	MGI:1917565	protein coding gene	Hdac8	histone deacetylase 8	
+X	53344598	53370502	29.51	-	MGI:1917630	protein coding gene	Mospd1	motile sperm domain containing 1	
+X	95470201	95557987	41.99	-	MGI:1917642	protein coding gene	Asb12	ankyrin repeat and SOCS box-containing 12	
+X	50841174	50893103	27.5	+	MGI:1917665	protein coding gene	Stk26	serine/threonine kinase 26	
+X	12587801	12617049	7.42	+	MGI:1917745	protein coding gene	Atp6ap2	ATPase, H+ transporting, lysosomal accessory protein 2	
+X	56136572	56153498	30.06	+	MGI:1917941	protein coding gene	3830403N18Rik	RIKEN cDNA 3830403N18 gene	
+X	64173548	64178778	34.57	+	MGI:1917946	protein coding gene	3830417A13Rik	RIKEN cDNA 3830417A13 gene	
+X	152343598	152368704	68.46	-	MGI:1918021	protein coding gene	Gpr173	G-protein coupled receptor 173	
+X	139684996	139753405	61.35	+	MGI:1918101	protein coding gene	Tbc1d8b	TBC1 domain family, member 8B	
+X	78737763	78739401	38.35	+	MGI:1918114	protein coding gene	Fam47c	family with sequence similarity 47, member C	
+X	102903216	102908687	45.79	-	MGI:1918137	protein coding gene	Dmrtc1a	DMRT-like family C1a	
+X	62467991	62468812	34.57	+	MGI:1918186	protein coding gene	4931400O07Rik	RIKEN cDNA 4931400O07 gene	
+X	52912266	52956943	29.28	+	MGI:1918248	protein coding gene	Phf6	PHD finger protein 6	
+X	112239049	112243852	48.76	+	MGI:1918280	protein coding gene	4933403O08Rik	RIKEN cDNA 4933403O08 gene	
+X	102802963	102809942	45.73	+	MGI:1918333	protein coding gene	Dmrtc1c1	DMRT-like family C1c1	
+X	139179228	139181009	61.27	+	MGI:1918498	protein coding gene	4933428M09Rik	RIKEN cDNA 4933428M09 gene	
+X	77919786	77925062	38.32	-	MGI:1918601	protein coding gene	5430402E10Rik	RIKEN cDNA 5430402E10 gene	
+X	85870354	85891499	39.39	+	MGI:1918648	protein coding gene	5430427O19Rik	RIKEN cDNA 5430427O19 gene	
+X	12036740	12160355	6.83	-	MGI:1918708	protein coding gene	Bcor	BCL6 interacting corepressor	
+X	100729873	100738895	43.72	+	MGI:1918834	protein coding gene	Gdpd2	glycerophosphodiester phosphodiesterase domain containing 2	
+X	134756595	134761455	56.25	+	MGI:1918953	protein coding gene	Armcx3	armadillo repeat containing, X-linked 3	
+X	95935335	95956962	42.58	-	MGI:1923380	protein coding gene	Las1l	LAS1-like (S. cerevisiae)	
+X	94234599	94277724	41.53	+	MGI:1923400	protein coding gene	Klhl15	kelch-like 15	
+X	150397773	150459154	68.46	-	MGI:1923420	protein coding gene	Tmem29	transmembrane protein 29	
+X	96713468	96719388	42.69	+	MGI:1923456	protein coding gene	Gpr165	G protein-coupled receptor 165	
+X	136033367	136034946	57.36	+	MGI:1923469	protein coding gene	Arxes1	adipocyte-related X-chromosome expressed sequence 1	
+X	9283764	9284288	4.22	+	MGI:1923633	protein coding gene	H2al1m	H2A histone family member L1M	
+X	135208687	135210687	56.7	-	MGI:1923939	protein coding gene	Tceal6	transcription elongation factor A (SII)-like 6	
+X	164936169	164980375	76.75	-	MGI:1924013	protein coding gene	Mospd2	motile sperm domain containing 2	
+X	135993824	135995355	57.35	+	MGI:1924226	protein coding gene	Arxes2	adipocyte-related X-chromosome expressed sequence 2	
+X	36887540	36902899	21.3	-	MGI:1924536	protein coding gene	Nkrf	NF-kappaB repressing factor	
+X	150519519	150589868	68.46	-	MGI:1924872	protein coding gene	Apex2	apurinic/apyrimidinic endonuclease 2	
+X	36827551	36864303	21.23	-	MGI:1924894	protein coding gene	C330007P06Rik	RIKEN cDNA C330007P06 gene	
+X	38772780	38962688	23.05	+	MGI:1925133	protein coding gene	6030498E09Rik	RIKEN cDNA 6030498E09 gene	
+X	71972986	71989046	37.15	+	MGI:1925155	protein coding gene	Fate1	fetal and adult testis expressed 1	
+X	98936321	98949021	43.19	+	MGI:1925179	protein coding gene	Yipf6	Yip1 domain family, member 6	
+X	154022780	154033827	72.38	-	MGI:1925342	protein coding gene	4921511M17Rik	RIKEN cDNA 4921511M17 gene	
+X	106920625	106933899	47.39	+	MGI:1925384	protein coding gene	Lpar4	lysophosphatidic acid receptor 4	
+X	134717963	134721917	56.24	+	MGI:1925498	protein coding gene	Armcx1	armadillo repeat containing, X-linked 1	
+X	135718667	135725261	57.26	-	MGI:1925728	protein coding gene	Tmsb15a	thymosin beta 15a	
+X	56346400	56365674	30.06	+	MGI:1925869	protein coding gene	Zfp449	zinc finger protein 449	
+X	53243415	53269805	29.43	-	MGI:1926005	protein coding gene	Fam122b	family with sequence similarity 122, member B	
+X	140907608	140939472	61.62	+	MGI:1926039	protein coding gene	Vsig1	V-set and immunoglobulin domain containing 1	
+X	107088492	107104974	47.43	+	MGI:1926076	protein coding gene	P2ry10	purinergic receptor P2Y, G-protein coupled 10	
+X	37432494	37437278	21.73	+	MGI:1930129	protein coding gene	Rhox4b	reproductive homeobox 4B	
+X	109095407	109162467	47.92	+	MGI:1930849	protein coding gene	Sh3bgrl	SH3-binding domain glutamic acid-rich protein like	
+X	6047507	6054751	2.68	+	MGI:1930957	protein coding gene	Nudt11	nudix (nucleoside diphosphate linked moiety X)-type motif 11	
+X	146962513	147197277	68.46	+	MGI:96281	protein coding gene	Htr2c	5-hydroxytryptamine (serotonin) receptor 2C	
+X	70343069	70365084	36.01	-	MGI:96417	protein coding gene	Ids	iduronate 2-sulfatase	
+X	101264385	101268255	43.9	-	MGI:96551	protein coding gene	Il2rg	interleukin 2 receptor, gamma chain	
+X	7823759	7838278	3.53	+	MGI:96671	protein coding gene	Kcnd1	potassium voltage-gated channel, Shal-related family, member 1	
+X	73853780	73880838	37.43	-	MGI:96721	protein coding gene	L1cam	L1 cell adhesion molecule	
+X	38401357	38456454	22.67	-	MGI:96748	protein coding gene	Lamp2	lysosomal-associated membrane protein 2	
+X	16619698	16687812	11.78	+	MGI:96915	protein coding gene	Maoa	monoamine oxidase A	
+X	16709282	16817366	11.88	-	MGI:96916	protein coding gene	Maob	monoamine oxidase B	
+X	60055956	60179089	33.5	-	MGI:96932	protein coding gene	Mcf2	mcf.2 transforming sequence	
+X	96096045	96168553	42.65	+	MGI:97167	protein coding gene	Msn	moesin	
+X	10252305	10321024	4.66	+	MGI:97448	protein coding gene	Otc	ornithine transcarbamylase	
+X	20687954	20699880	16.18	+	MGI:97516	protein coding gene	Cdk16	cyclin-dependent kinase 16	
+X	160122209	160138413	73.95	-	MGI:97532	protein coding gene	Pdha1	pyruvate dehydrogenase E1 alpha 1	
+X	37804842	37808876		+	MGI:97538	protein coding gene	Rhox5	reproductive homeobox 5	
+X	20925454	20931555	16.44	-	MGI:97545	protein coding gene	Cfp	complement factor properdin	
+X	106187100	106203699	47.36	+	MGI:97555	protein coding gene	Pgk1	phosphoglycerate kinase 1	
+X	102513975	102644246	45.47	-	MGI:97576	protein coding gene	Phka1	phosphorylase kinase alpha 1	
+X	160502166	160598878	73.95	+	MGI:97577	protein coding gene	Phka2	phosphorylase kinase alpha 2	
+X	7878306	7883432	3.55	+	MGI:97587	protein coding gene	Pim2	proviral integration site 2	
+X	136822166	136838582	59.1	+	MGI:97623	protein coding gene	Plp1	proteolipid protein (myelin) 1	
+X	140456613	140476140	61.35	+	MGI:97775	protein coding gene	Prps1	phosphoribosyl pyrophosphate synthetase 1	
+X	167346322	167382749	78.32	-	MGI:97776	protein coding gene	Prps2	phosphoribosyl pyrophosphate synthetase 2	
+X	102184941	102189391	45.2	-	MGI:98158	protein coding gene	Rps4x	ribosomal protein S4, X-linked	
+X	155213132	155216449	72.38	-	MGI:98233	protein coding gene	Sat1	spermidine/spermine N1-acetyl transferase 1	
+X	60891366	60893430	33.66	-	MGI:98365	protein coding gene	Sox3	SRY (sex determining region Y)-box 3	
+X	20860511	20920918	16.37	-	MGI:98460	protein coding gene	Syn1	synapsin I	
+X	7638580	7653256	3.44	+	MGI:98467	protein coding gene	Syp	synaptophysin	
+X	7762560	7775202	3.5	+	MGI:98511	protein coding gene	Tfe3	transcription factor E3	
+X	20870166	20874735	16.38	+	MGI:98752	protein coding gene	Timp1	tissue inhibitor of metalloproteinase 1	
+X	103356476	103396092	46.08	+	MGI:1344694	protein coding gene	Chic1	cysteine-rich hydrophobic domain 1	
+X	42527866	43429126	23.21	-	MGI:1345185	protein coding gene	Tenm1	teneurin transmembrane protein 1	
+X	7884034	7894492	3.56	+	MGI:1345297	protein coding gene	Slc35a2	solute carrier family 35 (UDP-galactose transporter), member A2	
+X	13632089	13640858	8.55	+	MGI:1346334	protein coding gene	Gpr34	G protein-coupled receptor 34	
+X	73433705	73435343	37.31	-	MGI:1346343	protein coding gene	Trex2	three prime repair exonuclease 2	
+X	100494291	100516125	43.72	+	MGI:1346500	protein coding gene	Igbp1	immunoglobulin (CD79A) binding protein 1	
+X	72913565	72918344	37.29	-	MGI:1347085	protein coding gene	Cetn2	centrin 2	
+X	134588169	134601005	56.2	-	MGI:1347344	protein coding gene	Gla	galactosidase, alpha	
+X	73503086	73571005	37.33	+	MGI:1347353	protein coding gene	Atp2b3	ATPase, Ca++ transporting, plasma membrane 3	
+X	73655992	73660111	37.38	-	MGI:1347357	protein coding gene	Pnck	pregnancy upregulated non-ubiquitously expressed CaM kinase	
+X	73716597	73738534	37.39	+	MGI:1349215	protein coding gene	Abcd1	ATP-binding cassette, sub-family D (ALD), member 1	
+X	48474944	48513563	25.68	-	MGI:1349419	protein coding gene	Aifm1	apoptosis-inducing factor, mitochondrion-associated 1	
+X	94188709	94212651	41.52	-	MGI:1349431	protein coding gene	Eif2s3x	eukaryotic translation initiation factor 2, subunit 3, structural gene X-linked	
+X	12675369	12762073	7.52	-	MGI:1349442	protein coding gene	Med14	mediator complex subunit 14	
+X	20615326	20617564	16.11	-	MGI:1349919	protein coding gene	Ndufb11	NADH:ubiquinone oxidoreductase subunit B11	
+X	166390033	166440704	77.28	-	MGI:1350328	protein coding gene	Ofd1	OFD1, centriole and centriolar satellite protein	
+X	73686178	73716175	37.38	-	MGI:1350933	protein coding gene	Bcap31	B cell receptor associated protein 31	
+X	73214333	73222453	37.29	+	MGI:1350975	protein coding gene	Xlr4b	X-linked lymphocyte-regulated 4B	
+X	73282896	73292976	37.29	-	MGI:1350981	protein coding gene	Xlr5c	X-linked lymphocyte-regulated 5C	
+X	73342621	73359080	37.29	+	MGI:1350985	protein coding gene	Zfp275	zinc finger protein 275	
+X	138914430	139010532	61.15	+	MGI:1351326	protein coding gene	Nrk	Nik related kinase	
+X	133936385	133981812	55.47	-	MGI:1351606	protein coding gene	Sytl4	synaptotagmin-like 4	
+X	74313033	74320149	37.98	+	MGI:1351626	protein coding gene	Fam50a	family with sequence similarity 50, member A	
+X	86191775	86195947	39.67	+	MGI:1352460	protein coding gene	Nr0b1	nuclear receptor subfamily 0, group B, member 1	
+X	101449109	101453541	44.17	+	MGI:1353420	protein coding gene	Itgb1bp2	integrin beta 1 binding protein 2	
+X	7919822	7924410	3.57	+	MGI:1353431	protein coding gene	Pcsk1n	proprotein convertase subtilisin/kexin type 1 inhibitor	
+X	134537256	134541670	56.18	-	MGI:1353433	protein coding gene	Timm8a1	translocase of inner mitochondrial membrane 8A1	
+X	36795651	36798807	21.2	+	MGI:1353496	protein coding gene	Slc25a5	solute carrier family 25 (mitochondrial carrier, adenine nucleotide translocator), member 5	
+X	48025146	48034852	25.48	-	MGI:1353624	protein coding gene	Apln	apelin	
+X	142317993	142390535	63.12	-	MGI:1354713	protein coding gene	Acsl4	acyl-CoA synthetase long-chain family member 4	
+X	51387212	51681856	28.04	-	MGI:1354959	protein coding gene	Hs6st2	heparan sulfate 6-O-sulfotransferase 2	
+X	109004537	109013380	47.92	-	MGI:1355295	protein coding gene	Hmgn5	high-mobility group nucleosome binding domain 5	
+X	101429651	101448593	44.14	+	MGI:1855692	protein coding gene	Nono	non-POU-domain-containing, octamer binding protein	
+X	71364760	71419196	36.75	+	MGI:1858271	protein coding gene	Mtmr1	myotubularin related protein 1	
+X	36598206	36606079	21.0	+	MGI:1858305	protein coding gene	Pgrmc1	progesterone receptor membrane component 1	
+X	10037977	10117661	4.62	-	MGI:1858306	protein coding gene	Srpx	sushi-repeat-containing protein	
+X	129749742	130465834	52.36	+	MGI:1858500	protein coding gene	Diaph2	diaphanous related formin 2	
+X	166523007	166585716	77.66	-	MGI:1858599	protein coding gene	Egfl6	EGF-like-domain, multiple 6	
+X	140948425	140956711	61.67	-	MGI:1858898	protein coding gene	Psmd10	proteasome (prosome, macropain) 26S subunit, non-ATPase, 10	
+X	122394560	122397385	49.81	-	MGI:1859565	protein coding gene	Nap1l3	nucleosome assembly protein 1-like 3	
+X	7721983	7728201	3.48	+	MGI:1859606	protein coding gene	Wdr45	WD repeat domain 45	
+X	7728571	7731063	3.48	+	MGI:1859607	protein coding gene	Praf2	PRA1 domain family 2	
+X	7593809	7605420	3.42	-	MGI:1859608	protein coding gene	Ccdc22	coiled-coil domain containing 22	
+X	7697131	7710262	3.47	+	MGI:1859610	protein coding gene	Gpkow	G patch domain and KOW motifs	
+X	7841364	7876626	3.54	+	MGI:1859615	protein coding gene	Otud5	OTU domain containing 5	
+X	7789961	7820567	3.51	+	MGI:1859616	protein coding gene	Gripap1	GRIP1 associated protein 1	
+X	7558562	7574281	3.4	-	MGI:1859617	protein coding gene	Ppp1r3f	protein phosphatase 1, regulatory subunit 3F	
+X	7731714	7741324	3.48	-	MGI:1859619	protein coding gene	Ccdc120	coiled-coil domain containing 120	
+X	7657379	7668186	3.45	+	MGI:1859635	protein coding gene	Prickle3	prickle planar cell polarity protein 3	
+X	7894519	7899269	3.56	-	MGI:1859638	protein coding gene	Pqbp1	polyglutamine binding protein 1	
+X	7607083	7635196	3.42	+	MGI:1859639	protein coding gene	Cacna1f	calcium channel, voltage-dependent, alpha 1F subunit	
+X	7673166	7681251	3.46	-	MGI:1859644	protein coding gene	Magix	MAGI family member, X-linked	
+X	7372591	7375830	3.31	-	MGI:1859645	protein coding gene	Usp27x	ubiquitin specific peptidase 27, X chromosome	
+X	8238668	8252406	3.73	-	MGI:1859648	protein coding gene	Ftsj1	FtsJ RNA methyltransferase homolog 1 (E. coli)	
+X	60223283	60404861	33.5	-	MGI:1859661	protein coding gene	Atp11c	ATPase, class VI, type 11C	
+X	155323918	155340749	72.38	-	MGI:1859815	protein coding gene	Prdx4	peroxiredoxin 4	
+X	142853474	142966728	63.74	-	MGI:1860206	protein coding gene	Ammecr1	Alport syndrome, mental retardation, midface hypoplasia and elliptocytosis chromosomal region gene 1	
+X	153498232	153501562	68.46	+	MGI:1860283	protein coding gene	Ubqln2	ubiquilin 2	
+X	77837898	77853500	38.32	-	MGI:1860484	protein coding gene	Pbsn	probasin	
+X	75095854	75109777	38.15	+	MGI:1861727	protein coding gene	Dkc1	dyskeratosis congenita 1, dyskerin	
+X	72825178	72842602	37.29	+	MGI:1888498	protein coding gene	Gabrq	gamma-aminobutyric acid (GABA) A receptor, subunit theta	
+X	36911272	36990050	21.32	-	MGI:1888939	protein coding gene	Sept6	septin 6	
+X	100767722	100818410	43.72	+	MGI:1888986	protein coding gene	Dlg3	discs large MAGUK scaffold protein 3	
+X	163909017	163933666	75.97	+	MGI:1889383	protein coding gene	Ap1s2	adaptor-related protein complex 1, sigma 2 subunit	
+X	159627028	159975920	73.65	+	MGI:1889583	protein coding gene	Sh3kbp1	SH3-domain kinase binding protein 1	
+X	37899097	37901770	22.15	-	MGI:1890128	protein coding gene	Rhox9	reproductive homeobox 9	
+X	8193848	8206525	3.7	-	MGI:1890212	protein coding gene	Porcn	porcupine O-acyltransferase	
+X	21714900	21742358	16.78	+	MGI:1890216	protein coding gene	Slc6a14	solute carrier family 6 (neurotransmitter transporter), member 14	
+X	20059560	20097521	15.5	+	MGI:1891767	protein coding gene	Chst7	carbohydrate (N-acetylglucosamino) sulfotransferase 7	
+X	101254528	101260873	43.89	+	MGI:1891915	protein coding gene	Foxo4	forkhead box O4	
+X	137570608	138846946	59.1	+	MGI:1913106	protein coding gene	Il1rapl2	interleukin 1 receptor accessory protein-like 2	
+X	101274030	101297465	43.91	+	MGI:1926212	protein coding gene	Med12	mediator complex subunit 12	
+X	106576509	106603679	47.36	-	MGI:1926218	protein coding gene	Cysltr1	cysteinyl leukotriene receptor 1	
+X	164090187	164118859	76.12	+	MGI:1926234	protein coding gene	Cltrn	collectrin, amino acid transport regulator	
+X	163976822	164027997	76.03	-	MGI:1926249	protein coding gene	Car5b	carbonic anhydrase 5b, mitochondrial	
+X	133891068	133898429	55.47	-	MGI:1926264	protein coding gene	Tspan6	tetraspanin 6	
+X	53069995	53240111	29.31	-	MGI:1926287	protein coding gene	Plac1	placental specific protein 1	
+X	100590154	100594869	43.72	-	MGI:1926594	protein coding gene	P2ry4	pyrimidinergic receptor P2Y, G-protein coupled, 4	
+X	151800807	151935417	68.46	+	MGI:1926884	protein coding gene	Huwe1	HECT, UBA and WWE domain containing 1	
+X	136732942	136743686	59.1	-	MGI:1927167	protein coding gene	Morf4l2	mortality factor 4 like 2	
+X	101404384	101420849	44.1	-	MGI:1927231	protein coding gene	Zmym3	zinc finger, MYM-type 3	
+X	38189793	38197046	22.45	+	MGI:1927290	protein coding gene	Zbtb33	zinc finger and BTB domain containing 33	
+X	48411049	48463132	25.67	-	MGI:1928377	protein coding gene	Elf4	E74-like factor 4 (ets domain transcription factor)	
+X	166457253	166479867	77.47	-	MGI:1890695	protein coding gene	Rab9	RAB9, member RAS oncogene family	
+X	155262443	155297654	72.38	+	MGI:1928939	protein coding gene	Acot9	acyl-CoA thioesterase 9	
+X	150645304	150657583	68.46	-	MGI:1928994	protein coding gene	Tro	trophinin	
+X	37187588	37191163	21.61	-	MGI:1929511	protein coding gene	Ndufa1	NADH:ubiquinone oxidoreductase subunit A1	
+X	7579676	7595243	3.41	+	MGI:1891436	protein coding gene	Foxp3	forkhead box P3	
+X	133851008	133865577	55.47	+	MGI:1929885	protein coding gene	Tnmd	tenomodulin	
+X					MGI:1345188	protein coding gene	Spry3	sprouty RTK signaling antagonist 3	
+X	108737227	108834362	47.88	-	MGI:3029414	protein coding gene	Brwd3	bromodomain and WD repeat domain containing 3	
+X	49683504	49684463	26.02	+	MGI:3031154	protein coding gene	Olfr1320	olfactory receptor 1320	
+X	49726973	49727932	26.04	-	MGI:3031155	protein coding gene	Olfr1321	olfactory receptor 1321	
+X	49885469	49886401	26.09	-	MGI:3031156	protein coding gene	Olfr1322	olfactory receptor 1322	
+X	50009306	50010235	26.14	-	MGI:3031157	protein coding gene	Olfr1323	olfactory receptor 1323	
+X	50425496	50426494	26.28	-	MGI:3031158	protein coding gene	Olfr1324	olfactory receptor 1324	
+X	74594328	74595275	38.04	+	MGI:3031159	protein coding gene	Olfr1325	olfactory receptor 1325	
+X	135494588	135504594	57.12	+	MGI:3035227	protein coding gene	AV320801	expressed sequence AV320801	
+X	136200948	136203851	57.4	-	MGI:3036236	protein coding gene	Tceal5	transcription elongation factor A (SII)-like 5	
+X	153139981	153171943	68.46	+	MGI:3038613	protein coding gene	Rragb	Ras-related GTP binding B	
+X	37249919	37258978	21.67	+	MGI:2676626	protein coding gene	Rhox3a	reproductive homeobox 3A	
+X	106206883	106221158	47.36	-	MGI:3039562	protein coding gene	Taf9b	TATA-box binding protein associated factor 9B	
+X	139079257	139085236	61.23	-	MGI:3041197	protein coding gene	Serpina7	serine (or cysteine) peptidase inhibitor, clade A (alpha-1 antiproteinase, antitrypsin), member 7	
+X	167471309	168577231	78.36	-	MGI:3042378	protein coding gene	Frmpd4	FERM and PDZ domain containing 4	
+X	19479424	19481319	14.88	-	MGI:3037654	protein coding gene	Tex13c3	TEX13 family member C3	
+X	106143275	106160493	47.36	+	MGI:3045213	protein coding gene	Tlr13	toll-like receptor 13	
+X	100524838	100546108	43.72	+	MGI:3045268	protein coding gene	Dgat2l6	diacylglycerol O-acyltransferase 2-like 6	
+X	37048845	37050418	21.46	+	MGI:3045274	protein coding gene	Sowahd	sosondowah ankyrin repeat domain family member D	
+X	81419575	81458121	38.38	-	MGI:3045300	protein coding gene	4930595M18Rik	RIKEN cDNA 4930595M18 gene	
+X	71050256	71156056	36.33	+	MGI:3045303	protein coding gene	Mamld1	mastermind-like domain containing 1	
+X	126812462	126815868	49.81	-	MGI:3045322	protein coding gene	4932411N23Rik	RIKEN cDNA 4932411N23 gene	
+X	102066544	102071304	45.06	-	MGI:3045324	protein coding gene	Rtl5	retrotransposon Gag like 5	
+X	21079174	21089527	16.59	-	MGI:3045326	protein coding gene	Zfp300	zinc finger protein 300	
+X	96306178	96456294	42.69	-	MGI:3045337	protein coding gene	Hsf3	heat shock transcription factor 3	
+X	112600526	112635070	48.76	+	MGI:3045342	protein coding gene	Zfp711	zinc finger protein 711	
+X	92118879	92599572	40.62	-	MGI:3045344	protein coding gene	Mageb18	melanoma antigen family B, 18	
+X	100402221	100442717	43.71	-	MGI:3045345	protein coding gene	Awat2	acyl-CoA wax alcohol acyltransferase 2	
+X	38196573	38252439	22.46	-	MGI:3045722	protein coding gene	Tmem255a	transmembrane protein 255A	
+X	163760139	163761329	75.84	-	MGI:1921514	protein coding gene	Rnf138rt1	ring finger protein 138, retrogene 1	
+X	51968695	51972772	28.33	-	MGI:1921529	protein coding gene	1700080O16Rik	RIKEN cDNA 1700080O16 gene	
+X	36328353	36362341	20.72	+	MGI:1921615	protein coding gene	Lonrf3	LON peptidase N-terminal domain and ring finger 3	
+X	17132049	17319368	12.34	-	MGI:1921655	protein coding gene	Efhc2	EF-hand domain (C-terminal) containing 2	
+X	94355053	94366777	41.56	-	MGI:1921682	protein coding gene	Fam90a1b	family with sequence similarity 90, member A1B	
+X	62283499	62292078	34.57	+	MGI:1921687	protein coding gene	4933402E13Rik	RIKEN cDNA 4933402E13 gene	
+X	134187501	134208028	55.9	+	MGI:1921698	protein coding gene	Arl13a	ADP-ribosylation factor-like 13A	
+X	134460118	134476490	56.18	-	MGI:1921719	protein coding gene	Taf7l	TATA-box binding protein associated factor 7 like	
+X	73175302	73176989	37.29	-	MGI:1922101	protein coding gene	Spin2d	spindlin family, member 2D	
+X	66303361	66304224	34.69	-	MGI:1922112	protein coding gene	4930447F04Rik	RIKEN cDNA 4930447F04 gene	
+X	78369643	78371128	38.34	+	MGI:1922160	protein coding gene	4930480E11Rik	RIKEN cDNA 4930480E11 gene	
+X	76582610	76602924	38.3	-	MGI:1922237	protein coding gene	Cldn34d	claudin 34D	
+X	53724826	53738441	29.99	+	MGI:1922263	protein coding gene	4930502E18Rik	RIKEN cDNA 4930502E18 gene	
+X	103630586	103631664	46.26	+	MGI:1922314	protein coding gene	Zcchc13	zinc finger, CCHC domain containing 13	
+X	154339225	154343392	72.38	-	MGI:1922321	protein coding gene	4930524N10Rik	RIKEN cDNA 4930524N10 gene	
+X	114907582	114908510	49.47	+	MGI:1922347	protein coding gene	Ube2dnl2	ubiquitin-conjugating enzyme E2D N-terminal like 2	
+X	139086243	139093403	61.23	+	MGI:1922375	protein coding gene	4930513O06Rik	RIKEN cDNA 4930513O06 gene	
+X	55226876	55243723	30.06	+	MGI:1922390	protein coding gene	Slxl1	Slx-like 1	
+X	154482002	154484682	72.38	+	MGI:1922435	protein coding gene	Samt4	spermatogenesis associated multipass transmembrane protein 4	
+X	37244992	37249690	21.67	+	MGI:1922449	protein coding gene	Rhox2a	reproductive homeobox 2A	
+X	9849703	9850252	4.62	+	MGI:1922521	protein coding gene	H2al3	H2A histone family member L3	
+X	58911461	58920304	33.18	+	MGI:1922602	protein coding gene	4930550L24Rik	RIKEN cDNA 4930550L24 gene	
+X	49463945	49500244	25.95	+	MGI:1922654	protein coding gene	Arhgap36	Rho GTPase activating protein 36	
+X	102908905	102909651	45.79	+	MGI:1922693	protein coding gene	1700011M02Rik	RIKEN cDNA 1700011M02 gene	
+X	69945300	69945978	35.81	+	MGI:1922759	protein coding gene	1700020N15Rik	RIKEN cDNA 1700020N15 gene	
+X	53742901	53757831	30.01	-	MGI:1922764	protein coding gene	1700013H16Rik	RIKEN cDNA 1700013H16 gene	
+X	153036166	153037563	68.46	-	MGI:1922875	protein coding gene	Mageh1	melanoma antigen, family H, 1	
+X	139821632	139871677	61.35	-	MGI:1922996	protein coding gene	Morc4	microrchidia 4	
+X	9104562	9106342	4.14	+	MGI:1923025	protein coding gene	4930402K13Rik	RIKEN cDNA 4930402K13 gene	
+X	135613002	135627705	57.26	-	MGI:1923079	protein coding gene	Prame	preferentially expressed antigen in melanoma	
+X	18414881	18461397	13.73	-	MGI:1923155	protein coding gene	Dipk2b	divergent protein kinase domain 2B	
+X	35888832	36076562	20.35	+	MGI:1923224	protein coding gene	Dock11	dedicator of cytokinesis 11	
+X	150588258	150643878	68.46	+	MGI:107816	protein coding gene	Pfkfb1	6-phosphofructo-2-kinase/fructose-2,6-biphosphatase 1	
+X	8185329	8193512	3.7	-	MGI:107822	protein coding gene	Ebp	phenylalkylamine Ca2+ antagonist (emopamil) binding protein	
+X	20549787	20562089	16.04	+	MGI:108024	protein coding gene	Rgn	regucalcin	
+X	164373378	164402650	76.35	+	MGI:108037	protein coding gene	Vegfd	vascular endothelial growth factor D	
+X	71991849	72010218	37.15	+	MGI:108040	protein coding gene	Cnga2	cyclic nucleotide gated channel alpha 2	
+X	164070705	164076493	76.11	-	MGI:108063	protein coding gene	Siah1b	siah E3 ubiquitin protein ligase 1B	
+X	73411096	73428385	37.31	+	MGI:108094	protein coding gene	Zfp92	zinc finger protein 92	
+X	72987339	73031543	37.29	+	MGI:108095	protein coding gene	Zfp185	zinc finger protein 185	
+X	74254687	74261548	37.92	+	MGI:108117	protein coding gene	Emd	emerin	
+X	103414467	103424580	46.12	+	MGI:108118	protein coding gene	Tsx	testis specific X-linked gene	
+X	100626065	100727271	43.72	+	MGI:108389	protein coding gene	Kif4	kinesin family member 4	
+X					MGI:105113	protein coding gene	Gcna	germ cell nuclear acidic protein	
+X	134086421	134137711	55.69	-	MGI:2450016	protein coding gene	Nox1	NADPH oxidase 1	
+X	48541625	48594504	25.68	-	MGI:2387585	protein coding gene	Zfp280c	zinc finger protein 280C	
+X	73064787	73068191	37.29	+	MGI:2180565	protein coding gene	Pnma3	paraneoplastic antigen MA3	
+X	136517999	136534306	58.77	+	MGI:2652397	protein coding gene	Kir3dl1	killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 1	
+X	57088106	57106540	30.89	+	MGI:2655768	protein coding gene	Vgll1	vestigial like family member 1	
+X	145290359	145349089	66.54	-	MGI:1891214	protein coding gene	Lhfpl1	lipoma HMGIC fusion partner-like 1	
+X	70459753	70477180	36.04	-	MGI:2448555	protein coding gene	Tmem185a	transmembrane protein 185A	
+X	150983141	151017322	68.46	-	MGI:2448557	protein coding gene	Gnl3l	guanine nucleotide binding protein-like 3 (nucleolar)-like	
+X	157821573	158043353	72.76	-	MGI:2661175	protein coding gene	Cnksr2	connector enhancer of kinase suppressor of Ras 2	
+X	123221399	123222481	49.81	-	MGI:3777603	protein coding gene	Srsx	serine-rich, secreted, X-linked	
+X	26912743	26935669	18.27	-	MGI:3779555	protein coding gene	Gm6121	predicted gene 6121	
+X	60436052	60456195	33.5	-	MGI:3779666	protein coding gene	Gm7073	predicted gene 7073	
+X	152563334	152563969	68.46	+	MGI:3779684	protein coding gene	Cldn34a	claudin 34A	
+X	25548501	25570449	17.86	-	MGI:3780163	protein coding gene	Gm1993	predicted gene 1993	
+X	26200882	26231323	18.06	-	MGI:3780181	protein coding gene	Gm2012	predicted gene 2012	
+X	26287199	26310044	18.08	-	MGI:3780199	protein coding gene	Gm2030	predicted gene 2030	
+X	26414963	26415310	18.12	-	MGI:3780205	protein coding gene	Gm2036	predicted gene 2036	
+X	56447965	56448366	30.06	+	MGI:3780344	protein coding gene	Gm2174	predicted gene 2174	
+X	42489361	42491953	23.2	+	MGI:3780650	protein coding gene	Tex13d	TEX13 family member D	
+X	31381959	31383918	19.41	-	MGI:3780946	protein coding gene	Btbd35f19	BTB domain containing 35, family member 19	
+X	31336454	31337950	19.43	+	MGI:3780952	protein coding gene	Btbd35f26	BTB domain containing 35, family member 26	
+X	31254636	31255381	19.45	+	MGI:3780958	protein coding gene	Spin2f	spindlin family, member 2F	
+X	32278394	32280342	19.52	+	MGI:3780968	protein coding gene	Btbd35f2	BTB domain containing 35, family member 2	
+X	32973897	32975846	19.63	+	MGI:3780997	protein coding gene	Btbd35f5	BTB domain containing 35, family member 5	
+X	33399358	33400123	19.71	+	MGI:3781026	protein coding gene	Gm2854	predicted gene 2854	
+X	33313379	33315286	19.74	+	MGI:3781040	protein coding gene	Btbd35f12	BTB domain containing 35, family member 12	
+X	33575398	33577314	19.86	-	MGI:3781091	protein coding gene	Btbd35f15	BTB domain containing 35, family member 15	
+X	33657172	33658872	19.88	+	MGI:3781105	protein coding gene	Btbd35f13	BTB domain containing 35, family member 13	
+X	33700649	33702349	19.89	-	MGI:3781111	protein coding gene	Btbd35f14	BTB domain containing 35, family member 14	
+X	33955044	33956540	19.97	-	MGI:3781142	protein coding gene	Btbd35f6	BTB domain containing 35, family member 6	
+X	79266559	79517285	38.37	-	MGI:3781475	protein coding gene	Cfap47	cilia and flagella associated protein 47	
+X	3955054	3957002	1.75	-	MGI:3781877	protein coding gene	Btbd35f16	BTB domain containing 35, family member 16	
+X	4037674	4039616	1.79	+	MGI:3781882	protein coding gene	Btbd35f3	BTB domain containing 35, family member 3	
+X	4800496	4801986	2.12	+	MGI:3781925	protein coding gene	Btbd35f4	BTB domain containing 35, family member 4	
+X	4952135	4954077	2.19	+	MGI:3781937	protein coding gene	Btbd35f27	BTB domain containing 35, family member 27	
+X	9328974	9332606			MGI:3782230	protein coding gene	Gm4055	predicted gene 4055	
+X	24552250	24573305	17.62	-	MGI:3782476	protein coding gene	Gm4297	predicted gene 4297	
+X	118427227	118428256	49.58	+	MGI:3800824	protein coding gene	Tgif2lx2	TGFB-induced factor homeobox 2-like, X-linked 2	
+X	35404215	35427094	20.21	+	MGI:3801716	protein coding gene	Gm14819	predicted gene 14819	
+X	26672780	26702638	18.2	-	MGI:3802008	protein coding gene	Gm14525	predicted gene 14525	
+X	102847639	102854616	45.76	-	MGI:3802967	protein coding gene	Dmrtc1c2	DMRT-like family C1c2	
+X	25277605	25301455	17.78	-	MGI:3804938	protein coding gene	Gm5169	predicted gene 5169	
+X	30329772	30352645	19.19	+	MGI:3805544	protein coding gene	Gm14632	predicted gene 14632	
+X	135167624	135177632	56.64	-	MGI:3805552	protein coding gene	Gm15023	predicted gene 15023	
+X	28270710	28293632	18.63	-	MGI:3809202	protein coding gene	Gm4836	predicted gene 4836	
+X	123346785	123378718	49.81	+	MGI:3809203	protein coding gene	Gm2411	predicted gene 2411	
+X	144456581	144477066	65.58	+	MGI:3641805	protein coding gene	Trpc5os	transient receptor potential cation channel, subfamily C, member 5, opposite strand	
+X	7907693	7907835	3.57	-	MGI:3642000	protein coding gene	Gm10491	predicted gene 10491	
+X	7909542	7909927	3.57	+	MGI:3642001	protein coding gene	Gm10490	predicted gene 10490	
+X	128548386	128551423			MGI:3642115	protein coding gene	Gm10448	predicted pseudogene 10448	
+X	118142412	118145830			MGI:3642203	protein coding gene	Gm1971	predicted gene 1971	
+X	155624846	156062072	72.38	+	MGI:3642241	protein coding gene	Gm15155	predicted gene 15155	
+X	117014757	117015104	49.58	+	MGI:3642445	protein coding gene	H2afb1	H2A histone family member B1	
+X	56524742	56525432	30.06	+	MGI:3642464	protein coding gene	Gm10477	predicted gene 10477	
+X	8871568	8875407	4.03	+	MGI:3642927	protein coding gene	Gm5751	predicted gene 5751	
+X	8962134	8962975	4.07	-	MGI:3642940	protein coding gene	Fthl17b	ferritin, heavy polypeptide-like 17, member B	
+X	9063090	9063822	4.12	+	MGI:3642941	protein coding gene	Fthl17f	ferritin, heavy polypeptide-like 17, member F	
+X	124127339	124135910	49.81	-	MGI:3643045	protein coding gene	Vmn2r121	vomeronasal 2, receptor 121	
+X	9571960	9572391	4.37	-	MGI:3643069	protein coding gene	H2al1o	H2A histone family member L1O	
+X	64151405	64152198	34.57	-	MGI:3643199	protein coding gene	Gm6760	predicted gene 6760	
+X	11327822	11328151	6.06	+	MGI:3643273	protein coding gene	H2al1j	H2A histone family member L1J	
+X	54622211	54639019	30.06	+	MGI:3643726	protein coding gene	Gm16430	predicted gene 16430	
+X	14211148	14211657	9.18	+	MGI:3643774	protein coding gene	H2al1n	H2A histone family member L1N	
+X	24474308	24499163	17.59	-	MGI:3643862	protein coding gene	Gm5934	predicted gene 5934	
+X	91392500	91393534	40.37	+	MGI:3643982	protein coding gene	Gm5072	predicted gene 5072	
+X	74480287	74481399	38.01	-	MGI:3644285	protein coding gene	Gm6880	predicted gene 6880	
+X	36403477	36404654	20.8	+	MGI:3644556	protein coding gene	Gm6268	predicted gene 6268	
+X	100429013	100429885	43.72	+	MGI:3644685	protein coding gene	Otud6a	OTU domain containing 6A	
+X	123581700	123602134	49.81	+	MGI:3644765	protein coding gene	Cldn34c2	claudin 34C2	
+X	120312748	120313095	49.58	-	MGI:3644875	protein coding gene	H2afb3	H2A histone family, member B3	
+X	116681178	116681525	49.55	+	MGI:3644980	protein coding gene	H2afb2	H2A histone family, member B2	
+X	101849385	102092055	44.75	+	MGI:3645090	protein coding gene	Nhsl2	NHS-like 2	
+X	74639119	74645635	38.05	-	MGI:3645126	protein coding gene	Gm5640	predicted gene 5640	
+X	123793665	123813765	49.81	+	MGI:3645501	protein coding gene	Cldn34c3	claudin 34C3	
+X	102706890	102707635	45.66	-	MGI:3645559	protein coding gene	Gm9112	predicted gene 9112	
+X	74837196	74843355	38.09	+	MGI:3645575	protein coding gene	Gm5936	predicted gene 5936	
+X	74740927	74742188	38.07	+	MGI:3645826	protein coding gene	Gm6890	predicted gene 6890	
+X	32159583	32160345	19.48	+	MGI:3645924	protein coding gene	Gm5923	predicted gene 5923	
+X	124016018	124044356	49.81	+	MGI:3646000	protein coding gene	Gm5945	predicted gene 5945	
+X	92489949	92490681	40.75	+	MGI:3646197	protein coding gene	Gm5941	predicted gene 5941	
+X	24753162	24775164	17.67	-	MGI:3646322	protein coding gene	Gm5935	predicted gene 5935	
+X	91480126	91481160	40.4	+	MGI:3646464	protein coding gene	Gm8914	predicted gene 8914	
+X	140342263	140435467	61.35	+	MGI:3646547	protein coding gene	Frmpd3	FERM and PDZ domain containing 3	
+X	114905012	114905941	49.47	+	MGI:3646570	protein coding gene	Ube2dnl1	ubiquitin-conjugating enzyme E2D N-terminal like 1	
+X	154575228	154579330	72.38	-	MGI:3646587	protein coding gene	Samt2	spermatogenesis associated multipass transmembrane protein 2	
+X	101790332	101794456	44.66	-	MGI:3646776	protein coding gene	Gm4779	predicted gene 4779	
+X	21169950	21179036	16.62	-	MGI:3647035	protein coding gene	Gm5932	predicted gene 5932	
+X	135373284	135383393	56.94	+	MGI:3647038	protein coding gene	Gm5128	predicted gene 5128	
+X	109196756	109200439	47.97	+	MGI:3647255	protein coding gene	Gm6377	predicted gene 6377	
+X	32650716	32651426	19.58	+	MGI:3647272	protein coding gene	Gm5926	predicted gene 5926	
+X	61288157	61292488	34.42	+	MGI:3647289	protein coding gene	Gm4988	predicted gene 4988	
+X	8843994	8849607	4.01	+	MGI:3647394	protein coding gene	Gm6592	predicted gene 6592	
+X	54531208	54548016	30.06	+	MGI:3647662	protein coding gene	Gm16405	predicted gene 16405	
+X	106583186	106710557	47.36	+	MGI:3648285	protein coding gene	Gm5127	predicted gene 5127	
+X	23882553	23907607	17.42	+	MGI:3648288	protein coding gene	Gm4907	predicted gene 4907	
+X	76264306	76267673	38.3	+	MGI:3648293	protein coding gene	Cldn34b3	claudin 34B3	
+X	99821069	99846345	43.59	+	MGI:3648377	protein coding gene	Tmem28	transmembrane protein 28	
+X	154886805	154890267	72.38	-	MGI:3648403	protein coding gene	Cldn34b1	claudin 34B1	
+X	23957702	23958934	17.44	-	MGI:3648554	protein coding gene	Gm4985	predicted gene 4985	
+X	135433835	135443830	57.03	+	MGI:3648697	protein coding gene	Gm7903	predicted gene 7903	
+X	37639115	37643470	21.94	-	MGI:3648776	protein coding gene	Rhox2g	reproductive homeobox 2G	
+X	37493428	37497623	21.79	+	MGI:3648779	protein coding gene	Rhox2d	reproductive homeobox 2D	
+X	78125467	78130403	38.33	+	MGI:3648846	protein coding gene	Gm5938	predicted gene 5938	
+X	11311934	11312427	6.04	+	MGI:3649617	protein coding gene	H2al1e	H2A histone family member L1E	
+X	11315158	11315475	6.05	+	MGI:3649874	protein coding gene	H2al1f	H2A histone family member L1F	
+X	11302432	11302921	6.03	+	MGI:3650131	protein coding gene	H2al1b	H2A histone family member L1B	
+X	8514052	8524954	3.86	-	MGI:3650385	protein coding gene	Gm14459	predicted gene 14459	
+X	37874778	37878944	22.12	-	MGI:3579898	protein coding gene	Rhox8	reproductive homeobox 8	
+X	102142820	102157091	45.16	-	MGI:2654144	protein coding gene	Ercc6l	excision repair cross-complementing rodent repair deficiency complementation group 6 like	
+X	37213804	37222258	21.63	-	MGI:3580237	protein coding gene	Rhox1	reproductive homeobox 1	
+X	37265338	37270132	21.69	+	MGI:3580240	protein coding gene	Rhox4a	reproductive homeobox 4A	
+X	37831686	37841171	22.08	+	MGI:3580246	protein coding gene	Rhox7a	reproductive homeobox 7A	
+X	38066475	38071688	22.32	+	MGI:3580249	protein coding gene	Rhox10	reproductive homeobox 10	
+X	6779306	6948363	3.07	+	MGI:3580254	protein coding gene	Dgkk	diacylglycerol kinase kappa	
+X	73254540	73265390	37.29	-	MGI:3047103	protein coding gene	Xlr3c	X-linked lymphocyte-regulated 3C	
+X	73234076	73243130	37.29	-	MGI:3574099	protein coding gene	Xlr4c	X-linked lymphocyte-regulated 4C	
+X	73074345	73082478	37.29	-	MGI:3574098	protein coding gene	Xlr4a	X-linked lymphocyte-regulated 4A	
+X	73107621	73119113	37.29	-	MGI:3574108	protein coding gene	Xlr5a	X-linked lymphocyte-regulated 5A	
+X	73148796	73158872	37.29	+	MGI:3574109	protein coding gene	Xlr5b	X-linked lymphocyte-regulated 5B	
+X	134149043	134162076	55.85	-	MGI:3584011	protein coding gene	Xkrx	X-linked Kx blood group related, X-linked	
+X	144688907	145122411	65.85	+	MGI:3588192	protein coding gene	Rtl4	retrotransposon Gag like 4	
+X	100572251	100578205	43.72	+	MGI:3588200	protein coding gene	Awat1	acyl-CoA wax alcohol acyltransferase 1	
+X	72381870	72386858	37.23	-	MGI:3588211	protein coding gene	Magea10	melanoma antigen family A, 10	
+X	153006469	153009416	68.46	+	MGI:3588217	protein coding gene	Usp51	ubiquitin specific protease 51	
+X	52791200	52799468	29.19	+	MGI:3588225	protein coding gene	Ccdc160	coiled-coil domain containing 160	
+X	76393350	76397979	38.3	+	MGI:3588232	protein coding gene	Cldn34b4	claudin 34B4	
+X	75146057	75163756	38.16	-	MGI:3588243	protein coding gene	Smim9	small integral membrane protein 9	
+X	70393901	70394740	36.02	-	MGI:3588249	protein coding gene	4930567H17Rik	RIKEN cDNA 4930567H17 gene	
+X	89930098	89932852	39.95	-	MGI:3588286	protein coding gene	4930415L06Rik	RIKEN cDNA 4930415L06 gene	
+X	89752268	89755491	39.95	+	MGI:3588287	protein coding gene	4932429P05Rik	RIKEN cDNA 4932429P05 gene	
+X	162778919	162829454	74.99	-	MGI:3590652	protein coding gene	Txlng	taxilin gamma	
+X	153832225	153834243	72.38	+	MGI:3605548	protein coding gene	Spin2c	spindlin family, member 2C	
+X	136139045	136140439	57.4	+	MGI:3606746	protein coding gene	Bex4	brain expressed X-linked 4	
+X	140062879	140106797	61.35	+	MGI:3607720	protein coding gene	Pih1h3b	PIH1 domain containing 3B	
+X	73033981	73037103	37.29	-	MGI:2180566	protein coding gene	Pnma5	paraneoplastic antigen family 5	
+X	136448107	136544056	58.45	-	MGI:3612791	protein coding gene	Kir3dl2	killer cell immunoglobulin-like receptor, three domains, long cytoplasmic tail, 2	
+X	37480337	37485124	21.78	+	MGI:3613386	protein coding gene	Rhox4c	reproductive homeobox 4C	
+X	37514385	37519176	21.82	+	MGI:3613388	protein coding gene	Rhox4d	reproductive homeobox 4D	
+X	37557412	37562283	21.86	+	MGI:3613390	protein coding gene	Rhox4e	reproductive homeobox 4E	
+X	37602895	37607686	21.91	-	MGI:3613392	protein coding gene	Rhox4f	reproductive homeobox 4F	
+X	37646501	37651327	21.95	-	MGI:3613394	protein coding gene	Rhox4g	reproductive homeobox 4G	
+X	139779681	139782353	61.35	-	MGI:3614797	protein coding gene	Ripply1	ripply transcriptional repressor 1	
+X	170672644	170678054		+	MGI:96090	protein coding gene	Asmt	acetylserotonin O-methyltransferase	
+X	52988137	53021659	29.31	+	MGI:96217	protein coding gene	Hprt	hypoxanthine guanine phosphoribosyl transferase	
+X	153118786	153132861	68.46	+	MGI:3511682	protein coding gene	Foxr2	forkhead box R2	
+X	53774048	53776394	30.06	-	MGI:3525151	protein coding gene	Zfp36l3	zinc finger protein 36, C3H type-like 3	
+X	152144268	152225236	68.46	+	MGI:3528396	protein coding gene	Iqsec2	IQ motif and Sec7 domain 2	
+X	16885521	16911774	12.07	-	MGI:102570	protein coding gene	Ndp	Norrie disease (pseudoglioma) (human)	
+X	75410442	75416584	38.22	-	MGI:102699	protein coding gene	Mtcp1	mature T cell proliferation 1	
+X	48841466	48877713	25.74	-	MGI:2685441	protein coding gene	Gm595	predicted gene 595	
+X	101261376	101263992	43.9	-	MGI:2685460	protein coding gene	Gm614	predicted gene 614	
+X	56543874	56549606	30.06	-	MGI:2685494	protein coding gene	Gm648	predicted gene 648	
+X	133582860	133688987	55.21	-	MGI:2685563	protein coding gene	Pcdh19	protocadherin 19	
+X	21068488	21077959	16.59	+	MGI:2685564	protein coding gene	Spaca5	sperm acrosome associated 5	
+X	140006802	140062707	61.35	-	MGI:2685565	protein coding gene	Nup62cl	nucleoporin 62 C-terminal like	
+X	6399940	6637454	2.85	+	MGI:2685570	protein coding gene	Shroom4	shroom family member 4	
+X	107945735	107948436	47.66	-	MGI:2685578	protein coding gene	Gm732	predicted gene 732	
+X	56189827	56212881	30.06	-	MGI:2685619	protein coding gene	Gm773	predicted gene 773	
+X	104482782	104506262	46.67	+	MGI:2685620	protein coding gene	Uprt	uracil phosphoribosyltransferase	
+X	106235246	106255372	47.36	-	MGI:2685621	protein coding gene	Fnd3c2	fibronectin type III domain containing 3C2	
+X	106420041	106485401	47.36	-	MGI:2685630	protein coding gene	Fndc3c1	fibronectin type III domain containing 3C1	
+X	67682900	67693562	34.81	-	MGI:2685986	protein coding gene	Gm1140	predicted gene 1140	
+X	71932438	71940871	37.14	+	MGI:2685987	protein coding gene	Gm1141	predicted gene 1141	
+X	101794656	101798642	44.67	+	MGI:2685988	protein coding gene	8030474K03Rik	RIKEN cDNA 8030474K03 gene	
+X	116448944	116478783	49.48	+	MGI:2685989	protein coding gene	Cpxcr1	CPX chromosome region, candidate 1	
+X	159532640	159593081	73.55	+	MGI:2685992	protein coding gene	Bclaf3	Bclaf1 and Thrap3 family member 3	
+X	38104077	38110907	22.36	-	MGI:2685994	protein coding gene	Rhox12	reproductive homeobox 12	
+X	50895180	50942710	27.82	-	MGI:2686379	protein coding gene	Frmd7	FERM domain containing 7	
+X	74150944	74167838	37.79	-	MGI:2686384	protein coding gene	Tex28	testis expressed 28	
+X	16522869	16523689	11.68	+	MGI:3616441	protein coding gene	Cypt1	cysteine-rich perinuclear theca 1	
+X					MGI:3616446	protein coding gene	Cypt7	cysteine-rich perinuclear theca 7	
+X					MGI:3616448	protein coding gene	Cypt8	cysteine-rich perinuclear theca 8	
+X	39862919	39863604	23.19	-	MGI:3616459	protein coding gene	Cypt14	cysteine-rich perinuclear theca 14	
+X	39346267	39346963	23.19	+	MGI:3616461	protein coding gene	Cypt15	cysteine-rich perinuclear theca 15	
+X	37150698	37168842	21.57	-	MGI:3618288	protein coding gene	Akap14	A kinase (PRKA) anchor protein 14	
+X	135579555	135598777	57.25	-	MGI:2159343	protein coding gene	Nxf7	nuclear RNA export factor 7	
+X	167304929	167330558	78.31	-	MGI:2176882	protein coding gene	Tlr7	toll-like receptor 7	
+X	167242696	167264329	78.29	-	MGI:2176887	protein coding gene	Tlr8	toll-like receptor 8	
+X	71420060	71492849	36.82	-	MGI:2177151	protein coding gene	Cd99l2	CD99 antigen-like 2	
+X	81070698	81097872	38.38	+	MGI:2177570	protein coding gene	Tmem47	transmembrane protein 47	
+X	102707881	102715209	45.66	+	MGI:3639121	protein coding gene	Dmrtc1b	DMRT-like family C1b	
+X	53669177	53670408	29.91	-	MGI:3576504	protein coding gene	Rtl8b	retrotransposon Gag like 8B	
+X					MGI:5590603	protein coding gene	Gm31444	predicted gene, 31444	
+X					MGI:5591631	protein coding gene	Gm32472	predicted gene, 32472	
+X	36401263	36403446		+	MGI:5592542	protein coding gene	Gm33383	predicted gene, 33383	
+X					MGI:5593650	protein coding gene	Gm34491	predicted gene, 34491	
+X	109445438	109558772		+	MGI:5593680	protein coding gene	Gm34521	predicted gene, 34521	
+X					MGI:5593739	protein coding gene	Gm34580	predicted gene, 34580	
+X					MGI:5594483	protein coding gene	Gm35324	predicted gene, 35324	
+X	55891713	55895852		-	MGI:5594745	protein coding gene	Gm35586	predicted gene, 35586	
+X	56277085	56293278		-	MGI:5595112	protein coding gene	Gm35953	predicted gene, 35953	
+X	161357881	161364590		+	MGI:5595208	protein coding gene	Gm36049	predicted gene, 36049	
+X	95558104	95558803		+	MGI:5804915	protein coding gene	Pfn5	profilin 5	
+X	33777828	33778538		-	MGI:5826320	protein coding gene	Gm46683	predicted gene, 46683	
+X	20775461	20783201		+	MGI:5622385	protein coding gene	Gm39500	predicted gene, 39500	
+X					MGI:5624772	protein coding gene	Gm41887	predicted gene, 41887	
+X					MGI:5624780	protein coding gene	Gm41895	predicted gene, 41895	
+X					MGI:5624784	protein coding gene	Gm41899	predicted gene, 41899	
+X	75404846	75416584		-	MGI:5637812	protein coding gene	Cmc4	C-x(9)-C motif containing 4	
+X	37412067	37416806	21.71	+	MGI:3770262	protein coding gene	Rhox2b	reproductive homeobox 2B	
+X	37453480	37458417	21.75	+	MGI:3770266	protein coding gene	Rhox2c	reproductive homeobox 2C	
+X	37469868	37473961	21.76	+	MGI:3770268	protein coding gene	Rhox3c	reproductive homeobox 3C	
+X	37530452	37541813	21.83	+	MGI:3770272	protein coding gene	Rhox2e	reproductive homeobox 2E	
+X	37571421	37576159	21.87	+	MGI:3770275	protein coding gene	Rhox2f	reproductive homeobox 2F	
+X	37581352	37585496	21.88	+	MGI:3770277	protein coding gene	Rhox3f	reproductive homeobox 3F	
+X	37546975	37550897	21.84	+	MGI:3770274	protein coding gene	Rhox3e	reproductive homeobox 3E	
+X	37623431	37628139	21.93	-	MGI:3770313	protein coding gene	Rhox3g	reproductive homeobox 3G	
+X	32941768	32942945		+	MGI:5433953	protein coding gene	Gm21789	predicted gene, 21789	
+X	33985639	33986816		-	MGI:5434034	protein coding gene	Gm21870	predicted gene, 21870	
+X	21174439	21175653		-	MGI:5434040	protein coding gene	Gm21876	predicted gene, 21876	
+X	31573106	31574283		-	MGI:5434047	protein coding gene	Gm21883	predicted gene, 21883	
+X	170009659	170019281		+	MGI:5434051	protein coding gene	Gm21887	predicted gene, 21887	
+X	37380383	37384431		+	MGI:5434440	protein coding gene	Rhox3a2	reproductive homeobox 3A2	
+X	37390860	37395621		+	MGI:5434453	protein coding gene	Rhox4a2	reproductive homeobox 4A2	
+X	3193887	3195827		-	MGI:5434719	protein coding gene	Btbd35f24	BTB domain containing 35, family member 24	
+X	31117674	31119170		+	MGI:5434802	protein coding gene	Btbd35f29	BTB domain containing 35, family member 29	
+X	32437174	32438844		+	MGI:5434821	protein coding gene	Gm21466	predicted gene, 21466	
+X	31618216	31618920		-	MGI:5434847	protein coding gene	Spin2e	spindlin family, member 2E	
+X	34237100	34238592		-	MGI:5434937	protein coding gene	Spin2g	spindlin family, member 2G	
+X	31715660	31717156		-	MGI:5434963	protein coding gene	Btbd35f25	BTB domain containing 35, family member 25	
+X	125435542	125436039		+	MGI:5434971	protein coding gene	Gm21616	predicted gene, 21616	
+X	31962044	31962821		+	MGI:5434992	protein coding gene	Gm21637	predicted gene, 21637	
+X	32047829	32049325		+	MGI:5435000	protein coding gene	Btbd35f22	BTB domain containing 35, family member 22	
+X	32894625	32896121		+	MGI:5435012	protein coding gene	Btbd35f30	BTB domain containing 35, family member 30	
+X	34160003	34161499		-	MGI:5435036	protein coding gene	Btbd35f9	BTB domain containing 35, family member 9	
+X	34450524	34452020		+	MGI:5435054	protein coding gene	Btbd35f8	BTB domain containing 35, family member 8	
+X	3076920	3078823		+	MGI:5439401	protein coding gene	Btbd35f23	BTB domain containing 35, family member 23	
+X	32726137	32728057		+	MGI:5439402	protein coding gene	Btbd35f21	BTB domain containing 35, family member 21	
+X	42489691	42491524		+	MGI:5663474	protein coding gene	Tex13c2	TEX13 family member C2	
+X	73334996	73336840		-	MGI:5753591	protein coding gene	Gm45015	predicted gene 45015	
+X	111891389	112240590		+	MGI:5753770	protein coding gene	Gm45194	predicted gene 45194	
+X	7722245	7730530		+	MGI:5753784	protein coding gene	Gm45208	predicted gene 45208	
+X	74367447	74373349		-	MGI:5621304	protein coding gene	Gm44504	predicted readthrough transcript (NMD candidate), 44504	
+X	74966844	74969125		-	MGI:5621310	protein coding gene	Gm38425	predicted gene, 38425	
+X	126017557	126018055	49.81	+	MGI:4936901	protein coding gene	Gm17267	predicted gene, 17267	
+X	125004163	125004660	49.81	+	MGI:4936995	protein coding gene	Gm17361	predicted gene, 17361	
+X	123704324	123704791	49.81	-	MGI:4937101	protein coding gene	Gm17467	predicted gene, 17467	
+X	124629893	124630390	49.81	+	MGI:4937103	protein coding gene	Gm17469	predicted gene, 17469	
+X	123029202	123029669	49.81	-	MGI:4937155	protein coding gene	Gm17521	predicted gene, 17521	
+X	123246440	123246907	49.81	-	MGI:4937211	protein coding gene	Gm17577	predicted gene, 17577	
+X	124500563	124501060	49.81	+	MGI:4937218	protein coding gene	Gm17584	predicted gene, 17584	
+X	165003765	165004829	76.75	-	MGI:4937238	protein coding gene	Gm17604	predicted gene, 17604	
+X	125705444	125705941	49.81	+	MGI:4937327	protein coding gene	Gm17693	predicted gene, 17693	
+X	73396889	73398712	37.3	-	MGI:5010521	protein coding gene	Gm18336	predicted gene, 18336	
+X	150157426	150177319	68.46	-	MGI:5012338	protein coding gene	Gm20153	predicted gene, 20153	
+X			21.75		MGI:5141929	protein coding gene	Gm20464	predicted gene 20464	
+X	101261405	101269023	43.9	-	MGI:5141954	protein coding gene	Gm20489	predicted gene 20489	
+X	21743440	21745097		-	MGI:5578975	protein coding gene	Gm28269	predicted gene 28269	
+X					MGI:5588909	protein coding gene	Gm29750	predicted gene, 29750	
+X	103422010	103481705		+	MGI:5504107	protein coding gene	Gm26992	predicted gene, 26992	
+X	157566119	157568985	72.57	-	MGI:3837947	protein coding gene	Yy2	Yy2 transcription factor	
+X	136974022	136976874	59.1	-	MGI:3843059	protein coding gene	Tmsb15b1	thymosin beta 15b1	
+X	136954988	136957979	59.1	-	MGI:3843061	protein coding gene	Tmsb15b2	thymosin beta 15b2	
+X	94724569	94730187	41.68	+	MGI:3694898	protein coding gene	Zxdb	zinc finger, X-linked, duplicated B	
+X	26028214	26051041	18.01	-	MGI:3703318	protein coding gene	Gm5168	predicted gene 5168	
+X	37657688	37668764	21.96	-	MGI:3704137	protein coding gene	Rhox3h	reproductive homeobox 3H	
+X	68892375	68893053	34.9	-	MGI:3704138	protein coding gene	Gm6812	predicted gene 6812	
+X	37886547	37897232	22.14	-	MGI:3705218	protein coding gene	Rhox7b	reproductive homeobox 7B	
+X	8975718	8976559	4.08	-	MGI:3705221	protein coding gene	Fthl17c	ferritin, heavy polypeptide-like 17, member C	
+X	78240462	78245921	38.33	-	MGI:3705225	protein coding gene	Gm14743	predicted gene 14743	
+X	161297856	161334722	73.95	+	MGI:3705232	protein coding gene	Gm15262	predicted gene 15262	
+X	9250928	9256899	4.21	-	MGI:3705234	protein coding gene	Gm14862	predicted gene 14862	
+X	36423601	36491830	20.82	-	MGI:3705243	protein coding gene	Gm14569	predicted gene 14569	
+X			3.48		MGI:3705282	protein coding gene	Gm14720	predicted gene 14720	
+X			34.92		MGI:3705355	protein coding gene	Gm14702	predicted gene 14702	
+X			25.78		MGI:3705594	protein coding gene	Gm15035	predicted gene 15035	
+X			34.93		MGI:3705678	protein coding gene	Gm14700	predicted gene 14700	
+X	148857694	148924139	68.46	+	MGI:3708816	protein coding gene	Luzp4	leucine zipper protein 4	
+X	4196576	4198535	1.86	+	MGI:3709183	protein coding gene	Btbd35f28	BTB domain containing 35, family member 28	
+X	5669067	5671026	2.5	+	MGI:3709265	protein coding gene	Btbd35f7	BTB domain containing 35, family member 7	
+X	4370636	4372595	1.9	+	MGI:3709272	protein coding gene	Btbd35f17	BTB domain containing 35, family member 17	
+X	4289286	4291245	1.94	-	MGI:3709274	protein coding gene	Btbd35f20	BTB domain containing 35, family member 20	
+X	3750934	3752885	1.65	-	MGI:3709278	protein coding gene	Btbd35f10	BTB domain containing 35, family member 10	
+X	3441731	3443690	1.55	-	MGI:3709280	protein coding gene	Btbd35f11	BTB domain containing 35, family member 11	
+X	3700233	3702192	1.63	+	MGI:3709282	protein coding gene	Btbd35f18	BTB domain containing 35, family member 18	
+X	77864758	77870033	38.32	+	MGI:3709306	protein coding gene	Gm14744	predicted gene 14744	
+X	154109633	154120685	72.38	-	MGI:3709336	protein coding gene	Gm15140	predicted gene 15140	
+X	154001590	154012640	72.38	-	MGI:3709338	protein coding gene	Samt1	spermatogenesis associated multipass transmembrane protein 1	
+X	68821093	68825318	34.87	+	MGI:3709613	protein coding gene	Gm14698	predicted gene 14698	
+X	11324659	11324976	6.06	+	MGI:3710416	protein coding gene	H2al1i	H2A histone family member L1I	
+X	11308824	11309141	6.04	+	MGI:3710419	protein coding gene	H2al1d	H2A histone family member L1D	
+X	27472031	27494882	18.4	-	MGI:3710515	protein coding gene	Gm10230	predicted gene 10230	
+X	35067384	35090316	20.11	+	MGI:3710516	protein coding gene	Gm10486	predicted gene 10486	
+X	28584992	28607842	18.72	-	MGI:3710518	protein coding gene	Gm10147	predicted gene 10147	
+X	29976314	29999162	19.09	+	MGI:3710522	protein coding gene	Gm10488	predicted gene 10488	
+X	149594601	149636621	68.46	+	MGI:3710525	protein coding gene	Gm10439	predicted gene 10439	
+X	154043986	154055039	72.38	-	MGI:3710528	protein coding gene	Gm10057	predicted gene 10057	
+X	11318256	11318764	6.05	+	MGI:3710577	protein coding gene	H2al1g	H2A histone family member L1G	
+X	9350627	9351136	4.26	+	MGI:3710586	protein coding gene	H2al1k	H2A histone family member L1K	
+X	30820542	30843469	19.32	-	MGI:3710592	protein coding gene	Gm10487	predicted gene 10487	
+X	73117047	73129262	37.29	+	MGI:3710618	protein coding gene	Gm14685	predicted gene 14685	
+X	28931821	28954702	18.82	-	MGI:3710636	protein coding gene	Gm10096	predicted gene 10096	
+X	149784473	149826694	68.46	+	MGI:3710639	protein coding gene	Gm15097	predicted gene 15097	
+X	148663598	148703849	68.46	+	MGI:3711248	protein coding gene	Gm15127	predicted gene 15127	
+X	27924021	27946885	18.53	-	MGI:3711266	protein coding gene	Gm10058	predicted gene 10058	
+X	11305655	11305972	6.04	+	MGI:3711280	protein coding gene	H2al1c	H2A histone family member L1C	
+X	11321492	11321809	6.06	+	MGI:3711282	protein coding gene	H2al1h	H2A histone family member L1H	
+X	53577073	53580003	29.78	-	MGI:3711766	protein coding gene	Gm14597	predicted gene 14597	
+X	91632194	91635671	40.45	+	MGI:3712084	protein coding gene	Gm14781	predicted gene 14781	
+X	149447617	149487784	68.46	+	MGI:3712210	protein coding gene	Gm15085	predicted gene 15085	
+X	147992993	148033174	68.46	+	MGI:3712217	protein coding gene	Gm15080	predicted gene 15080	
+X	147789653	147833116	68.46	+	MGI:3712219	protein coding gene	Gm15128	predicted gene 15128	
+X	149941655	149984982	68.46	+	MGI:3712222	protein coding gene	Gm15091	predicted gene 15091	
+X	149272377	149305003	68.46	+	MGI:3712496	protein coding gene	Gm15093	predicted gene 15093	
+X	8985940	8986672	4.08	-	MGI:3713070	protein coding gene	Fthl17d	ferritin, heavy polypeptide-like 17, member D	
+X	67695698	67706258	34.81	+	MGI:3713084	protein coding gene	Gm14692	predicted gene 14692	
+X	148180724	148224710	68.46	+	MGI:3713328	protein coding gene	Gm15107	predicted gene 15107	
+X	148488949	148521446	68.46	+	MGI:3713330	protein coding gene	Gm15114	predicted gene 15114	
+X	37668997	37673277	21.98	-	MGI:3713490	protein coding gene	Rhox2h	reproductive homeobox 2H	
+X	11299257	11299757	6.03	+	MGI:3714114	protein coding gene	H2al1a	H2A histone family member L1A	

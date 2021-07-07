@@ -17,6 +17,13 @@
 #'
 #' @param cores number of cores to use for parallelization. Default is 1.
 #'
+#' @param genes which genes to fit the model on, should be  a  subset of  the
+#' rownames of matrix1, default is all of the genes
+#'
+#' @param add.var amount of additional variance  to add, default is 0. If
+#' non-zero, addds additional columns to result data  frame suffixed with  .adj
+#' to indicate calculated with the adjusted standard error
+#'
 #' @param verbose whether or not to print a lot of status messages. Default is
 #' FALSE.
 #'
@@ -29,9 +36,15 @@
 #' @import doSNOW
 #'
 #' @export
+#'
+#'
+
+expit <- function(x) {
+  return(exp(x)/(1+exp(x)))
+}
 
 scase <- function(matrix1, matrix2, covariates=NULL,
-                  min.cells = 10, cores = 1, genes = NULL,
+                  min.cells = 10, cores = 1, genes = NULL, add.var=0,
                   verbose = F) {
 
   if(!(is(matrix1, 'matrix') | is(matrix1, 'sparseMatrix')) &
@@ -160,5 +173,19 @@ scase <- function(matrix1, matrix2, covariates=NULL,
       }
     }
   stopCluster(cl)
+  result$p <- expit(result$logit.p)
+  result$ci.low <- expit(result$logit.p - 2*result$logit.p.sd)
+  result$ci.high <- expit(result$logit.p + 2*result$logit.p.sd)
+  result$z <- result$logit.p/result$logit.p.sd
+  result$pval <- pnorm(abs(result$z), lower.tail=F)
+  result$qval <- p.adjust(result$pval, method='BH')
+  if (add.var > 0) {
+    result$logit.p.sd.adj <- sqrt(result$logit.p.sd^2 + add.var)
+    result$ci.low.adj <- expit(result$logit.p-2*result$logit.p.sd.adj)
+    result$ci.high.adj <- expit(result$logit.p+2*result$logit.p.sd.adj)
+    result$z.adj <- result$logit.p/result$logit.p.sd.adj
+    result$pval.adj <- pnorm(abs(result$z.adj), lower.tail=F)
+    result$qval.adj <- p.adjust(result$pval.adj, method='BH')
+  }
   return(result)
 }
