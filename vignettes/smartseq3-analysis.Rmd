@@ -3,6 +3,9 @@ title: "Smart-seq3 analysis"
 output: html_document
 ---
 
+This vignette replicates our results for the Smart-seq2 with UMIs and
+Smart-seq3 data. 
+
 ```{r}
 library(dplyr)
 library(tidyr)
@@ -18,9 +21,6 @@ expit <- function(x) {
   return(exp(x)/(1+exp(x)))
 }
 ```
-
-This vignette replicates our resultsfor the Smart-seq2 with UMIs and
-Smart-seq3 data.
 
 ## Smart-seq2 with UMIs data
 
@@ -56,6 +56,8 @@ We can view the results data frame and arrange it by  e.g. descending q-value:
 ```{r}
 head(ss2 %>% arrange(qval), n=10)
 ```
+
+##  Smart-seq3 data
 
 Next, download the Smart-seq3 data. The rows (as of the last editing date of
 this vignette) are in terms of ENSEMBL gene  IDs, not MGI symbols, so first I
@@ -97,6 +99,8 @@ and produces plots for the desired genes.
 ```{r}
 plotScase(c57.ss3, cast.ss3, ss3, genes=c('Ercc1', 'Phgdh', 'Rnf5', 'Ywhae'))
 ```
+
+## Comparing estimates using SS2 with UMIs and SS3 
 
 The following calculates the average coverage per cell per gene per data set:
 
@@ -176,6 +180,8 @@ both %>%
   theme(legend.position='none')
 ggsave(filename='figure2e.png', width=3,height=2.5)
 ```
+
+## Calculating variance within and across data  sets
 
 Next, we assess whether or not the variance is underestimated by looking at the
 variance  of  the distribution of the difference in MLE and seeing if it's 
