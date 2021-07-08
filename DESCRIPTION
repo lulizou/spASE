@@ -4,9 +4,10 @@ Title: Detecting Allele-Specific Expression in Single-Cell and Spatial Transcrip
 Version: 0.1.0
 Author: Luli S. Zou
 Maintainer: Luli S. Zou <zou@g.harvard.edu>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Fits a beta-binomial model to single-cell and spatial data to
+    detect allele-specific expression in the binary setting (e.g. maternal
+    vs. paternal, reference, vs. alternate allele).
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
