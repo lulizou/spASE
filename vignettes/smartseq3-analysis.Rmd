@@ -24,8 +24,9 @@ expit <- function(x) {
 
 ## Smart-seq2 with UMIs data
 
-First download the data - Smart-seq2 w/ UMI data is already formatted correctly 
-as is.
+First download the data - Smart-seq2 w/ UMI data. The method requires input
+in the form of two matrices where  the  row names are the unique genes and the
+columns are the unique cells.
 
 ```{r}
 # Load Smart-seq2 with UMIs data
@@ -45,7 +46,8 @@ cast.ss2 <- cast.ss2[-xchr.idx,]
 ```
 
 Now we can fit the beta-binomial model for genes expressed in at least half
-of all cells (change number of cores used if necessary):
+of all cells (change number of cores used if necessary) using the  `scase`
+function.
 
 ```{r}
 ss2 <- scase(matrix1=c57.ss2, matrix2=cast.ss2, min.cells = ncol(c57.ss2)/2, cores=2)
@@ -94,7 +96,8 @@ ss3 <- scase(c57.ss3, cast.ss3, min.cells=ncol(c57.ss3)/2, cores=2)
 ```
 
 There is a built-in plotting function that takes in the results data frame
-and produces plots for the desired genes.
+and produces plots for the desired genes. (They can  be saved instead of  plotted
+by setting the `save` parameter  to be the prefix of the filename for the output).
 
 ```{r}
 plotScase(c57.ss3, cast.ss3, ss3, genes=c('Ercc1', 'Phgdh', 'Rnf5', 'Ywhae'))
