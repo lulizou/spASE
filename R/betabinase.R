@@ -11,6 +11,10 @@
 #'
 #' @param total vector of total counts
 #'
+#' @param mod.mat optional model matrix that contains the design matrix of
+#' interest. Used for adding the thin plate regression spline basis functions
+#' in the `spase` function and for adding cell type as a covariate.
+#'
 #'
 #' @return A list the result, warnings, and errors
 #'
