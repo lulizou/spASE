@@ -1,9 +1,9 @@
 #' Main function for detecting spatial allele-specific expression (ASE) patterns
 #'
-#' Fits a binomial GAM for each gene.
+#' Fits a beta-binomial thin plate regression spline for each gene.
 #'
-#' @description This function fits a spatial binomial model, estimates a
-#' smoothed probability surface, and stores information for plotting results.
+#' @description This function fits a spatial beta-binomial model, estimates a
+#' 2D smoothed probability function, and stores information for plotting results.
 #' Uses a likelihood ratio test to test for a significant spatial fit over
 #' optional baseline covariates such as cell type.
 #'
@@ -174,7 +174,10 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
                                contrasts.arg=list(cov.name=
                                                     diag(nlevels(baseline.covari[,1]))))
           }
-          mm <- mm[,-which(colSums(mm)==0)] # in case of empty levels
+          empties <- which(colSums(mm)==0)
+          if (length(empties)>0) {
+            mm <- mm[,-empties] # in case of empty levels
+          }
           baseline.model <- betabinase(y, total, mm)
           if (is.null(baseline.model$result)) {
             el[[genes[i]]] <- NA
@@ -201,8 +204,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
                                       chisq.p = NA, flag = 'conv'), fits=el))
       }
       lrt.stat <- 2*(smooth.model$result@logL-baseline.model$result@logL)
-      df.diff <- df.residual(baseline.model$result)-
-        df.residual(smooth.model$result)
+      df.diff <- baseline.model$result@df.residual-smooth.model$result@df.residual
       pval <- 1 - pchisq(abs(lrt.stat), df.diff)
       el[[genes[i]]] <- smooth.model$result
       return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
