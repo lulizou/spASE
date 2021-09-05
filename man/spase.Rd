@@ -12,6 +12,7 @@ spase(
   genes = NULL,
   min.pixels = 100,
   min.pixels.per.factor = 15,
+  min.umi = 500,
   cores = 1,
   verbose = F
 )
@@ -40,6 +41,9 @@ a gene should be present on if there are factor covariates e.g. cell type.
 For example, the default of 15 requires that at least 15 pixels are that cell
 type, otherwise that cell type will not be included in the model for that gene.}
 
+\item{min.umi}{integer specifying the minimum number of UMI a gene should
+have to fit. Default is 500.}
+
 \item{cores}{number of cores to use for parallelization. Default is 1.}
 
 \item{verbose}{whether or not to print a lot of status messages. Default is
@@ -53,11 +57,11 @@ baseline covariates provided }
 \item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}
 }
 \description{
-This function fits a spatial binomial model, estimates a
-smoothed probability surface, and stores information for plotting results.
+This function fits a spatial beta-binomial model, estimates a
+2D smoothed probability function, and stores information for plotting results.
 Uses a likelihood ratio test to test for a significant spatial fit over
 optional baseline covariates such as cell type.
 }
 \details{
-Fits a binomial GAM for each gene.
+Fits a beta-binomial thin plate regression spline for each gene.
 }

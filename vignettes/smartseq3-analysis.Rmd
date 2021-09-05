@@ -39,7 +39,7 @@ assumptions about ASE as autosomal genes.
 
 ```{r}
 # load list of X-chromosome genes
-xchr <- read.delim('../data/MGImarkerQuery_20190611_114216.txt')$Symbol
+xchr <- read.delim('../inst/extdata/MGImarkerQuery_20190611_114216.txt')$Symbol
 xchr.idx <- which(rownames(c57.ss2) %in% xchr)
 c57.ss2 <- c57.ss2[-xchr.idx,]
 cast.ss2 <- cast.ss2[-xchr.idx,]
@@ -204,10 +204,10 @@ ss2.half2 <- scase(c57.ss2[,-half1], cast.ss2[,-half1], min.cells=length(half1)/
 both.half.2 <- left_join(ss2.half1, ss2.half2, by='gene', suffix=c('.1','.2')) %>%
   filter(flag.1=='', flag.2=='', !is.na(logit.p.2)) %>%
   mutate(p.diff = (logit.p.1-logit.p.2)/sqrt(logit.p.sd.1^2+logit.p.sd.2^2))
-#png(filename='suppfig2a.png', width=5, height=5, units='in', res=100)
+png(filename='suppfig2a.png', width=5, height=5, units='in', res=100)
 qqnorm(both.half.2$p.diff, main=TeX(r'($(\hat{p}_1-\hat{p}_2)/\sqrt{Var(\hat{p}_1) + Var(\hat{p}_2)}$ within Smart-seq2)'))
 abline(0,1,col='red')
-#dev.off()
+dev.off()
 ```
 
 Within SS3:
@@ -224,10 +224,10 @@ ss3.half2 <- scase(c57.ss3[,-half1], cast.ss3[,-half1], min.cells=length(half1)/
 both.half.3 <- left_join(ss3.half1, ss3.half2, by='gene', suffix=c('.1','.2')) %>%
   filter(flag.1=='', flag.2=='', !is.na(logit.p.2)) %>%
   mutate(p.diff = (logit.p.1-logit.p.2)/sqrt(logit.p.sd.1^2+logit.p.sd.2^2))
-#png(filename='suppfig2b.png', width=5, height=5, units='in', res=100)
+png(filename='suppfig2b.png', width=5, height=5, units='in', res=100)
 qqnorm(both.half.3$p.diff, main=TeX(r'($(\hat{p}_1-\hat{p}_2)/\sqrt{Var(\hat{p}_1) + Var(\hat{p}_2)}$ within Smart-seq3)'))
 abline(0,1,col='red')
-#dev.off()
+dev.off()
 ```
 
 Across SS2 with UMIs and SS3:
@@ -235,10 +235,10 @@ Across SS2 with UMIs and SS3:
 ```{r}
 # across dataset variance
 both <- both %>% mutate(p.diff = (logit.p.2-logit.p.3)/sqrt(logit.p.sd.2^2+logit.p.sd.3^2))
-#png(filename='suppfig2c.png', width=5, height=5, units='in', res=100)
+png(filename='suppfig2c.png', width=5, height=5, units='in', res=100)
 qqnorm(both$p.diff, main=TeX(r'($(\hat{p}_1-\hat{p}_2)/\sqrt{Var(\hat{p}_1) + Var(\hat{p}_2)}$ across datasets)'))
 abline(0,1,col='red')
-#dev.off()
+dev.off()
 ```
 
 Now estimate the batch effect variance and fit  the model again whileadjusting
@@ -260,10 +260,10 @@ Visualize the improvement in the QQ plot:
 ```{r}
 # across dataset variance with adjusted s.e's
 both <- both %>% mutate(p.diff.adj = (logit.p.2-logit.p.3)/sqrt(logit.p.sd.adj.2^2+logit.p.sd.adj.3^2))
-#png(filename='suppfig2d.png', width=5, height=5, units='in', res=100)
+png(filename='suppfig2d.png', width=5, height=5, units='in', res=100)
 qqnorm(both$p.diff.adj, main=TeX(r'($(\hat{p}_1-\hat{p}_2)/\sqrt{Var(\hat{p}_1) + Var(\hat{p}_2)}$ across, corrected)'))
 abline(0,1,col='red')
-#dev.off()
+dev.off()
 ```
 
 Create the bar chart of categories again using the adjusted standard errors.

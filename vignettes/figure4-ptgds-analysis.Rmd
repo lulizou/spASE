@@ -57,9 +57,9 @@ peaksOverlappingSNPs <- peaksr[sort(peaksOverlappingSNPs)]
 # find motifs in peaks of interest
 # downloaded all of the JASPAR motifs into 3 separate csv files (there may be
 # an easier way to get all of them)
-jasp <- read.csv('../data/jaspar-mouse-1.csv')
-jasp <- bind_rows(jasp, read.csv('../data/jaspar-mouse-2.csv'))
-jasp <- bind_rows(jasp, read.csv('../data/jaspar-mouse-3.csv'))
+jasp <- read.csv('../inst/extdata/jaspar-mouse-1.csv')
+jasp <- bind_rows(jasp, read.csv('../inst/extdata/jaspar-mouse-2.csv'))
+jasp <- bind_rows(jasp, read.csv('../inst/extdata/jaspar-mouse-3.csv'))
 pfm <- getMatrixByID(JASPAR2020, ID = jasp$ID)
 motif_pos <- matchMotifs(pfm, peaksOverlappingSNPs,
                          genome='mm10', out='positions')

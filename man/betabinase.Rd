@@ -4,12 +4,16 @@
 \alias{betabinase}
 \title{Helper function to fit betabin model while handling common warnings/errors}
 \usage{
-betabinase(y, total, covariates = NULL)
+betabinase(y, total, mod.mat = NULL)
 }
 \arguments{
 \item{y}{vector of counts to be modeled}
 
 \item{total}{vector of total counts}
+
+\item{mod.mat}{optional model matrix that contains the design matrix of
+interest. Used for adding the thin plate regression spline basis functions
+in the `spase` function and for adding cell type as a covariate.}
 }
 \value{
 A list the result, warnings, and errors

@@ -4,7 +4,16 @@
 \alias{scase}
 \title{Main function for estimating ASE in single-cell data}
 \usage{
-scase(matrix1, matrix2, min.cells = 10, cores = 1, verbose = F)
+scase(
+  matrix1,
+  matrix2,
+  covariates = NULL,
+  min.cells = 10,
+  cores = 1,
+  genes = NULL,
+  add.var = 0,
+  verbose = F
+)
 }
 \arguments{
 \item{matrix1}{a matrix of counts where  the rows are genes and the columns
@@ -18,6 +27,13 @@ are cells for allele 2.}
 should be present on to fit. Default is 10 cells.}
 
 \item{cores}{number of cores to use for parallelization. Default is 1.}
+
+\item{genes}{which genes to fit the model on, should be  a  subset of  the
+rownames of matrix1, default is all of the genes}
+
+\item{add.var}{amount of additional variance  to add, default is 0. If
+non-zero, addds additional columns to result data  frame suffixed with  .adj
+to indicate calculated with the adjusted standard error}
 
 \item{verbose}{whether or not to print a lot of status messages. Default is
 FALSE.}
