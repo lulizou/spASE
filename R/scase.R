@@ -31,17 +31,15 @@
 #' standard errors on the logit scale.
 #'
 #' @importFrom aod betabin
+#' @importFrom dplyr left_join
 #' @import foreach
 #' @import parallel
 #' @import doSNOW
 #'
+#'
 #' @export
 #'
 #'
-
-expit <- function(x) {
-  return(exp(x)/(1+exp(x)))
-}
 
 scase <- function(matrix1, matrix2, covariates=NULL,
                   min.cells = 10, cores = 1, genes = NULL, add.var=0,
