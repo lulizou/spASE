@@ -1,0 +1,222 @@
+---
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+library(spASE)
+library(mgcv)
+library(viridis)
+library(Matrix)
+library(latex2exp)
+library(RColorBrewer)
+library(xtable)
+set.seed(1337)
+
+expit <- function(x) {
+  return(exp(x)/(1+exp(x)))
+}
+```
+
+```{r}
+# xchr annotations 
+xchr <- read.delim('../inst/extdata/MGImarkerQuery_20190611_114216.txt')$Symbol
+```
+
+```{r}
+# Slide-seq data
+# puck 4 needs to be rotated and shifted
+load('~/Documents/School/Chenlab.nosync/slideseqASE/pucks.3-4.spatial.RData')
+puck3.spatial <- puck3.spatial %>%
+  mutate(total = CAST+X129) %>%
+  mutate(X = xcoord/1000, Y = ycoord/1000)
+puck4.spatial <- puck4.spatial %>%
+  mutate(total = CAST+X129) %>%
+  mutate(X = xcoord/1000, Y = ycoord/1000)
+
+
+angle <- 261*pi/180
+x.shift <- 0.37
+y.shift <- -0.16
+x.center <- 3.25
+y.center <- 3.025
+# rotate and shift puck 4
+new.X <- (puck4.spatial$X-x.center)*cos(angle) - (puck4.spatial$Y-y.center)*sin(angle)+x.center + x.shift
+new.Y <- (puck4.spatial$X-x.center)*sin(angle) + (puck4.spatial$Y-y.center)*cos(angle)+y.center + y.shift
+puck4.spatial$X <- new.X
+puck4.spatial$Y <- new.Y
+
+# load in RCTD results
+rctd.results.puck3 <- readRDS('~/Documents/School/Chenlab.nosync/slideseqASE/rctd_puck_3.rds')
+coords <- puck3.spatial %>%
+  dplyr::select(X, Y, bead, total) %>%
+  group_by(X, Y, bead) %>%
+  summarise(nUMI = sum(total))
+puck3.rctd <- rctd.results.puck3$results_df %>%
+  mutate(bead = rownames(rctd.results.puck3$results_df)) %>%
+  left_join(coords) %>%
+  filter(spot_class == 'singlet')
+rctd.results.puck4 <- readRDS('~/Documents/School/Chenlab.nosync/slideseqASE/rctd_puck_4.rds')
+coords <- puck4.spatial %>%
+  dplyr::select(X, Y, bead, total) %>%
+  group_by(X, Y, bead) %>%
+  summarise(nUMI = sum(total))
+puck4.rctd <- rctd.results.puck4$results_df %>%
+  mutate(bead = rownames(rctd.results.puck4$results_df)) %>%
+  left_join(coords) %>%
+  filter(spot_class == 'singlet')
+
+# combine RCTD annotations and both pucks
+puck3.spatial <- left_join(puck3.spatial, puck3.rctd %>% dplyr::select(bead, first_type, spot_class), by = 'bead')
+puck4.spatial <- left_join(puck4.spatial, puck4.rctd %>% dplyr::select(bead, first_type, spot_class), by = 'bead')
+
+joint <- bind_rows(puck3.spatial, puck4.spatial)
+joint <- joint %>%
+  filter(!grepl('mt-',gene)) %>% 
+  filter(bead!='TTTTTTTTTTTTTT') %>%
+  filter(bead!='GGGGGGGGGGGGGG') %>%
+  mutate(gene = as.factor(as.character(gene)), bead = as.factor(as.character(bead)))
+
+# get locations at a grid of points
+xcoords <- seq(min(joint$X), max(joint$X), by = 0.1)
+ycoords <- seq(min(joint$Y), max(joint$Y), by = 0.1)
+predictCoords <- expand.grid(xcoords, ycoords)
+colnames(predictCoords) <- c('X', 'Y')
+predictCoords <- data.frame(predictCoords) %>%
+  filter(((X-3.2)^2+(Y-3.1)^2<=2.3^2) | ((X-x.center-x.shift)^2+(Y-y.center-y.shift)^2<=2.3^2))
+
+singlets <- joint %>% 
+  filter(spot_class == 'singlet') %>%
+  mutate(gene = as.factor(as.character(gene)), bead = as.factor(as.character(bead)))
+```
+
+```{r}
+# Simulation 1: spatial gradient across all pixels
+unique_coords <- joint %>%
+  dplyr::select(X,Y,first_type,spot_class) %>%
+  distinct()
+df <- 15
+sm <- smoothCon(s(X,Y,k=df,fx=T,bs='tp'),data=unique_coords)[[1]]
+```
+
+```{r}
+# Simulation 2: Cell type-specific ASE
+singlet_coords <- singlets %>%
+  dplyr::select(bead,first_type) %>%
+  distinct() %>%
+  mutate(first_type = gsub('Denate','Dentate',first_type)) %>%
+  mutate(first_type = gsub('Microglia Macrophages','Microglia/Macrophages',first_type)) %>%
+  mutate(first_type = gsub('Entorihinal','Entorhinal',first_type))
+# list of common cell types included in paper
+cell.types <- c('Astrocyte','CA1','CA3','Dentate','Endothelial Tip',
+                'Interneuron','Microglia/Macrophages','Oligodendrocyte')
+ncells <- c(25,50,100,150,250,500)
+numis <- c(1,2,5,10,25)
+# for each cell type, assume all other cell types have the same maternal
+# allele probability p1 which has a beta distribution with a mean of 0.5, 
+# and the cell type of interest has maternal allele probability p2 which has
+# a beta distribution skewed near either 0 or 1
+niter <- 100
+qval.threshold <- 0.01
+total.entries <- length(numis)*length(ncells)*length(cell.types)
+bb.results <- data.frame(numis = numeric(total.entries),
+                         ncells = numeric(total.entries),
+                         cell.type = character(total.entries),
+                         true.pos = numeric(total.entries),
+                         true.neg = numeric(total.entries),
+                         false.pos = numeric(total.entries),
+                         false.neg = numeric(total.entries),
+                         total.pos = numeric(total.entries),
+                         total.neg = numeric(total.entries))
+qb.results <- data.frame(numis = numeric(total.entries),
+                         ncells = numeric(total.entries),
+                         cell.type = character(total.entries),
+                         true.pos = numeric(total.entries),
+                         true.neg = numeric(total.entries),
+                         false.pos = numeric(total.entries),
+                         false.neg = numeric(total.entries),
+                         total.pos = numeric(total.entries),
+                         total.neg = numeric(total.entries))
+idx.bb <- 1
+idx.qb <- 1
+for (u in numis) {
+  for (n in ncells) {
+    singlet_coords_df <- singlet_coords %>% filter(first_type %in% cell.types) %>% 
+      group_by(first_type) %>% sample_n(n) %>% mutate(first_type = factor(first_type))
+    for (c in cell.types) {
+      idx.cell.type <- which(singlet_coords_df$first_type==c)
+      idx.rest <- which(singlet_coords_df$first_type!=c)
+      mmaternal <- mpaternal <- matrix(nrow=niter, ncol=nrow(singlet_coords_df))
+      colnames(mmaternal) <- colnames(mpaternal) <- singlet_coords_df$bead
+      rownames(mmaternal) <- rownames(mpaternal) <- paste0('fakegene',seq(1:niter))
+      for (i in 1:niter) {
+        # draw p's from beta distributions
+        p1 <- rbeta(length(idx.rest), 2, 2)
+        mat.or.pat <- rbinom(1, 1, 0.5)
+        if (mat.or.pat == 0) { # randomly choose maternal or paternal skew
+          p2 <- rbeta(length(idx.cell.type),2,1)
+        } else {
+          p2 <- rbeta(length(idx.cell.type),1,2)
+        }
+        # draw binomial counts for each pixel
+        y <- rep(NA, nrow(singlet_coords_df))
+        total <- rep(u, nrow(singlet_coords_df))
+        y[idx.rest] <- rbinom(length(idx.rest), size=u, prob=p1)
+        y[idx.cell.type] <- rbinom(length(idx.cell.type), size=u, prob=p2)
+        mmaternal[i,] <- y
+        mpaternal[i,] <- total-y
+      }
+      betabin.result <- scase(mmaternal, mpaternal, covariates = singlet_coords_df,
+                              method = 'betabinomial')
+      quasibin.result <- scase(mmaternal, mpaternal, covariates = singlet_coords_df,
+                               method = 'quasibinomial')
+      bb.results$numis[idx.bb] <- u
+      bb.results$ncells[idx.bb] <- n
+      bb.results$cell.type[idx.bb] <- c
+      bb.results$true.pos[idx.bb] <- sum(betabin.result$qval[which(betabin.result$lvl==c)]<=qval.threshold)
+      bb.results$false.pos[idx.bb] <- sum(betabin.result$qval[which(betabin.result$lvl!=c)]<=qval.threshold)
+      bb.results$true.neg[idx.bb] <- sum(betabin.result$qval[which(betabin.result$lvl!=c)]>qval.threshold)
+      bb.results$false.neg[idx.bb] <- sum(betabin.result$qval[which(betabin.result$lvl==c)]>qval.threshold)
+      bb.results$total.pos[idx.bb] <- length(betabin.result$qval[which(betabin.result$lvl==c)])
+      bb.results$total.neg[idx.bb] <- length(betabin.result$qval[which(betabin.result$lvl!=c)])
+      qb.results$numis[idx.qb] <- u
+      qb.results$ncells[idx.qb] <- n
+      qb.results$cell.type[idx.qb] <- c
+      qb.results$true.pos[idx.qb] <- sum(quasibin.result$qval[which(quasibin.result$lvl==c)]<=qval.threshold)
+      qb.results$false.pos[idx.qb] <- sum(quasibin.result$qval[which(quasibin.result$lvl!=c)]<=qval.threshold)
+      qb.results$true.neg[idx.qb] <- sum(quasibin.result$qval[which(quasibin.result$lvl!=c)]>qval.threshold)
+      qb.results$false.neg[idx.qb] <- sum(quasibin.result$qval[which(quasibin.result$lvl==c)]>qval.threshold)
+      qb.results$total.pos[idx.qb] <- length(quasibin.result$qval[which(quasibin.result$lvl==c)])
+      qb.results$total.neg[idx.qb] <- length(quasibin.result$qval[which(quasibin.result$lvl!=c)])
+      idx.bb <- idx.bb + 1
+      idx.qb <- idx.qb + 1
+    }
+  }
+}
+save(bb.results, qb.results, file='simulations-cell-type-ASE-high-var.RData')
+```
+
+```{r}
+bb.results.ct <- bb.results %>%
+  group_by(numis, ncells) %>%
+  summarise_if(is.numeric, sum, na.rm=T)
+qb.results.ct <- qb.results %>%
+  group_by(numis, ncells) %>%
+  summarise_if(is.numeric, sum, na.rm=T)
+bind_rows(bb.results.ct %>% mutate(model='betabinomial'),
+          qb.results.ct %>% mutate(model='quasibinomial')) %>%
+  ggplot(aes(x = ncells, y = true.pos/total.pos, color=model)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(numis ~ .)
+```
+
+```{r}
+# Simulation 3: Within cell type
+```
+
+
+

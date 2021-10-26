@@ -7,6 +7,7 @@ This vignette replicates our results for the Smart-seq2 with UMIs and
 Smart-seq3 data. 
 
 ```{r}
+library(apeglm)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -15,6 +16,7 @@ library(biomaRt)
 library(RCurl)
 library(latex2exp)
 library(RColorBrewer)
+library(gridExtra)
 set.seed(1337)
 
 expit <- function(x) {
@@ -30,8 +32,8 @@ columns are the unique cells.
 
 ```{r}
 # Load Smart-seq2 with UMIs data
-c57.ss2 <- as.matrix(read.csv(text=getURL('https://raw.githubusercontent.com/sandberg-lab/txburst/master/data/SS3_c57_UMIs_concat.csv'), row.names = 1))
-cast.ss2 <- as.matrix(read.csv(text=getURL('https://raw.githubusercontent.com/sandberg-lab/txburst/master/data/SS3_cast_UMIs_concat.csv'), row.names = 1))
+c57.ss2 <- as.matrix(read.csv(text=getURL('https://raw.githubusercontent.com/sandberg-lab/aRME_and_bursting/master/data/nature_paper/SS3_c57_UMIs_concat.csv'), row.names = 1))
+cast.ss2 <- as.matrix(read.csv(text=getURL('https://raw.githubusercontent.com/sandberg-lab/aRME_and_bursting/master/data/nature_paper/SS3_cast_UMIs_concat.csv'), row.names = 1))
 ```
 
 Remove X-chromosome genes, since they are not expected to follow the same
@@ -43,6 +45,10 @@ xchr <- read.delim('../inst/extdata/MGImarkerQuery_20190611_114216.txt')$Symbol
 xchr.idx <- which(rownames(c57.ss2) %in% xchr)
 c57.ss2 <- c57.ss2[-xchr.idx,]
 cast.ss2 <- cast.ss2[-xchr.idx,]
+# set all NAs to 0, since 0/0 does not impact binomial model and NAs
+# happen in the same place for both alleles
+c57.ss2[which(is.na(c57.ss2))] <- 0
+cast.ss2[which(is.na(cast.ss2))] <- 0
 ```
 
 Now we can fit the beta-binomial model for genes expressed in at least half
@@ -92,6 +98,9 @@ beta-binomial model.
 xchr.idx <- which(rownames(c57.ss3) %in% xchr)
 c57.ss3 <- c57.ss3[-xchr.idx,]
 cast.ss3 <- cast.ss3[-xchr.idx,]
+# TRY SETTING ALL NAs to 0
+c57.ss3[which(is.na(c57.ss3))] <- 0
+cast.ss3[which(is.na(cast.ss3))] <- 0
 ss3 <- scase(c57.ss3, cast.ss3, min.cells=ncol(c57.ss3)/2, cores=2)
 ```
 
@@ -103,18 +112,15 @@ by setting the `save` parameter  to be the prefix of the filename for the output
 plotScase(c57.ss3, cast.ss3, ss3, genes=c('Ercc1', 'Phgdh', 'Rnf5', 'Ywhae'))
 ```
 
+
 ## Comparing estimates using SS2 with UMIs and SS3 
 
 The following calculates the average coverage per cell per gene per data set:
 
 ```{r}
 # average coverage per cell per data set
-c57.ss3[which(is.na(cast.ss3))] <- NA # NAs are placed where that gene didn't have any allele-specific UMI counts in that cell. ensure we are only using gene/cell combos which had both alleles
-cast.ss3[which(is.na(c57.ss3))] <- NA
-c57.ss2[which(is.na(cast.ss2))] <- NA 
-cast.ss2[which(is.na(c57.ss2))] <- NA
-print(paste('Average coverage/cell for SS3:', mean(colMeans(c57.ss3+cast.ss3,na.rm=T))))
-print(paste('Average coverage/cell for SS2 w/ UMIs:', mean(colMeans(c57.ss2+cast.ss2,na.rm=T))))
+print(paste('Average coverage/cell for SS3:', mean(colMeans(c57.ss3+cast.ss3))))
+print(paste('Average coverage/cell for SS2 w/ UMIs:', mean(colMeans(c57.ss2+cast.ss2))))
 ```
 
 Plotting all the  point estimates from  the beta-binomial fit allows us to
@@ -135,11 +141,106 @@ both %>%
   ylab(TeX(r'($\hat{p}$, Smart-seq3)'))
 ggsave(filename='figure2e.png', width=3,height=2.5)
 ```
+
+
 Calculate  the $r^2$  between the point estimates:
 
 ```{r}
 cor(both$p.2, both$p.3, method='pearson')
 ```
+
+
+Compare this to using `apeglm`:
+
+```{r}
+ase.cts <- c57.ss2
+cts <- c57.ss2+cast.ss2
+X <- matrix(rep(1,ncol(cts)))
+# theta.hat.0 <- 100 # rough estimate of dispersion
+# param <- cbind(theta.hat.0, cts)
+# fit.mle <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinC")
+# theta.hat <- bbEstDisp(success=ase.cts, size=cts,x=X, beta=fit.mle$map,minDisp=1, maxDisp=500)
+# param <- cbind(theta.hat, cts)
+# fit.mle <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinC")
+# theta.hat <- bbEstDisp(success=ase.cts, size=cts,x=X, beta=fit.mle$map,minDisp=1, maxDisp=500)
+# param <- cbind(theta.hat, cts)
+# fit.mle.ss2 <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinCR")
+
+theta.hat.0 <- 100 # rough estimate of dispersion
+param <- cbind(theta.hat.0, cts)
+
+fit.mle <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, no.shrink=TRUE, log.link=FALSE, method="betabinC")
+theta.hat <- bbEstDisp(success=ase.cts, size=cts, x=X, beta=fit.mle$map, minDisp=1, maxDisp=500)
+param <- cbind(theta.hat, cts)
+fit.mle <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, no.shrink=TRUE, log.link=FALSE, method="betabinCR")
+theta.hat <- bbEstDisp(success=ase.cts, size=cts, x=X, beta=fit.mle$map, minDisp=1, maxDisp=500)
+coef <- 1
+mle <- cbind(fit.mle$map, fit.mle$sd)
+param <- cbind(theta.hat, cts)
+fit.map.ss2 <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, coef=1, mle=mle, log.link=FALSE, method = "betabinCR")
+```
+
+```{r}
+ase.cts <- c57.ss3
+cts <- c57.ss3+cast.ss3
+X <- matrix(rep(1,ncol(cts)))
+# theta.hat.0 <- 100 # rough estimate of dispersion
+# param <- cbind(theta.hat.0, cts)
+# fit.mle <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinC")
+# theta.hat <- bbEstDisp(success=ase.cts, size=cts,x=X, beta=fit.mle$map,minDisp=1, maxDisp=500)
+# param <- cbind(theta.hat, cts)
+# fit.mle <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinC")
+# theta.hat <- bbEstDisp(success=ase.cts, size=cts,x=X, beta=fit.mle$map,minDisp=1, maxDisp=500)
+# param <- cbind(theta.hat, cts)
+# fit.mle.ss3 <- apeglm(Y=ase.cts,x=X,log.lik=NULL,param=param,no.shrink=TRUE,log.link=FALSE,method="betabinCR")
+
+theta.hat.0 <- 100 # rough estimate of dispersion
+param <- cbind(theta.hat.0, cts)
+
+fit.mle <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, no.shrink=TRUE, log.link=FALSE, method="betabinC")
+theta.hat <- bbEstDisp(success=ase.cts, size=cts, x=X, beta=fit.mle$map, minDisp=1, maxDisp=500)
+param <- cbind(theta.hat, cts)
+fit.mle <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, no.shrink=TRUE, log.link=FALSE, method="betabinCR")
+theta.hat <- bbEstDisp(success=ase.cts, size=cts, x=X, beta=fit.mle$map, minDisp=1, maxDisp=500)
+coef <- 1
+mle <- cbind(fit.mle$map, fit.mle$sd)
+param <- cbind(theta.hat, cts)
+fit.map.ss3 <- apeglm(Y=ase.cts, x=X, log.lik=NULL, param=param, coef=1, mle=mle, log.link=FALSE, method = "betabinCR")
+```
+
+```{r}
+apeglm_dd <- data.frame(gene = rownames(fit.map.ss3$map), map.ss3 = fit.map.ss3$map) %>%
+  left_join(data.frame(gene = rownames(fit.map.ss2$map), map.ss2 = fit.map.ss2$map), by='gene') %>%
+  filter(!is.na(map.ss2), !is.na(map.ss3))
+
+p1 <- apeglm_dd %>%
+  ggplot(aes(x = expit(map.ss2), y = expit(map.ss3))) +
+  geom_point(alpha=0.1) +
+  geom_abline(slope=1, intercept=0, color='red', lty='dashed') +
+  theme_bw() +
+  xlim(c(0,1)) +
+  ylim(c(0,1)) +
+  xlab(TeX(r'($\hat{p}$, Smart-seq2 with UMIs)')) +
+  ylab(TeX(r'($\hat{p}$, Smart-seq3)')) +
+  ggtitle(paste0('apeglm, r2=',round(cor(expit(apeglm_dd$map.ss2), 
+                                         expit(apeglm_dd$map.ss3)),2)))
+
+
+p2 <- both %>%
+  filter(gene %in% apeglm_dd$gene) %>%
+  ggplot(aes(x = p.2, y = p.3)) +
+  geom_point(alpha=0.1) +
+  geom_abline(slope=1, intercept=0, color='red', lty='dashed') +
+  theme_bw() +
+  xlim(c(0,1)) +
+  ylim(c(0,1)) +
+  xlab(TeX(r'($\hat{p}$, Smart-seq2 with UMIs)')) +
+  ylab(TeX(r'($\hat{p}$, Smart-seq3)')) +
+  ggtitle(paste0('beta-binomial, r2=',round(cor(both$p.2,both$p.3),2)))
+ggsave('apeglm-vs-me.png', plot = arrangeGrob(p1, p2, nrow=1), height=4, width=8)
+grid.arrange(p1, p2, nrow=1)
+```
+
 
 We can categorize each gene by whether or not it was signiifcant ($q \leq 0.01$) 
 in either one, both, or no data set, and whether or not  the direction of the 

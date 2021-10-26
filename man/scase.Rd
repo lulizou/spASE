@@ -8,6 +8,7 @@ scase(
   matrix1,
   matrix2,
   covariates = NULL,
+  method = "betabinomial",
   min.cells = 10,
   cores = 1,
   genes = NULL,

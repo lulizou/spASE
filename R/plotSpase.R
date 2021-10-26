@@ -51,7 +51,7 @@
 #' file starting with the prefix defined in the save parameter.
 #'
 #' @import ggplot2
-#' @importFrom mgcv smoothCon s PredictMat
+#' @importFrom mgcv smoothCon s Predict.matrix
 #' @importFrom reshape2 melt
 #' @importFrom RColorBrewer brewer.pal
 #' @import dplyr
@@ -78,7 +78,31 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
   if (is.null(colnames(matrix1))) {
     warning('input matrix1 doesnt have colnames')
   }
-  colnames(covariates)[1:3] <- c('pixel','x1','x2')
+  num.cov <- ncol(covariates)
+  mydim <- 2
+  if (num.cov<2) {
+    stop('covariates should contain 1) pixel names, 2) and possibly 3), spatial coordinates')
+  } else if (num.cov==2) {
+    message(paste('found 2 columns in covariates; going to assume that first column is pixel names and second column is 1D coordinates'))
+    colnames(covariates) <- c('pixel','x1')
+    covariates$x1 <- (covariates$x1-scasefit$coord.mean)/scasefit$coord.sd
+    sm <- smoothCon(s(x1,k=df,fx=T,bs='tp'),data=covariates)[[1]]
+    mydim <- 1
+  } else if (num.cov==3) {
+    message(paste('found 3 columns in covariates; going to assume that first column is pixel names, 2nd and 3rd column are 2D coordinates'))
+    colnames(covariates)[1:3] <- c('pixel','x1','x2')
+    covariates[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,scasefit$coord.mean,'-')/scasefit$coord.sd)
+    sm <- smoothCon(s(x1,x2,k=scasefit$df,fx=T,bs='tp'),data=covariates)[[1]]
+
+  } else if (num.cov>3) {
+    covariates[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,scasefit$coord.mean,'-')/scasefit$coord.sd)
+    colnames(covariates)[1:3] <- c('pixel','x1','x2')
+    sm <- smoothCon(s(x1,x2,k=scasefit$df,fx=T,bs='tp'),data=covariates)[[1]]
+    baseline.cov <- colnames(covariates)[-c(1:3)]
+    message(paste('using', paste(baseline.cov, collapse=','),
+                  'as baseline covariates'))
+    baseline.cov.classes <- sapply(covariates, 'class')[-c(1:3)]
+  }
   if (is.null(genes)) {
     genes <- scasefit$result$gene[1]
   }
@@ -90,7 +114,11 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
     n <- sum(total)
     covari <- left_join(data.frame(pixel=names(y)), covariates, by='pixel')
     # accounting for pixels w/o coordinates:
-    remove.idx <- which(is.na(covari$x1)|is.na(covari$x2))
+    if (mydim > 1) {
+      remove.idx <- which(is.na(covari$x1)|is.na(covari$x2))
+    } else {
+      remove.idx <- which(is.na(covari$x1))
+    }
     if (length(remove.idx)>0) {
       warning(paste(length(remove.idx), 'pixels did not have matching coordinates'))
       y <- y[-remove.idx]; total<-total[-remove.idx]
@@ -103,12 +131,21 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
     } else {
       pred.coords <- coords
     }
-    colnames(pred.coords) <- c('x1','x2')
     df <- scasefit$df
-    sm <- smoothCon(s(x1,x2,k=df,fx=T,bs='tp'),data=covari)[[1]]
+    if (mydim > 1) {
+      colnames(pred.coords) <- c('x1','x2')
+
+    } else {
+      colnames(pred.coords) <- c('x1')
+    }
     smooth.model <- scasefit$fits[[genes[i]]]
     smooth.coef <- coef(smooth.model)
-    Xp <- PredictMat(sm, pred.coords)
+    pred.coords <- sweep(pred.coords, 2, scasefit$coord.mean, '-')
+    pred.coords <- pred.coords/scasefit$coord.sd
+    Xp <- Predict.matrix(sm, pred.coords)
+    Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
+    Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
+    Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
     pred.coords$fit <- Xp%*%smooth.coef
     pred.coords$se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
     pred.coords$z <- (pred.coords$fit/pred.coords$se)
@@ -196,12 +233,18 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
       x2.pred <- data.frame(x1=seq(min(pred.coords$x1),max(pred.coords$x1),
                                    length.out=50),
                             x2=cross.x2)
-      Xp <- PredictMat(sm, x1.pred)
+      Xp <- Predict.matrix(sm, x1.pred)
+      Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
       se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
       x1.pred$fit <- Xp%*%smooth.coef
       x1.pred$ci.low <- x1.pred$fit-qnorm(.975)*se
       x1.pred$ci.high <- x1.pred$fit+qnorm(.975)*se
-      Xp <- PredictMat(sm, x2.pred)
+      Xp <- Predict.matrix(sm, x2.pred)
+      Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
       se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
       x2.pred$fit <- Xp%*%smooth.coef
       x2.pred$ci.low <- x2.pred$fit-qnorm(.975)*se

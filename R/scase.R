@@ -41,7 +41,7 @@
 #'
 #'
 
-scase <- function(matrix1, matrix2, covariates=NULL,
+scase <- function(matrix1, matrix2, covariates=NULL, method='betabinomial',
                   min.cells = 10, cores = 1, genes = NULL, add.var=0,
                   verbose = F) {
 
@@ -65,7 +65,7 @@ scase <- function(matrix1, matrix2, covariates=NULL,
     colnames(covariates)[1] <- 'cell'
     message(paste('assuming covariates first column is cell, using',
                   colnames(covariates[,-1]), 'as baseline covariates'))
-    if (any(!is.factor(covariates[,-1]))) {
+    if (any(!sapply(covariates[,-1], is.factor))) {
       stop('cannot handle non-factor covariates rn; either convert all covariates
            to factor or remove non-factor columns')
     }
@@ -74,11 +74,21 @@ scase <- function(matrix1, matrix2, covariates=NULL,
   registerDoSNOW(cl)
   # Smart-seq uses NAs in the matrices which are different from 0's;
   # make sure don't use cells for which gene counts are NA in one allele
-  matrix1[is.na(matrix2)] <- NA
-  matrix2[is.na(matrix1)] <- NA
+  if (any(is.na(matrix1))) {
+    warning('Warning: matrix1 contains NAs. Setting these positions to NA
+            in matrix2.')
+    matrix2[is.na(matrix1)] <- NA
+  }
+  if (any(is.na(matrix2))) {
+    warning('Warning: matrix2 contains NAs. Setting these positions to NA
+            in matrix1.')
+    matrix1[is.na(matrix2)] <- NA
+  }
   numcells <- rowSums((matrix1>0)|(matrix2>0), na.rm=T)
   remove.idx <- which(numcells < min.cells)
-  matrix1 <- matrix1[-remove.idx,]; matrix2 <- matrix2[-remove.idx,]
+  if (length(remove.idx)!=0) {
+    matrix1 <- matrix1[-remove.idx,]; matrix2 <- matrix2[-remove.idx,]
+  }
   if (is.null(genes)) {
     genes <- rownames(matrix1)
     message(paste(nrow(matrix1), 'genes pass min threshold of', min.cells, 'cells'))
@@ -108,14 +118,29 @@ scase <- function(matrix1, matrix2, covariates=NULL,
                             logit.p = NA, logit.p.sd = NA,
                             phi = NA, phi.sd = NA, flag = 'monoallelic2'))
         }
-        fit <- betabinase(y, total)
+        if (method=='betabinomial') {
+          fit <- betabinase(y, total)
+        } else if (method=='quasibinomial') {
+          fit <- quasibinase(y, total)
+        }
         res  <- fit$result
         if (!is.null(res)){
+          if (method=='betabinomial') {
+            logit.p <- unname(res@param['(Intercept)'])
+            logit.p.sd <- sqrt(res@varparam[1,1])
+            phi <- unname(res@param['phi.(Intercept)'])
+            phi.sd <- sqrt(res@varparam[2,2])
+          } else if (method=='quasibinomial') {
+            logit.p <- coef(res)['(Intercept)']
+            logit.p.sd <- sqrt(vcov(res)[1,1])
+            phi <- summary(res)$dispersion
+            phi.sd <- NA
+          }
           return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
-                            logit.p = unname(res@param['(Intercept)']),
-                            logit.p.sd = sqrt(res@varparam[1,1]),
-                            phi = unname(res@param['phi.(Intercept)']),
-                            phi.sd = sqrt(res@varparam[2,2]),
+                            logit.p = logit.p,
+                            logit.p.sd = logit.p.sd,
+                            phi = phi,
+                            phi.sd = phi.sd,
                             flag = ''))
         } else {
           return(data.frame(gene = genes[i], totalUMI = n, totalCells = length(y),
@@ -133,7 +158,6 @@ scase <- function(matrix1, matrix2, covariates=NULL,
                             phi = NA, phi.sd = NA, flag = 'monoallelic2'))
         }
         covari <- left_join(data.frame(cell=names(y)), covariates, by='cell')
-        print(covari)
         baseline.covari <- covari[,-1,drop=F]
         bcov.names <- colnames(baseline.covari)
         # fit one model to each cell type and return one entry per gene per level
@@ -143,26 +167,41 @@ scase <- function(matrix1, matrix2, covariates=NULL,
           lvls <- names(lvls[lvls>min.cells])
           for (l in lvls) {
             ii <- which(baseline.covari[,b]==l)
-            n <- sum(y[ii])
+            n <- sum(total[ii])
             ncell <- length(ii)
-            fit <- betabinase(y[ii], total[ii])
+            if (method=='betabinomial') {
+              fit <- betabinase(y[ii], total[ii])
+            } else if (method=='quasibinomial') {
+              fit <- quasibinase(y[ii], total[ii])
+            }
             res  <- fit$result
             if (!is.null(res)) {
+              if (method=='betabinomial') {
+                logit.p <- unname(res@param['(Intercept)'])
+                logit.p.sd <- sqrt(res@varparam[1,1])
+                phi <- unname(res@param['phi.(Intercept)'])
+                phi.sd <- sqrt(res@varparam[2,2])
+              } else if (method=='quasibinomial') {
+                logit.p <- unname(coef(res)['(Intercept)'])
+                logit.p.sd <- sqrt(vcov(res)[1,1])
+                phi <- summary(res)$dispersion
+                phi.sd <- NA
+              }
               if (is.null(dfres)) {
                 dfres <- data.frame(gene = genes[i], factor = b, lvl = l, totalUMI = n,
                                     totalCells = ncell,
-                                    logit.p = unname(res@param['(Intercept)']),
-                                    logit.p.sd = sqrt(res@varparam[1,1]),
-                                    phi = unname(res@param['phi.(Intercept)']),
-                                    phi.sd = sqrt(res@varparam[2,2]), flag = '')
+                                    logit.p = logit.p,
+                                    logit.p.sd = logit.p.sd,
+                                    phi = phi,
+                                    phi.sd = phi.sd, flag = '')
               } else {
                 dfres <- rbind(dfres,
                                data.frame(gene = genes[i], factor = b, lvl = l, totalUMI = n,
                                           totalCells = ncell,
-                                          logit.p = unname(res@param['(Intercept)']),
-                                          logit.p.sd = sqrt(res@varparam[1,1]),
-                                          phi = unname(res@param['phi.(Intercept)']),
-                                          phi.sd = sqrt(res@varparam[2,2]), flag = ''))
+                                          logit.p = logit.p,
+                                          logit.p.sd = logit.p.sd,
+                                          phi = phi,
+                                          phi.sd = phi.sd, flag = ''))
               }
             }
           }

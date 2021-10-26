@@ -8,6 +8,7 @@ spase(
   matrix1,
   matrix2,
   covariates,
+  method = "betabinomial",
   df = 5,
   genes = NULL,
   min.pixels = 100,
@@ -27,6 +28,9 @@ modeled. Row names should be genes and column names should be pixel IDs.}
 and other covariates. First column assumed to be pixel IDs, next two columns
 assumed to be x,y coordinates. Any additional columns assumed to be
 covariates that will be included in the baseline model.}
+
+\item{method}{string specifying which method to use. Default is
+`betabinomial`. Other options are `quasibinomial` and `apeglm`.}
 
 \item{df}{integer, sets the number of degrees of freedom to use for the
 smoothing spline. Default is 5. Usually want to increase this or test multiple.}
@@ -50,11 +54,13 @@ have to fit. Default is 500.}
 FALSE.}
 }
 \value{
-A list containing following output:
+If method is betabinomial or quasibinomial, a list containing the
+following output:
 \itemize{ \item{\code{results}}{ a data frame containing a summary of
 the results including p-values and q-values for goodness of spatial fit over
 baseline covariates provided }
-\item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}
+\item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}.
+If method is apeglm, returns a list of the map estimates
 }
 \description{
 This function fits a spatial beta-binomial model, estimates a

@@ -17,6 +17,9 @@
 #' assumed to be x,y coordinates. Any additional columns assumed to be
 #' covariates that will be included in the baseline model.
 #'
+#' @param method string specifying which method to use. Default is
+#' `betabinomial`. Other options are `quasibinomial` and `apeglm`.
+#'
 #' @param df integer, sets the number of degrees of freedom to use for the
 #' smoothing spline. Default is 5. Usually want to increase this or test multiple.
 #'
@@ -38,23 +41,26 @@
 #' @param verbose whether or not to print a lot of status messages. Default is
 #' FALSE.
 #'
-#' @return A list containing following output:
+#' @return If method is betabinomial or quasibinomial, a list containing the
+#' following output:
 #' \itemize{ \item{\code{results}}{ a data frame containing a summary of
 #' the results including p-values and q-values for goodness of spatial fit over
 #' baseline covariates provided }
-#' \item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}
+#' \item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}.
+#' If method is apeglm, returns a list of the map estimates
+#'
+#'
 #'
 #' @import aod
 #' @import foreach
 #' @import parallel
 #' @import doSNOW
-#' @importFrom mgcv smoothCon s
 #' @import Matrix
 #' @importFrom dplyr left_join
 #'
 #' @export
 
-spase <- function(matrix1, matrix2, covariates, df = 5,
+spase <- function(matrix1, matrix2, covariates, method = 'betabinomial', df = 5,
                   genes = NULL, min.pixels = 100, min.pixels.per.factor = 15,
                   min.umi = 500, cores = 1, verbose = F) {
 
@@ -69,10 +75,11 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
     stop('matrices dont have same number of rows')
   }
   if (is.null(rownames(matrix1))) {
-    warning('input matrix1 doesnt have rownames')
+    warning('Warning: input matrix1 doesnt have rownames, will label genes
+            using row index')
   }
   if (is.null(colnames(matrix1))) {
-    warning('input matrix1 doesnt have colnames')
+    warning('Warning: input matrix1 doesnt have colnames')
   }
   cl <- makeCluster(cores)
   registerDoSNOW(cl)
@@ -85,7 +92,11 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
   message(paste(nrow(matrix1), 'genes pass min threshold of', min.pixels,
                 'pixels,', min.umi, 'UMI'))
   if (is.null(genes)) {
-    genes <- rownames(matrix1)
+    if (is.null(rownames(matrix1))) {
+      genes <- seq(1,nrow(matrix1))
+    } else {
+      genes <- rownames(matrix1)
+    }
   } else {
     if (!all(genes %in% rownames(matrix1))) {
       stop('not all specified genes are in the matrix after thresholding')
@@ -93,15 +104,45 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
   }
   baseline.cov <- ''
   num.cov <- ncol(covariates)
-  if (num.cov<3) {
-    stop('covariates should contain 1) pixel names, 2) and 3), spatial coordinates')
+  mydim <- 2
+  if (num.cov<2) {
+    stop('covariates should contain 1) pixel names, 2) and possibly 3), spatial coordinates')
+  } else if (num.cov==2) {
+    message(paste('found 2 columns in covariates; going to assume that first column is pixel names and second column is 1D coordinates'))
+    colnames(covariates) <- c('pixel','x1')
+    coord.mean <- mean(covariates$x1)
+    coord.sd <- sd(covariates$x1)
+    covariates$x1 <- (covariates$x1-coord.mean)/coord.sd
+    mydim <- 1
+  } else if (num.cov==3) {
+    message(paste('found 3 columns in covariates; going to assume that first column is pixel names, 2nd and 3rd column are 2D coordinates'))
+    coord.mean <- apply(covariates[,2:3], 2, mean)
+    coord.sd <- sd(as.matrix(covariates[,2:3]))
+    covariates[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,coord.mean,'-')/coord.sd)
+    colnames(covariates)[1:3] <- c('pixel','x1','x2')
   } else if (num.cov>3) {
+    coord.mean <- apply(covariates[,2:3], 2, mean)
+    coord.sd <- sd(as.matrix(covariates[,2:3]))
+    covariates[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,coord.mean,'-')/coord.sd)
+    colnames(covariates)[1:3] <- c('pixel','x1','x2')
     baseline.cov <- colnames(covariates)[-c(1:3)]
     message(paste('using', paste(baseline.cov, collapse=','),
                   'as baseline covariates'))
     baseline.cov.classes <- sapply(covariates, 'class')[-c(1:3)]
   }
-  colnames(covariates)[1:3] <- c('pixel','x1','x2')
+  # get the spline matrix for all the coordinates
+  if (mydim==1) {
+    sm <- getSplineMatrix(covariates[,c('x1'),drop=F], df=df)
+  } else if (mydim==2) {
+    sm <- getSplineMatrix(covariates[,c('x1','x2')], df=df)
+  }
+  spline.mean <- sm[['mean']]
+  spline.sd <- sm[['sd']]
+  covariates <- cbind(covariates, sm[['X']])
+  spline.idx <- (num.cov+1):ncol(covariates)
+  if (length(genes)==0) {
+    stop('no genes passed minimum thresholds. try lowering them')
+  }
   pb <- txtProgressBar(max = length(genes), style = 3)
   progress <- function(n) setTxtProgressBar(pb, n)
   opts <- list(progress = progress)
@@ -117,14 +158,20 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
     .options.snow = opts) %dopar% {
       y <- matrix1[genes[i],]
       total <- y + matrix2[genes[i],]
-      y <- y[total > 0]; total <- total[total > 0]
+      present.idx <- which(!is.na(total) & total>0)
+      y <- y[present.idx]; total <- total[present.idx]
       n <- sum(total)
       nspots <- length(total)
       covari <- left_join(data.frame(pixel=names(y)), covariates, by='pixel')
       # accounting for pixels w/o coordinates:
-      remove.idx <- which(is.na(covari$x1)|is.na(covari$x2))
+      if (mydim > 1) {
+        remove.idx <- which(is.na(covari$x1)|is.na(covari$x2))
+      } else {
+        remove.idx <- which(is.na(covari$x1))
+      }
       if (length(remove.idx)>0) {
-        warning(paste(length(remove.idx), 'pixels did not have matching coordinates'))
+        warning(paste(length(remove.idx), 'pixels did not have matching coordinates,
+                      removing them, but you should probably double-check'))
         y <- y[-remove.idx]; total<-total[-remove.idx]
         covari <- covari[-remove.idx,]
       }
@@ -132,18 +179,25 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
       if (all(y==total)) {
         el[[genes[i]]] <- NA
         return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                      phi.baseline = NA, phi.full = NA,
                                       chisq.p = NA, flag = 'monoallelic1'), fits=el))
       } else if (sum(y)==0) {
         el[[genes[i]]] <- NA
         return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                      phi.baseline = NA, phi.full = NA,
                                       chisq.p = NA, flag = 'monoallelic2'), fits=el))
       }
       if (baseline.cov=='') {
-        baseline.model <- betabinase(y, total)
+        if (method == 'betabinomial') {
+          baseline.model <- betabinase(y, total)
+        } else if (method == 'quasibinomial') {
+          baseline.model <- quasibinase(y, total)
+        }
         mm <- NULL
         if (is.null(baseline.model$result)) {
           el[[genes[i]]] <- NA
           return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                        phi.baseline = NA, phi.full = NA,
                                         chisq.p = NA, flag = 'conv'), fits=el))
         }
       } else {
@@ -163,7 +217,7 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
           }
         }
         if (length(y) > min.pixels) {
-          baseline.covari <- covari[,-c(1:3),drop=F]
+          baseline.covari <- covari[,-c(1:3,spline.idx),drop=F]
           if (ncol(baseline.covari)>1) {
             mm <- model.matrix(~.-1, data=baseline.covari,
                                contrasts.arg=lapply(baseline.covari,contrasts,
@@ -178,40 +232,61 @@ spase <- function(matrix1, matrix2, covariates, df = 5,
           if (length(empties)>0) {
             mm <- mm[,-empties] # in case of empty levels
           }
-          baseline.model <- betabinase(y, total, mm)
+          if (method == 'betabinomial') {
+            baseline.model <- betabinase(y, total, mm)
+          } else if (method == 'quasibinomial') {
+            baseline.model <- quasibinase(y, total, mm)
+          }
           if (is.null(baseline.model$result)) {
             el[[genes[i]]] <- NA
             return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                          phi.baseline = NA, phi.full = NA,
                                           chisq.p = NA, flag = 'conv'), fits=el))
           }
         } else {
           el[[genes[i]]] <- NA
           return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                        phi.baseline = NA, phi.full = NA,
                                         chisq.p = NA, flag = 'min pixels'), fits=el))
         }
       }
-      sm <- smoothCon(s(x1,x2,k=df,fx=T,bs='tp'),data=covari)[[1]]
-      not.intercept <- which(colSums(sm$X==1) != nrow(sm$X))
+      not.intercept <- which(colSums(covari[,spline.idx]==1) != nrow(covari))
       if (is.null(mm)) {
-        mm <- as.matrix(data.frame(sm$X))
+        mm <- as.matrix(covari[,spline.idx])
       } else {
-        mm <- as.matrix(cbind(data.frame(sm$X[,not.intercept]),mm))
+        mm <- as.matrix(cbind(data.frame(covari[,spline.idx][,not.intercept]),mm))
       }
-      smooth.model <- betabinase(y, total, mm)
+      if (method == 'betabinomial') {
+        smooth.model <- betabinase(y, total, mm)
+      } else if (method == 'quasibinomial') {
+        smooth.model <- quasibinase(y, total, mm)
+      }
       if (is.null(smooth.model$result)) {
         el[[genes[i]]] <- NA
         return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                      phi.baseline = NA, phi.full = NA,
                                       chisq.p = NA, flag = 'conv'), fits=el))
       }
-      lrt.stat <- 2*(smooth.model$result@logL-baseline.model$result@logL)
-      df.diff <- baseline.model$result@df.residual-smooth.model$result@df.residual
+      if (method=='betabinomial') {
+        lrt.stat <- 2*(smooth.model$result@logL-baseline.model$result@logL)
+        df.diff <- baseline.model$result@df.residual-smooth.model$result@df.residual
+      } else if (method == 'quasibinomial') {
+        lrt.stat <- 2*(logLik(smooth.model$result)-logLik(baseline.model$result))
+        df.diff <- baseline.model$result$df.residual-smooth.model$result$df.residual
+      }
       pval <- 1 - pchisq(abs(lrt.stat), df.diff)
       el[[genes[i]]] <- smooth.model$result
       return(list(result=data.frame(gene = genes[i], totalUMI = n, totalSpots = nspots,
+                                    phi.baseline = baseline.model$result@random.param[[1]],
+                                    phi.full = smooth.model$result@random.param[[1]],
                                     chisq.p = pval,flag = ''), fits=el))
     }
-
   result$result$qval <- p.adjust(result$result$chisq.p, method='BH')
+  result$coord.mean <- coord.mean
+  result$coord.sd <- coord.sd
+  result$spline.mean <- spline.mean
+  result$spline.sd <- spline.sd
   stopCluster(cl)
   return(result)
+
 }

@@ -1,10 +1,10 @@
-#' Helper function to fit betabin model while handling common warnings/errors
+#' Helper function to fit quasibinomial model while handling common warnings/errors
 #'
-#' Just wraps betabin to return either the fit or warning description. Warnings
+#' Just wraps glm to return either the fit or warning description. Warnings
 #' and errors occur when the model doesn't converge. These will be flagged for
 #' removing downstream.
 #'
-#' @description This function fits a beta-binomial model from the package aod
+#' @description This function fits a quasibinomial model from the package aod
 #' and wraps it so that warnings and/or errors are output.
 #'
 #' @param y vector of counts to be modeled
@@ -23,7 +23,7 @@
 #'
 #' @export
 
-betabinase <- function(y, total, mod.mat=NULL) {
+quasibinase <- function(y, total, mod.mat=NULL) {
   res <- list(result = NULL, warning = NULL, error = NULL)
   if (length(y) != length(total)) {
     stop('y and total dont have the same length')
@@ -31,12 +31,13 @@ betabinase <- function(y, total, mod.mat=NULL) {
   withCallingHandlers({
     tryCatch({
       if (is.null(mod.mat)) {
-        fit <- betabin(cbind(y, total-y)~1, ~1,
-                       data = data.frame(y=y, total=total))
-      } else {
-        fit <- betabin(cbind(y,total-y)~mod.mat-1, ~1,
+        fit <- glm(cbind(y, total-y)~1,
                        data = data.frame(y=y, total=total),
-                       control = list(maxit=10000))
+                   family = quasibinomial)
+      } else {
+        fit <- glm(cbind(y,total-y)~mod.mat-1,
+                       data = data.frame(y=y, total=total),
+                       family = quasibinomial)
       }
     })
   },
