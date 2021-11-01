@@ -21,4 +21,8 @@ is `spase`, which requires:
   2.  x1 coordinates of that bead or spot
   3.  x2 coordinates
 
+Then the same information as well as the result of `spase` can be used in
+`plotSpase` to generate smoothed allele probability functions, cross-sections
+of those functions, and 2D z-score plots.
+
 Code to reproduce figures and results can be found in the vignettes folder.
