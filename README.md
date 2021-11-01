@@ -13,16 +13,12 @@ devtools::install_github("lulizou/spASE")
 
 The main function for estimating 2D smooth functions of ASE spatial data
 is `spase`, which requires:
-\begin{itemize}
-  \item matrix (rows = genes, columns = bead or spot barcodes) of UMI counts
+* matrix (rows = genes, columns = bead or spot barcodes) of UMI counts
   from allele 1
-  \item matrix of UMI counts from allele 2 (same dimensions as first matrix)
-  \item covariates which contain the following columns (in order):
-  \begin{enumerate}
-    \item bead or spot barcodes
-    \item x1 coordinates of that bead or spot
-    \item x2 coordinates
-  \end{enumerate}
-\end{itemize}
+* matrix of UMI counts from allele 2 (same dimensions as first matrix)
+* covariates data frame which contain the following columns (in order):
+  1.  bead or spot barcodes
+  2.  x1 coordinates of that bead or spot
+  3.  x2 coordinates
 
 Code to reproduce figures and results can be found in the vignettes folder.
