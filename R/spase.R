@@ -47,7 +47,6 @@
 #' the results including p-values and q-values for goodness of spatial fit over
 #' baseline covariates provided }
 #' \item{\code{fits}}{ a list of beta-binomial model fit objects for each gene}}.
-#' If method is apeglm, returns a list of the map estimates
 #'
 #'
 #'
