@@ -1,5 +1,5 @@
 # spASE
-Detecting 2D spatial patterns of allele-specific expression in spatial
+R package for detecting 2D spatial patterns of allele-specific expression in spatial
 transcriptomics data. Provides functions for estimating, plotting, and
 testing for significant ASE patterns.
 
