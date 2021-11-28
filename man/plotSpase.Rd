@@ -8,10 +8,14 @@ plotSpase(
   matrix1,
   matrix2,
   covariates,
-  scasefit,
+  spasefit,
   coords = NULL,
   extrapolate.width = 0.1,
   crosshairs = TRUE,
+  size.scale = TRUE,
+  point.size = 0.5,
+  point.outline = TRUE,
+  theme = "default",
   cross.x1 = NULL,
   cross.x2 = NULL,
   genes = NULL,
@@ -31,6 +35,8 @@ and other covariates. First column assumed to be pixel IDs, next two columns
 assumed to be x,y coordinates. Any additional columns assumed to be
 covariates that will be included in the baseline model.}
 
+\item{spasefit}{the resulting data frame from a call to scase}
+
 \item{coords}{data frame of coordinates to evaluate the model on. Default is
 NULL which will plot coordinates along the range of the x1 and x2 coordinate
 values. Highly suggest supplying a custom set of coordinates since the
@@ -42,7 +48,24 @@ point in the neighborhood,}
 
 \item{crosshairs}{boolean default of TRUE indicating plotting the cross-
 hairs on the 2D spatial plot and the associated confidence intervals of
-those slices in a separate plot.}
+those slices in a separate plot. Set to FALSE to turn off.}
+
+\item{size.scale}{boolean default of TRUE indicating the raw data to be
+plotted with points that change size depending on the total UMI count at
+that pixel. Set to FALSE to turn off.}
+
+\item{point.size}{numeric to set the point size, default is 0.5. Must be
+used with setting size.scale to FALSE.}
+
+\item{point.outline}{boolean to determine whether or not to draw points on
+raw data with a black outline. default is TRUE. Must be used with
+setting size.scaleto FALSE.}
+
+\item{theme}{string to set what theme to use for plotting smooth 2D
+probability functions, default is the default ggplot theme, despite ugly
+gray background, since the scale uses white as a color. If you're not
+worried about that you can set to 'classic' to remove gray background
+and grid lines.}
 
 \item{cross.x1}{numeric indicating which x1 value to make crosshairs at.
 default is NULL which, if crosshairs is TRUE, defaults to the middle of the
@@ -53,12 +76,10 @@ default is NULL which, if crosshairs is TRUE, defaults to the middle of the
 x2 range.}
 
 \item{genes}{a vector of genes given as strings to plot. default is NULL
-which will plot the first gene in the scasefit results dataframe.}
+which will plot the first gene in the spasefit results dataframe.}
 
 \item{save}{the filename prefix to save if want to save instead of visualize.
 Default is null meaning no file will be saved.}
-
-\item{spasefit}{the resulting data frame from a call to scase}
 }
 \value{
 Multiple ggplot2 plots or, instead, each one gets saved to a different

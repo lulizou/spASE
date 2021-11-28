@@ -20,6 +20,7 @@ is `spase`, which requires:
   1.  bead or spot barcodes
   2.  x1 coordinates of that bead or spot
   3.  x2 coordinates
+  4.  (optional) factor covariate, such as cell type
 
 Then the same information as well as the result of `spase` can be used in
 `plotSpase` to generate smoothed allele probability functions, cross-sections

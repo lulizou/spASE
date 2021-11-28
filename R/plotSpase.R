@@ -30,7 +30,24 @@
 #'
 #' @param crosshairs boolean default of TRUE indicating plotting the cross-
 #' hairs on the 2D spatial plot and the associated confidence intervals of
-#' those slices in a separate plot.
+#' those slices in a separate plot. Set to FALSE to turn off.
+#'
+#' @param size.scale boolean default of TRUE indicating the raw data to be
+#' plotted with points that change size depending on the total UMI count at
+#' that pixel. Set to FALSE to turn off.
+#'
+#' @param point.size numeric to set the point size, default is 0.5. Must be
+#' used with setting size.scale to FALSE.
+#'
+#' @param point.outline boolean to determine whether or not to draw points on
+#' raw data with a black outline. default is TRUE. Must be used with
+#' setting size.scaleto FALSE.
+#'
+#' @param theme string to set what theme to use for plotting smooth 2D
+#' probability functions, default is the default ggplot theme, despite ugly
+#' gray background, since the scale uses white as a color. If you're not
+#' worried about that you can set to 'classic' to remove gray background
+#' and grid lines.
 #'
 #' @param cross.x1 numeric indicating which x1 value to make crosshairs at.
 #' default is NULL which, if crosshairs is TRUE, defaults to the middle of the
@@ -41,7 +58,7 @@
 #' x2 range.
 #'
 #' @param genes a vector of genes given as strings to plot. default is NULL
-#' which will plot the first gene in the scasefit results dataframe.
+#' which will plot the first gene in the spasefit results dataframe.
 #'
 #' @param save the filename prefix to save if want to save instead of visualize.
 #' Default is null meaning no file will be saved.
@@ -59,9 +76,10 @@
 #'
 #' @export
 
-plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
-                      extrapolate.width=0.1, crosshairs=TRUE, cross.x1=NULL,
-                      cross.x2=NULL, genes=NULL, save=NULL) {
+plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
+                      extrapolate.width=0.1, crosshairs=TRUE, size.scale=TRUE,
+                      point.size = 0.5, point.outline = TRUE, theme='default',
+                      cross.x1=NULL, cross.x2=NULL, genes=NULL, save=NULL) {
   if(!(is(matrix1, 'matrix') | is(matrix1, 'sparseMatrix')) &
      !(is(matrix2, 'matrix') | is(matrix2, 'sparseMatrix'))) {
     stop('input matrix1 and matrix2 must be a matrix or sparseMatrix')
@@ -86,31 +104,36 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
     message(paste('found 2 columns in covariates; going to assume that first column is pixel names and second column is 1D coordinates'))
     colnames(covariates) <- c('pixel','x1')
     covariates.norm <- covariates
-    covariates.norm$x1 <- (covariates$x1-scasefit$coord.mean)/scasefit$coord.sd
+    covariates.norm$x1 <- (covariates$x1-spasefit$coord.mean)/spasefit$coord.sd
     sm <- smoothCon(s(x1,k=df,fx=T,bs='tp'),data=covariates.norm)[[1]]
     mydim <- 1
   } else if (num.cov==3) {
     message(paste('found 3 columns in covariates; going to assume that first column is pixel names, 2nd and 3rd column are 2D coordinates'))
     colnames(covariates)[1:3] <- c('pixel','x1','x2')
     covariates.norm <- covariates
-    covariates.norm[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,scasefit$coord.mean,'-')/scasefit$coord.sd)
-    sm <- smoothCon(s(x1,x2,k=scasefit$df,fx=T,bs='tp'),data=covariates.norm)[[1]]
+    covariates.norm[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,spasefit$coord.mean,'-')/spasefit$coord.sd)
+    sm <- smoothCon(s(x1,x2,k=spasefit$df,fx=T,bs='tp'),data=covariates.norm)[[1]]
 
   } else if (num.cov>3) {
     colnames(covariates)[1:3] <- c('pixel','x1','x2')
     covariates.norm <- covariates
-    covariates.norm[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,scasefit$coord.mean,'-')/scasefit$coord.sd)
-    sm <- smoothCon(s(x1,x2,k=scasefit$df,fx=T,bs='tp'),data=covariates.norm)[[1]]
+    covariates.norm[,2:3] <- as.data.frame(sweep(covariates[,2:3],2,spasefit$coord.mean,'-')/spasefit$coord.sd)
+    sm <- smoothCon(s(x1,x2,k=spasefit$df,fx=T,bs='tp'),data=covariates.norm)[[1]]
     baseline.cov <- colnames(covariates)[-c(1:3)]
     message(paste('using', paste(baseline.cov, collapse=','),
                   'as baseline covariates'))
     baseline.cov.classes <- sapply(covariates, 'class')[-c(1:3)]
   }
   if (is.null(genes)) {
-    genes <- scasefit$result$gene[1]
+    genes <- spasefit$result$gene[1]
   }
   zscore.palette <- rev(brewer.pal(n=7, 'RdBu'))
   for (i in 1:length(genes)) {
+    print(genes[i])
+    if (is.null(spasefit$fits[genes[i]][[1]])) {
+      warning(paste(genes[i], 'is not present in the results, probably did not pass minimum threshold of UMI or pixels'))
+      next
+    }
     y <- matrix1[genes[i],]
     total <- y + matrix2[genes[i],]
     y <- y[total > 0]; total <- total[total > 0]
@@ -135,21 +158,21 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
     } else {
       pred.coords <- coords
     }
-    df <- scasefit$df
+    df <- spasefit$df
     if (mydim > 1) {
       colnames(pred.coords) <- c('x1','x2')
 
     } else {
       colnames(pred.coords) <- c('x1')
     }
-    smooth.model <- scasefit$fits[[genes[i]]]
+    smooth.model <- spasefit$fits[[genes[i]]]
     smooth.coef <- coef(smooth.model)
-    pred.coords.norm <- sweep(pred.coords, 2, scasefit$coord.mean, '-')
-    pred.coords.norm <- pred.coords.norm/scasefit$coord.sd
+    pred.coords.norm <- sweep(pred.coords, 2, spasefit$coord.mean, '-')
+    pred.coords.norm <- pred.coords.norm/spasefit$coord.sd
     Xp <- Predict.matrix(sm, pred.coords.norm)
     Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
-    Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
-    Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
+    Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
+    Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.sd, '/')
     pred.coords$fit <- Xp%*%smooth.coef
     pred.coords$se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
     pred.coords$z <- (pred.coords$fit/pred.coords$se)
@@ -178,10 +201,26 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
                                           '1.5 <= z < 2', '2 <= z < 3',
                                           'z >= 3' ))
     pr <- ggplot(cbind(data.frame(y=y, total=total), covari.non.norm),
-                 aes(x=x1,y=x2)) +
-      geom_point(aes(fill=y/total,size=total), shape=21, color='black') +
-      scale_fill_gradient2(name='y/total', low='blue', mid='white', high='red',
-                           midpoint=0.5, limits=c(0,1)) +
+                 aes(x=x1,y=x2))
+    if (size.scale) {
+      pr <- pr +
+        geom_point(aes(fill=y/total,size=total), shape=21, color='black') +
+        scale_fill_gradient2(name='y/total', low='blue', mid='white', high='red',
+                             midpoint=0.5, limits=c(0,1))
+    } else {
+      if (point.outline) {
+        pr <- pr +
+          geom_point(aes(fill=y/total), size=point.size, shape=21, color='black') +
+          scale_fill_gradient2(name='y/total', low='blue', mid='white', high='red',
+                               midpoint=0.5, limits=c(0,1))
+      } else {
+        pr <- pr +
+          geom_point(aes(color=y/total), size=point.size) +
+          scale_color_gradient2(name='y/total', low='blue', mid='white', high='red',
+                               midpoint=0.5, limits=c(0,1))
+      }
+    }
+    pr <- pr +
       theme_classic() +
       ggtitle(paste(genes[i],'raw'))
     ps <- ggplot(pred.coords, aes(x=x1, y=x2)) +
@@ -197,6 +236,10 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
       geom_raster(interpolate=F) +
       scale_fill_identity() +
       ggtitle(paste(genes[i], 'z score surface'))
+    if (theme=='classic') {
+      ps <- ps + theme_classic()
+      pover <- pover + theme_classic()
+    }
     if (crosshairs) {
       if (is.null(cross.x1)) {
         cross.x1 <- round(mean(pred.coords$x1),2)
@@ -237,20 +280,20 @@ plotSpase <- function(matrix1, matrix2, covariates, scasefit, coords=NULL,
       x2.pred <- data.frame(x1=seq(min(pred.coords$x1),max(pred.coords$x1),
                                    length.out=50),
                             x2=cross.x2)
-      x1.pred.norm <- sweep(x1.pred, 2, scasefit$coord.mean, '-')/scasefit$coord.sd
-      x2.pred.norm <- sweep(x2.pred, 2, scasefit$coord.mean, '-')/scasefit$coord.sd
+      x1.pred.norm <- sweep(x1.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
+      x2.pred.norm <- sweep(x2.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
       Xp <- Predict.matrix(sm, x1.pred.norm)
       Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
-      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
-      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.sd, '/')
       se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
       x1.pred$fit <- Xp%*%smooth.coef
       x1.pred$ci.low <- x1.pred$fit-qnorm(.975)*se
       x1.pred$ci.high <- x1.pred$fit+qnorm(.975)*se
       Xp <- Predict.matrix(sm, x2.pred.norm)
       Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
-      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.mean, '-')
-      Xp[,2:df] <- sweep(Xp[,2:df], 2, scasefit$spline.sd, '/')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.sd, '/')
       se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
       x2.pred$fit <- Xp%*%smooth.coef
       x2.pred$ci.low <- x2.pred$fit-qnorm(.975)*se

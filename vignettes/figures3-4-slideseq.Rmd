@@ -1,9 +1,10 @@
 ---
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
-Code for reproducing Figures 3 and 4. Note: things with eval=F were experimental
-or only run once with results saved
+Code for reproducing Figures 3 and 4.
 
 ```{r}
 library(dplyr)
@@ -17,13 +18,13 @@ library(latex2exp)
 library(RColorBrewer)
 library(xtable)
 library(RCurl)
-library(wesanderson)
 library(scales)
 set.seed(1337)
 
 expit <- function(x) {
   return(exp(x)/(1+exp(x)))
 }
+knitr::opts_chunk$set(cache = T)
 ```
 
 ```{r}
@@ -34,7 +35,7 @@ xchr <- read.delim('../inst/extdata/MGImarkerQuery_20190611_114216.txt')$Symbol
 ```{r}
 # Slide-seq data
 # puck 4 needs to be rotated and shifted
-load('./pucks.3-4.spatial.RData')
+load('../inst/extdata/pucks.3-4.spatial.RData')
 puck3.spatial <- puck3.spatial %>%
   mutate(total = CAST+X129) %>%
   mutate(X = xcoord/1000, Y = ycoord/1000)
@@ -55,7 +56,22 @@ puck4.spatial$X <- new.X
 puck4.spatial$Y <- new.Y
 
 # load in RCTD results
-rctd.results.puck3 <- readRDS('rctd_puck_3.rds')
+# use lower threshold for calling a singlet
+# doublet_uncertain and doublet_certains will be reclassified as singlets
+SINGLET_THRESH <- 100
+rctd.results.puck3 <- readRDS('../inst/extdata/rctd_puck_3.rds')
+test <- rctd.results.puck3$results_df
+test %>%
+  mutate(diff = singlet_score-min_score) %>%
+  filter(spot_class != 'reject') %>%
+  ggplot(aes(x = diff)) +
+  geom_histogram(aes(fill = spot_class), color='white') +
+  theme_bw() +
+  geom_vline(xintercept=100, lty='dashed') +
+  xlab('singlet score - min score') +
+  ylab('num pixels') +
+  ggtitle('singlet threshold - default of 25, changing to 100')
+
 coords <- puck3.spatial %>%
   dplyr::select(X, Y, bead, total) %>%
   group_by(X, Y, bead) %>%
@@ -63,16 +79,16 @@ coords <- puck3.spatial %>%
 puck3.rctd <- rctd.results.puck3$results_df %>%
   mutate(bead = rownames(rctd.results.puck3$results_df)) %>%
   left_join(coords) %>%
-  filter(spot_class == 'singlet')
-rctd.results.puck4 <- readRDS('rctd_puck_4.rds')
+  mutate(spot_class = ifelse((spot_class != 'reject') & (singlet_score-min_score<=SINGLET_THRESH), 'singlet', 'reject or doublet'))
+rctd.results.puck4 <- readRDS('../inst/extdata/rctd_puck_4.rds')
 coords <- puck4.spatial %>%
   dplyr::select(X, Y, bead, total) %>%
   group_by(X, Y, bead) %>%
   summarise(nUMI = sum(total))
 puck4.rctd <- rctd.results.puck4$results_df %>%
   mutate(bead = rownames(rctd.results.puck4$results_df)) %>%
-  left_join(coords) %>%
-  filter(spot_class == 'singlet')
+  left_join(coords)  %>%
+  mutate(spot_class = ifelse((spot_class != 'reject') & (singlet_score-min_score<=SINGLET_THRESH), 'singlet', 'reject or doublet'))
 
 # combine RCTD annotations and both pucks
 puck3.spatial <- left_join(puck3.spatial, puck3.rctd %>% dplyr::select(bead, first_type, spot_class), by = 'bead')
@@ -83,7 +99,7 @@ joint <- joint %>%
   filter(!grepl('mt-',gene)) %>% 
   filter(bead!='TTTTTTTTTTTTTT') %>%
   filter(bead!='GGGGGGGGGGGGGG') %>%
-  filter(bead!='TTTGGAATTTAACT') %>% # duplicated
+  filter(bead!='TTTGGAATTTAACT') %>% # duplicated bead
   mutate(gene = as.factor(as.character(gene)), bead = as.factor(as.character(bead))) %>%
   group_by(bead, gene, xcoord, ycoord, X, Y, first_type, spot_class) %>%
   summarise(CAST = sum(CAST), X129 = sum(X129), total = sum(total)) %>% # since the pucks have the same bead barcodes which have the same coordinates
@@ -112,7 +128,7 @@ singlets <- singlets %>%
                            'Microglia_Macrophages', 'Oligodendrocyte', 'Endothelial_Tip')) %>%
   mutate(first_type = factor(first_type))
 
-remove.beads <- readRDS('CA1-CA3-Dentate-remove-these-beads.rds')
+remove.beads <- readRDS('../inst/extdata/CA1-CA3-Dentate-remove-these-beads.rds')
 singlets <- singlets %>%
   filter(!(bead %in% remove.beads))
 ```
@@ -148,14 +164,14 @@ plot(test)
 selectedPoints <- fhs(test, mark=T)
 remove.dentate.beads <- dentate$bead[-as.numeric(selectedPoints)]
 remove.beads <- c(as.character(remove.ca1.beads), as.character(remove.ca3.beads), as.character(remove.dentate.beads))
-saveRDS(remove.beads, file='CA1-CA3-Dentate-remove-these-beads.rds')
+saveRDS(remove.beads, file='../inst/extdata/CA1-CA3-Dentate-remove-these-beads.rds')
 ```
 
 
 ```{r}
 # plot a map of cell types called from RCTD
 # make a palette out of Set1 and 2
-mypal <- data.frame(first_type=unique(singlets$first_type),fill=c("#377EB8","#4DAF4A","#FF7F00","#FFD700","#E41A1C","#984EA3","#F781BF","#A65628")) %>%
+mypal <- data.frame(first_type=unique(singlets$first_type) %>% sort(),fill=c("#4DAF4A","#FF7F00","#377EB8","#984EA3","#E41A1C","#FFD700","#F781BF","#A65628")) %>%
   arrange(first_type)
 mypal$fill <- factor(mypal$fill, levels=unique(mypal$fill))
 singlets %>%
@@ -171,26 +187,25 @@ singlets %>%
                                                           mutate(first_type = gsub('Denate','Dentate',first_type))%>%mutate(first_type = gsub('Microglia Macrophages','Microglia/Macrophages',first_type))%>%mutate(gsub('Entorihinal','Entorhinal',first_type))%>%pull(first_type))) +
   theme_classic() +
   guides(colour = guide_legend(ncol=1,override.aes = list(size=3))) +
-  theme(legend.position='none') +
+  #theme(legend.position='none') +
   xlab('x1') +
   ylab('x2')
 ggsave('figure4a.png', width=4,height=4,units='in')
 ```
 
 
-```{r}
-# first use all pixels, spatial coordinates
-mcast <- with(joint, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=CAST, dimnames=list(levels(gene),levels(bead))))
-m129 <- with(joint, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=X129, dimnames=list(levels(gene),levels(bead))))
-covariates <- joint%>% dplyr::select(bead, X, Y) %>% distinct() 
-# filter out beads with more than two locations
-dupebeads <- covariates %>% group_by(bead) %>% summarise(n=n()) %>% filter(n>1) %>% pull(bead)
-covariates <- covariates %>% filter(!(bead %in% dupebeads))
-res15.nocelltype <- spase(mcast, m129, covariates, cores=2, df=15, min.umi=400) 
+```{r, eval = T}
+# singlets, with and without using cell type
+mcast <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=CAST, dimnames=list(levels(gene),levels(bead))))
+m129 <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=X129, dimnames=list(levels(gene),levels(bead))))
+covariates <- singlets%>% dplyr::select(bead, X, Y, first_type) %>% distinct() 
+res10_singlets_nocelltype<-spase(mcast, m129, covariates %>% dplyr::select(-first_type), cores=1, df=10, min.umi=100)
+res10_singlets_celltype<-spase(mcast, m129, covariates, cores=2, df=10, min.umi=100)
 ```
 
+
 ```{r}
-joint %>%
+singlets %>%
   group_by(gene) %>%
   summarise(totalSpots = n()) %>%
   ggplot(aes(x = log2(totalSpots))) +
@@ -200,91 +215,151 @@ joint %>%
   scale_y_continuous(expand=c(0,0)) +
   xlab('log2(total pixels)') +
   ylab('Number of genes')
-ggsave('fig3-totalpixels.png', height=2, width=2)
+ggsave('fig3-totalpixels-singlets.png', height=2, width=2)
 ```
 
-
 ```{r}
+# summary of number of pixels for each gene
+summary(res10_singlets_nocelltype$result$totalSpots)
 # summary of number of UMI per pixel for each gene
-summary(res15.nocelltype$result$totalSpots)
-```
-
-
-```{r}
-# summary of number of UMI per pixel for each gene
-summary(res15.nocelltype$result$totalUMI/res15.nocelltype$result$totalSpots)
-```
-
-```{r}
+summary(res10_singlets_nocelltype$result$totalUMI/res10_singlets_nocelltype$result$totalSpots)
 # summary of baseline overdispersion for each gene
-summary(res15.nocelltype$result$phi.baseline)
-```
-
-
-```{r}
+summary(res10_singlets_nocelltype$result$phi.baseline)
 # summary of spatial model overdispersion for each gene
-summary(res15.nocelltype$result$phi.full)
+summary(res10_singlets_nocelltype$result$phi.full)
+```
+
+```{r}
+# summary of number of pixels for each gene
+summary(res10_singlets_celltype$result$totalSpots)
+# summary of number of UMI per pixel for each gene
+summary(res10_singlets_celltype$result$totalUMI/res10_singlets_nocelltype$result$totalSpots)
+# summary of baseline overdispersion for each gene
+summary(res10_singlets_celltype$result$phi.baseline)
+# summary of spatial model overdispersion for each gene
+summary(res10_singlets_celltype$result$phi.full)
 ```
 
 
-
 ```{r}
-res15.nocelltype$result$xchr <- ifelse(res15.nocelltype$result$gene %in% xchr, 'xchr', 'autosome')
-res15.nocelltype$result %>%
+res10_singlets_nocelltype$result$xchr <- ifelse(res10_singlets_nocelltype$result$gene %in% xchr, 'xchr', 'autosome')
+res10_singlets_nocelltype$result %>%
   ggplot(aes(x = phi.baseline, y = phi.full)) +
-  geom_point(alpha=1,size=0.05) +
+  geom_point(aes(color=log2(totalSpots)),alpha=1, size=0.05) +
+  scale_color_viridis(name = 'log2(total pixels)') +
   geom_abline(intercept=0, slope=1, lty='dashed', color='red',size=0.5) +
   geom_rug(alpha=0.01) +
   theme_classic() +
+  theme(legend.position = 'none') +
   xlab(TeX(r'(Estimated $\phi$ null)')) +
   ylab(TeX(r'(Estimated $\phi$ spatial)'))
-ggsave('fig3-overdispersions.png', height=2, width=2)
+ggsave('overdispersions-singlets.png', height=2, width=2)
 ```
 
+
+
+```{R}
+res10_singlets_nocelltype$result$xchr <- ifelse(res10_singlets_nocelltype$result$gene %in% xchr, 'X - no cell type', 'A - no cell type')
+res10_singlets_celltype$result$xchr <- ifelse(res10_singlets_celltype$result$gene %in% xchr, 'X - cell type', 'A - cell type')
+dd <- res10_singlets_nocelltype$result %>%
+  bind_rows(res10_singlets_celltype$result) %>%
+  mutate(xchr = factor(xchr, levels=c('A - no cell type', 'A - cell type',
+                                      'X - no cell type', 'X - cell type'))) 
+dd %>%
+  filter(xchr=='A - no cell type') %>%
+  pull(chisq.p) %>%
+  summary()
+dd %>%
+  filter(xchr=='A - cell type') %>%
+  pull(chisq.p) %>%
+  summary()
+dd %>%
+  filter(xchr=='X - no cell type') %>%
+  pull(chisq.p) %>%
+  summary()
+dd %>%
+  filter(xchr=='X - cell type') %>%
+  pull(chisq.p) %>%
+  summary()
+```
+
+
+
 ```{r}
-res15.nocelltype$result %>%
-  ggplot(aes(x = chisq.p)) +
-  geom_histogram(aes(fill=xchr),bins=40) +
+dd %>%
+  mutate(p.value.bin = cut(chisq.p, breaks=seq(0,1,0.2))) %>%
+  group_by(xchr, p.value.bin) %>%
+  summarise(num.genes = n()) %>%
+  filter(!is.na(p.value.bin)) %>%
+  group_by(xchr) %>%
+  mutate(total = sum(num.genes)) %>%
+  mutate(prop = num.genes/total) %>%
+  ggplot(aes(x = p.value.bin, y = prop)) +
+  geom_bar(stat='identity') +
   theme_classic() +
-  scale_fill_manual(name='Chromosome',values=c('gray','red'), labels=c('Autosome', 'X')) +
   scale_y_continuous(expand=c(0,0)) +
+  facet_wrap(xchr ~ ., nrow=1) +
   xlab('p-value') +
-  ylab('Number of genes')
-ggsave('fig3-pvals.png', height=2, width=3)
+  ylab('Fraction of genes') +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45, hjust=1))
+ggsave('fig3-pvals-singlets.png', height=3, width=6)
+```
+
+```{r}
+ellipseX <- 3
+ellipseY <- 3.2
+ellipseWidth <- 1.9
+ellipseHeight <- 1.1
+ellipseAngle <- pi/2.3
+predictCoordsEllipse <- predictCoords %>%
+  filter(((X-ellipseX)*cos(ellipseAngle)+(Y-ellipseY)*sin(ellipseAngle))^2/ellipseWidth^2 + ((X-ellipseX)*sin(ellipseAngle)+(Y-ellipseY)*cos(ellipseAngle))^2/ellipseHeight^2 <= 1)
+```
+
+```{r}
+#plotSpase(mcast, m129, covariates, res10_singlets_nocelltype, coords = predictCoords, size.scale = F, point.size=1, point.outline=T, crosshairs=T, cross.x1 = 3, cross.x2 = 3, genes=c('Hpca'), save='hpca')
+plotSpase(mcast, m129, covariates, res10_singlets_nocelltype, coords = predictCoords, size.scale = F, point.size=1, point.outline=T, crosshairs=T, cross.x1 = 3, cross.x2 = 3, genes=c('Hpca'))
 ```
 
 
-
 ```{r}
-result.nocelltype <- res15.nocelltype$result %>%
+result.nocelltype <- res10_singlets_nocelltype$result %>%
   filter(qval <= 0.01) %>%
   arrange(qval)
 result.nocelltype$xchr <- ifelse(result.nocelltype$gene %in% xchr, T, F)
-# total number of significant genes with min total UMI 1000, min pixels 100:
+# total number of significant genes with min pixels 400:
 nrow(result.nocelltype)
 # total number of x chromosome genes 
 sum(result.nocelltype$xchr)
 xtable(result.nocelltype %>% dplyr::select(gene,totalUMI,chisq.p,qval,xchr),display=c('d', 's', 'd', 'e', 'e', 's')) #supp table 2
 ```
 
+
 ```{r}
-# repeat above two blocks for k=5, 10, 20 to see if reproducible
-res5.nocelltype <- spase(mcast, m129, covariates, cores=2, df=5, min.umi=400)
-result.nocelltype.5 <- res5.nocelltype$result %>%
+result.celltype <- res10_singlets_celltype$result %>%
   filter(qval <= 0.01) %>%
   arrange(qval)
-res10.nocelltype <- spase(mcast, m129, covariates, cores=2, df=10, min.umi=400)
-result.nocelltype.10 <- res10.nocelltype$result %>%
-  filter(qval <= 0.01) %>%
-  arrange(qval)
-res20.nocelltype <- spase(mcast, m129, covariates, cores=2, df=20, min.umi=400)
-result.nocelltype.20 <- res20.nocelltype$result %>%
-  filter(qval <= 0.01) %>%
-  arrange(qval)
+result.celltype$xchr <- ifelse(result.celltype$gene %in% xchr, T, F)
+# total number of significant genes with min pixels 400:
+nrow(result.celltype)
+# total number of x chromosome genes 
+sum(result.celltype$xchr)
+xtable(result.celltype %>% dplyr::select(gene,totalUMI,chisq.p,qval,xchr),display=c('d', 's', 'd', 'e', 'e', 's')) #supp table 2
 ```
 
 
+
 ```{r}
+# repeat above two blocks for k=5, 15, 20 to see if reproducible
+res5.nocelltype <- spase(mcast, m129, covariates %>% dplyr::select(-first_type), cores=2, df=5, min.umi=100)
+res10.nocelltype <- spase(mcast, m129, covariates %>% dplyr::select(-first_type), cores=2, df=15, min.umi=100)
+res20.nocelltype <- spase(mcast, m129, covariates %>% dplyr::select(-first_type), cores=2, df=20, min.umi=100)
+```
+
+```{r}
+result.nocelltype.5 <- res5.nocelltype$result %>%
+  filter(qval <= 0.01) %>%
+  arrange(qval)
 result.nocelltype.5$xchr <- ifelse(result.nocelltype.5$gene %in% xchr, T, F)
 # total number of significant genes with min total UMI 1000, min pixels 100:
 nrow(result.nocelltype.5)
@@ -294,6 +369,9 @@ xtable(result.nocelltype.5 %>% dplyr::select(gene,totalUMI,chisq.p,qval,xchr),di
 ```
 
 ```{r}
+result.nocelltype.10 <- res10.nocelltype$result %>%
+  filter(qval <= 0.01) %>%
+  arrange(qval)
 result.nocelltype.10$xchr <- ifelse(result.nocelltype.10$gene %in% xchr, T, F)
 # total number of significant genes with min total UMI 1000, min pixels 100:
 nrow(result.nocelltype.10)
@@ -304,6 +382,9 @@ xtable(result.nocelltype.10 %>% dplyr::select(gene,totalUMI,chisq.p,qval,xchr),d
 
 
 ```{r}
+result.nocelltype.20 <- res20.nocelltype$result %>%
+  filter(qval <= 0.01) %>%
+  arrange(qval)
 result.nocelltype.20$xchr <- ifelse(result.nocelltype.20$gene %in% xchr, T, F)
 # total number of significant genes with min total UMI 1000, min pixels 100:
 nrow(result.nocelltype.20)
@@ -312,17 +393,39 @@ sum(result.nocelltype.20$xchr)
 xtable(result.nocelltype.20 %>% dplyr::select(gene,totalUMI,chisq.p,qval,xchr),display=c('d', 's', 'd', 'e', 'e', 's'))
 ```
 
+```{r}
+# use all pixels, spatial coordinates, to increase resolution for estimated p
+mcast <- with(joint, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=CAST, dimnames=list(levels(gene),levels(bead))))
+m129 <- with(joint, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=X129, dimnames=list(levels(gene),levels(bead))))
+covariates <- joint%>% dplyr::select(bead, X, Y) %>% distinct() 
+# filter out beads with more than two locations
+dupebeads <- covariates %>% group_by(bead) %>% summarise(n=n()) %>% filter(n>1) %>% pull(bead)
+covariates <- covariates %>% filter(!(bead %in% dupebeads))
+res15.nocelltype <- spase(mcast, m129, covariates, cores=2, df=15, min.umi=400) 
+```
+
 
 ```{r}
-plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=c('Ptgds', 'Nrip3', 'Sst'), save='fig4-autosome')
+#plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=c('Tspan7', 'Plp1', 'Xist', 'Tceal3'), crosshairs=F, save='fig3-')
+result.nocelltype <- res15.nocelltype$result
+result.nocelltype$xchr <- ifelse(result.nocelltype$gene %in% xchr, T, F)
+plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=c('Tspan7', 'Plp1', 'Xist', 'Tceal3'), crosshairs=F)
 ```
 
 ```{r}
-plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=result.nocelltype %>% filter(!xchr) %>% pull(gene), save='SuppFig-autosomal')
+#plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=c('Ptgds', 'Nrip3', 'Sst'), save='fig4-autosome')
+plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=c('Ptgds', 'Nrip3', 'Sst'))
+```
+
+
+```{r}
+#plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=result.nocelltype %>% filter(xchr) %>% pull(gene), save='SuppFig-xchrom')
+plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=result.nocelltype %>% filter(xchr) %>% pull(gene))
 ```
 
 ```{r}
-plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=result.nocelltype %>% filter(xchr) %>% pull(gene), save='SuppFig-xchrom')
+#plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=res15.nocelltype$result %>% filter(xchr!='autosome', !is.na(phi.baseline)) %>% pull(gene), save='all-xchrom',cross.x1=3, cross.x2=3)
+plotSpase(mcast, m129, covariates, res15.nocelltype, coords=predictCoords, genes=(res15.nocelltype$result %>% dplyr::filter(xchr!='autosome', !is.na(phi.baseline)) %>% pull(gene)),cross.x1=3, cross.x2=3)
 ```
 
 ```{r}
@@ -339,15 +442,13 @@ res.xchr <- spase(mcast.xchr, m129.xchr, covariates, cores=1, df=15)
 ```
 
 ```{r}
-plotSpase(mcast.xchr, m129.xchr, covariates, res.xchr, coords=predictCoords, cross.x1=3, cross.x2=3, save='figure3xchrmerged')
+#plotSpase(mcast.xchr, m129.xchr, covariates, res.xchr, coords=predictCoords, cross.x1=3, cross.x2=3, save='figure3xchrmerged')
+plotSpase(mcast.xchr, m129.xchr, covariates, res.xchr, coords=predictCoords, cross.x1=3, cross.x2=3)
 ```
 
 ```{r}
-plotSpase(mcast, m129, covariates, res15.nocelltype, genes=c('Xist', 'Gprasp1', 'Tspan7', 'Plp1'), coords=predictCoords,cross.x1=3, cross.x2=3, save='figure3xchr')
-```
-
-```{r}
-plotSpase(mcast, m129, covariates, res15.nocelltype, genes=c('Xist', 'Gprasp1', 'Tspan7', 'Plp1'), coords=predictCoords,cross.x1=3, cross.x2=3, save='figure3xchr')
+#plotSpase(mcast, m129, covariates, res15.nocelltype, genes=c('Xist', 'Tspan7', 'Plp1', 'Tceal6'), coords=predictCoords,cross.x1=3, cross.x2=3, save='figure3xchr')
+plotSpase(mcast, m129, covariates, res15.nocelltype, genes=c('Xist', 'Tspan7', 'Plp1', 'Tceal3'), coords=predictCoords,cross.x1=3, cross.x2=3)
 ```
 
 ```{r}
@@ -357,13 +458,6 @@ covariates <- singlets%>% dplyr::select(bead, first_type) %>% distinct()
 ss <- scase(mcast, m129, min.cells=300, cores=2)
 ```
 
-```{r, eval = F}
-# only calculate LRT with singlets that have cell type assigned
-mcast <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=CAST, dimnames=list(levels(gene),levels(bead))))
-m129 <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=X129, dimnames=list(levels(gene),levels(bead))))
-covariates <- singlets%>% dplyr::select(bead, X, Y, first_type) %>% distinct() 
-res15_singlets_celltype<-spase(mcast, m129, covariates, cores=2, df=5, min.umi=400)
-```
 
 
 ```{r}
@@ -387,18 +481,18 @@ res15_singlets_celltype<-spase(mcast, m129, covariates, cores=2, df=5, min.umi=4
 #   res.subset <- spase(mcast, m129, covariates, cores=1, df=5, min.umi = 100)
 #   singlets.celltype$chisq.p[i] <- res.subset$result$chisq.p
 # }
-# saveRDS(singlets.celltype, file='ASE_paper_singlets_celltype_results.rds')
-singlets.celltype <- readRDS('ASE_paper_singlets_celltype_results.rds')
+# saveRDS(singlets.celltype, file='../inst/extdata/ASE_paper_singlets_celltype_results.rds')
+singlets.celltype <- readRDS('../inst/extdata/ASE_paper_singlets_celltype_results.rds')
 singlets.celltype$qval <- p.adjust(singlets.celltype$chisq.p, method='BH')
 singlets.celltype <- singlets.celltype %>% arrange(qval) 
 colnames(singlets.celltype) <- c('Gene', 'Cell type', 'Beads', 'UMIs', 'pval', 'qval')
-xtable(singlets.celltype %>% filter(qval<0.5),display=c('d','s', 's', 'd', 'd', 'e', 'e'))
+xtable(singlets.celltype %>% filter(qval<0.01),display=c('d','s', 's', 'd', 'd', 'e', 'e'))
 ```
 
 
 ```{r}
 # investigate/plot cell type specific gradients
-df<-10
+df<-5
 singlets.subset <- singlets %>%
   filter(gene=='Tspan7', first_type=='Astrocyte') %>%
   mutate(gene=factor(gene), first_type=factor(first_type), bead=factor(bead)) 
@@ -406,13 +500,14 @@ mcast <- with(singlets.subset, sparseMatrix(i=as.numeric(gene), j=as.numeric(bea
 m129 <- with(singlets.subset, sparseMatrix(i=as.numeric(gene), j=as.numeric(bead), x=X129,dimnames=list(levels(gene),levels(bead))))
 covariates <- singlets.subset%>% dplyr::select(bead, X, Y) %>% distinct()
 res.subset <- spase(mcast, m129, covariates, cores=1, df=df, min.umi = 100)
-plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F, save=paste0('tspan7-Astrocyte','-df-',df))
+#plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F, save=paste0('tspan7-Astrocyte','-df-',df))
+plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F)
 ```
 
 
 ```{r}
 # investigate/plot cell type specific gradients
-df<-25
+df<-15
 singlets.subset <- singlets %>%
   filter(gene=='Plp1', first_type=='Oligodendrocyte') %>%
   mutate(gene=factor(gene), first_type=factor(first_type), bead=factor(bead)) 
@@ -420,8 +515,8 @@ mcast <- with(singlets.subset, sparseMatrix(i=as.numeric(gene), j=as.numeric(bea
 m129 <- with(singlets.subset, sparseMatrix(i=as.numeric(gene), j=as.numeric(bead), x=X129,dimnames=list(levels(gene),levels(bead))))
 covariates <- singlets.subset%>% dplyr::select(bead, X, Y) %>% distinct()
 res.subset <- spase(mcast, m129, covariates, cores=1, df=df, min.umi = 100)
-plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F, save=paste0('plp1-',plp1$`Cell type`[i],'-df-',df))
-
+#plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F, save=paste0('plp1-oligodendrocyte-df-',df))
+plotSpase(mcast, m129, covariates, res.subset, coords=predictCoords, crosshairs=F)
 ```
 
 
@@ -484,7 +579,7 @@ for (i in 1:nrow(singlets.CA1)) {
 ```{r}
 # get individual CI results for each cell type using scase
 # which ones are significant at qval<0.01
-signif0.01 <- res15.nocelltype$result %>% arrange(qval) %>% filter(qval<0.01)
+signif0.01 <- res10.nocelltype$result %>% arrange(qval) %>% filter(qval<0.01)
 signif0.01$xchr <- ifelse(signif0.01$gene%in%xchr, T, F)
 mcast <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=CAST, dimnames=list(levels(gene),levels(bead))))
 m129 <- with(singlets, sparseMatrix(i = as.numeric(gene), j = as.numeric(bead), x=X129, dimnames=list(levels(gene),levels(bead))))
@@ -516,7 +611,7 @@ res_celltype_sc %>%
   theme(axis.text.x = element_text(angle=45, hjust=1)) +
   xlab('Estimated p maternal') +
   ylab('Total UMI')
-ggsave('figure4-celltype-cis.png', height=8, width=7)
+#ggsave('figure4-celltype-cis.png', height=8, width=7)
 ```
 
 ```{r}
@@ -533,7 +628,7 @@ res_celltype_sc %>%
   theme(axis.text.x = element_text(angle=45, hjust=1))+
   xlab('Estimated p maternal') +
   ylab('Total UMI')
-ggsave('figure4-celltype-cis-top.png', height=3, width=3)
+#ggsave('figure4-celltype-cis-top.png', height=3, width=5)
 ```
 
 ```{r, eval=F}
@@ -560,8 +655,8 @@ res_celltype_hpf %>%
   theme_bw()
 ```
 
-```{r}
-# figure 4x, plotting the non-xchr cell type points with CIs
+```{r, eval=F}
+# plotting the non-xchr cell type points with CIs
 res_celltype_sc %>%
   ggplot(aes(y = gene)) +
   geom_errorbarh(aes(xmin = p.low, xmax = p.high, color = fill),
@@ -583,32 +678,7 @@ ggsave(filename='figure4b.png', height=4, width=1.5, units='in')
 ```
 
 ```{r}
-# just plot for ptgds
-sccov <- covariates[,c(1,4)]
-sccov$first_type <- as.factor(sccov$first_type)
-res_celltype_ptgds <- scase(mcast, m129, sccov, cores=2, genes = 'Ptgds')
-```
-
-```{r}
-res_celltype_ptgds %>%
-  mutate(p.low = expit(logit.p-2*logit.p.sd),
-         p.high = expit(logit.p+2*logit.p.sd),
-         p = expit(logit.p)) %>%
-  left_join(mypal, by=c('lvl'='first_type')) %>%
-  ggplot() +
-  geom_point(aes(x = p, y = totalUMI, color=fill),size=3) +
-  geom_errorbarh(aes(xmin = p.low, xmax = p.high, y=totalUMI, color = fill)) +
-  scale_x_continuous(limits=c(0,1),breaks=c(0,0.25,0.50,0.75,1)) +
-  scale_color_identity() +
-  xlab('estimated p maternal') +
-  ylab('total UMI') +
-  geom_vline(xintercept=0.5, lty='dashed',color='grey') +
-  theme_classic()
-ggsave('figure4b-ptgds-ci.png', height=2.5, width=2.5, units='in')
-```
-
-```{r}
-# plot only oligodendrocytesfor Ptgds
+# plot only oligodendrocytes for Ptgds
 both.idx <- which(covariates$first_type%in%c('Oligodendrocyte','Endothelial_Tip'))
 #both.idx <- c(both.idx, grep('Endothelial', covariates$first_type))
 both.beads <- covariates$bead[both.idx]
@@ -629,11 +699,11 @@ ggplot(cbind(data.frame(y=y, total=total), covari),
   xlim(c(1,6)) +
   xlab('x1') +
   ylab('x2') +
-  theme_classic()
-ggsave('figure4ptgds-oligo.png', height=3,width=4)
+  theme_classic() 
+#ggsave('bottom legend.png', height=3,width=7)
 ```
 
-```{r}
+```{r, eval=F}
 # plot astrocytes for Nrip3
 inter.idx <- which(covariates$first_type%in%c('CA1', 'CA3', 'Denate', 'Interneuron','Astrocyte'))
 inter.beads <- covariates$bead[inter.idx]
@@ -656,7 +726,7 @@ ggplot(cbind(data.frame(y=y, total=total), covari),
 ggsave('figure4nrip-astrocyte.png', height=3,width=4)
 ```
 
-```{r}
+```{r, eval=F}
 # plot interneurons for Sst
 inter.idx <- which(grepl('Interneuron', covariates$first_type))
 inter.beads <- covariates$bead[inter.idx]
@@ -677,26 +747,4 @@ ggplot(cbind(data.frame(y=y, total=total), covari),
   ylab('x2') +
   theme_classic() 
 ggsave('figure4sst-inter.png', height=3,width=4)
-```
-
-```{r}
-# calculate number significant at q=0.1 before and after including cell type
-# also fraction of them that are xchr
-# before cell type
-res15.nocelltype$result %>%
-  arrange(qval) %>%
-  filter(qval <= 0.01) %>%
-  filter(totalUMI>=500) %>%
-  left_join(data.frame(gene=xchr, type='xchr')) %>%
-  group_by(type) %>%
-  summarise(count=n())
-```
-
-```{r}
-# after cell type
-res15.celltype$result %>%
-  arrange(qval) %>%
-  filter(qval <= 0.1) %>%
-  filter(totalUMI>=500) %>%
-  left_join(data.frame(gene=xchr, type='xchr')) 
 ```

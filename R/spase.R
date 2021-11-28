@@ -100,6 +100,7 @@ spase <- function(matrix1, matrix2, covariates, method = 'betabinomial', df = 5,
     if (!all(genes %in% rownames(matrix1))) {
       stop('not all specified genes are in the matrix after thresholding')
     }
+    message(paste('running on', length(genes), 'user-specified genes'))
   }
   baseline.cov <- ''
   num.cov <- ncol(covariates)
@@ -218,14 +219,14 @@ spase <- function(matrix1, matrix2, covariates, method = 'betabinomial', df = 5,
         if (length(y) > min.pixels) {
           baseline.covari <- covari[,-c(1:3,spline.idx),drop=F]
           if (ncol(baseline.covari)>1) {
-            mm <- model.matrix(~.-1, data=baseline.covari,
+            stop('more than one factor covariate not yet implemented')
+            mm <- model.matrix(~., data=baseline.covari,
                                contrasts.arg=lapply(baseline.covari,contrasts,
                                                     contrasts=FALSE))
           } else {
             cov.name <- colnames(baseline.covari)[1]
-            mm <- model.matrix(~.-1, data=baseline.covari,
-                               contrasts.arg=list(cov.name=
-                                                    diag(nlevels(baseline.covari[,1]))))
+            baseline.covari[,1] <- factor(baseline.covari[,1])
+            mm <- model.matrix(~., data=baseline.covari)
           }
           empties <- which(colSums(mm)==0)
           if (length(empties)>0) {
@@ -249,11 +250,10 @@ spase <- function(matrix1, matrix2, covariates, method = 'betabinomial', df = 5,
                                         chisq.p = NA, flag = 'min pixels'), fits=el))
         }
       }
-      not.intercept <- which(colSums(covari[,spline.idx]==1) != nrow(covari))
       if (is.null(mm)) {
         mm <- as.matrix(covari[,spline.idx])
       } else {
-        mm <- as.matrix(cbind(data.frame(covari[,spline.idx][,not.intercept]),mm))
+        mm <- as.matrix(cbind(data.frame(covari[,spline.idx]),mm[,-1]))
       }
       if (method == 'betabinomial') {
         smooth.model <- betabinase(y, total, mm)
