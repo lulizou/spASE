@@ -95,9 +95,14 @@ scase <- function(matrix1, matrix2, covariates=NULL, method='betabinomial',
   } else {
     message('using user-supplied genes')
   }
-  pb <- txtProgressBar(max = length(genes), style = 3)
-  progress <- function(n) setTxtProgressBar(pb, n)
-  opts <- list(progress = progress)
+  if (verbose) {
+    pb <- txtProgressBar(max = length(genes), style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  } else {
+    opts <- list()
+  }
+
   result <- foreach(
     i = 1:length(genes),
     .combine = rbind,

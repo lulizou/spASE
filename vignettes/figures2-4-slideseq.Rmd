@@ -287,7 +287,7 @@ dd %>%
 
 ```{r}
 dd %>%
-  mutate(p.value.bin = cut(chisq.p, breaks=seq(0,1,0.2))) %>%
+  mutate(p.value.bin = cut(chisq.p, breaks=seq(0,1,0.25))) %>%
   group_by(xchr, p.value.bin) %>%
   summarise(num.genes = n()) %>%
   filter(!is.na(p.value.bin)) %>%
