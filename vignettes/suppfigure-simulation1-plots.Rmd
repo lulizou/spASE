@@ -1,0 +1,124 @@
+---
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(wesanderson)
+```
+
+```{r}
+myfiles <- list.files(pattern='simulations-spatial-gradient-params')
+df <- NULL
+for (f in myfiles) {
+  load(f)
+  if (is.null(df)) {
+    df <- bb.results
+  } else {
+    df <- bind_rows(df, bb.results)
+  }
+}
+```
+
+```{r}
+df %>%
+  filter(phi!=0.01) %>%
+  filter(ncell < 600) %>%
+  group_by(numi, ncell, phi) %>%
+  summarise(true.pos = sum(true.pos), false.neg = sum(false.neg), total.pos = sum(total.pos)) %>%
+  ggplot(aes(x = log2(numi), y = true.pos/total.pos)) +
+  geom_line(aes(color=factor(phi))) +
+  scale_color_manual(name='Overdispersion',values=wes_palette('Zissou1',5,type='discrete')[c(1,2,4,5)]) +
+  facet_wrap(ncell ~ ., nrow=1) +
+  theme_bw() +
+  xlab('log2(number of UMI per pixel)') +
+  ylab('Power')
+ggsave('sim1-power.png', height=2, width=6)
+```
+
+
+```{r}
+myfiles <- list.files(pattern='simulations-spatial-gradient-null-params')
+df <- NULL
+pval.res <- NULL
+for (f in myfiles) {
+  load(f)
+  if (is.null(df)) {
+    df <- bb.results
+  } else {
+    df <- bind_rows(df, bb.results)
+  }
+}
+```
+
+```{r}
+df %>%
+  filter(phi!=0.01,ncell<1000,numi<=50) %>%
+  group_by(numi, ncell, phi) %>%
+  summarise(false.pos = sum(false.pos), true.neg = sum(true.neg), total.neg = sum(total.neg)) %>%
+  ggplot(aes(x = numi, y = false.pos/total.neg)) +
+  geom_line(aes(color=factor(phi))) +
+  scale_color_manual(name='Overdispersion',values=wes_palette('Zissou1',5,type='discrete')[c(1,2,4,5)]) +
+  facet_wrap(ncell ~ ., nrow=1) +
+  theme_bw() +
+  xlab('Number of UMI per pixel') +
+  ylab('False positive rate')
+ggsave('sim1-fpr-od.png', height=2, width=6)
+```
+
+
+```{r}
+df %>%
+  filter(ncell<1000, phi!=0.01, numi<=50) %>%
+  group_by(numi, ncell, phi) %>%
+  summarise(false.pos = sum(false.pos), true.neg = sum(true.neg), total.neg = sum(total.neg)) %>%
+  ggplot(aes(x = ncell, y = false.pos/total.neg)) +
+  geom_boxplot(aes(group=ncell)) +
+  theme_classic() +
+  geom_hline(yintercept=0.01, lty='dashed', color='red') +
+  xlab('Number of pixels') +
+  ylab('False positive rate')
+ggsave('sim1-fpr.png', height=2, width=2)
+```
+
+
+```{r}
+# assess pvalues
+myfiles.filter <- myfiles[grepl('-17.RData',myfiles)] # just take a random one for each ncell
+pval.res <- NULL
+ncell.label <- NULL
+myunif <- NULL
+for (f in myfiles.filter) {
+  load(f)
+  vals <- sort(pval.results[pval.results>0])
+  if (is.null(pval.res)) {
+    pval.res <- vals
+    ncell.label <- rep(bb.results$ncell[1], length(vals))
+    myunif <- sort(runif(length(vals), 0, 1))
+  } else {
+    pval.res <- c(pval.res, vals)
+    ncell.label <- c(ncell.label, rep(bb.results$ncell[1], length(vals)))
+    myunif <- c(myunif, sort(runif(length(vals), 0, 1)))
+  }
+}
+```
+
+```{r}
+data.frame(obs.pval = pval.res, expected.pval = myunif,
+                  ncell = ncell.label) %>%
+  filter(ncell < 1000) %>%
+  ggplot(aes(x = obs.pval, y = expected.pval)) +
+  geom_point(size=0.1) +
+  geom_abline(slope=1,intercept=0,lty='dashed',color='red') +
+  facet_wrap(ncell ~ ., nrow=1) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  xlab('Observed p-value') +
+  ylab('Expected p-value')
+ggsave('sim1-pvals.png', height=2, width=5)
+```
+
+
+

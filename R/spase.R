@@ -143,9 +143,13 @@ spase <- function(matrix1, matrix2, covariates, method = 'betabinomial', df = 5,
   if (length(genes)==0) {
     stop('no genes passed minimum thresholds. try lowering them')
   }
-  pb <- txtProgressBar(max = length(genes), style = 3)
-  progress <- function(n) setTxtProgressBar(pb, n)
-  opts <- list(progress = progress)
+  if (verbose) {
+    pb <- txtProgressBar(max = length(genes), style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  } else {
+    opts <- list()
+  }
   result <- foreach(
     i = 1:length(genes),
     .combine = function(l1, l2) {

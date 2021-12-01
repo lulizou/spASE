@@ -1,6 +1,6 @@
 Package: spASE
 Type: Package
-Title: Detecting Allele-Specific Expression in Single-Cell and Spatial Transcriptomics
+Title: Detecting Allele-Specific Expression in Spatial Transcriptomics
 Version: 0.1.0
 Author: Luli S. Zou
 Maintainer: Luli S. Zou <zou@g.harvard.edu>
