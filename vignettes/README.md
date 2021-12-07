@@ -1,5 +1,7 @@
 ## Description of files
 
+* `demo.Rmd` - demonstration of the method and plotting features using a small
+simulated data set.
 * `figures2-4-slideseq.Rmd` - for reproducing all of the main figures 
 involving the Slide-seqV2 data in this study. See the code and output 
 [here](https://rawcdn.githack.com/lulizou/spASE/5f42e663722a57fa360d36690661991833a3a6d5/vignettes/figures2-4-slideseq%202.html).
