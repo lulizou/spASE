@@ -1,0 +1,52 @@
+---
+title: "Demo Vignette"
+output: html_document
+---
+
+Example of running spASE on some simulated data.
+
+```{r setup, include=FALSE}
+library(spASE)
+```
+
+```{r null-genes}
+# Null simulation parameters
+ngenes <- 100
+numi <- 5
+p <- 0.5
+phi <- 0.2
+a <- p*(1-phi)/phi
+b <- (1-phi)*(1-p)/phi
+  
+# Simulate raw ASE data in a square
+coords <- expand.grid(seq(1,5,0.1), seq(1,5,0.1))
+npixels <- nrow(coords)
+
+matrix1 <- matrix(nrow = ngenes, ncol = npixels)
+matrix2 <- matrix(nrow = ngenes, ncol = npixels)
+
+for (i in 1:ngenes) {
+  lambda.p <- rbeta(npixels, a, b)
+  matrix1[i,] <- rbinom(npixels, size=numi, prob=lambda.p)
+  matrix2[i,] <- numi - matrix1[i,]
+}
+
+rownames(matrix1) <- rownames(matrix2) <- paste0('gene', seq(1,ngenes))
+colnames(matrix1) <- colnames(matrix2) <- paste0('pixel', seq(1,npixels))
+
+covariates <- cbind(data.frame(pixel = paste0('pixel',seq(1,npixels))),
+                    coords)
+
+results <- spase(matrix1, matrix2, covariates, cores=1)
+```
+
+```{r}
+# view the results data frame
+results$result %>% arrange(qval)
+```
+
+
+```{r}
+# plot the results for the first gene
+plotSpase(matrix1, matrix2, covariates, results, genes = 'gene28', coords=coords)
+```

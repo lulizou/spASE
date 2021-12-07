@@ -27,3 +27,5 @@ Then the same information as well as the result of `spase` can be used in
 of those functions, and 2D z-score plots.
 
 Code to reproduce figures and results can be found in the vignettes folder.
+See `demo.Rmd` for a demonstration of the method and plotting features using
+a small simulated data set.
