@@ -3,6 +3,17 @@
 .RData
 .Ruserdata
 vignettes/smartseq3-analysis.Rmd
+analysis/*rds
+analysis/*RData
+analysis/*err
+analysis/*out
 inst/extdata/*RData
 inst/extdata/*rds
 vignettes/*png
+inst/extdata/slideseq/*
+inst/extdata/visium/*
+analysis/02_global_ASE_results_cache/gfm/*
+analysis/*pdf
+analysis/*png
+analysis/figures/*pdf
+analysis/figures/*png

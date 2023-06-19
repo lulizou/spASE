@@ -10,4 +10,4 @@ Description: Fits a beta-binomial model to single-cell and spatial data to
 License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3

@@ -1,0 +1,524 @@
+---
+title: "Overall results summary figures"
+format: 
+  gfm:
+    toc: true
+editor: source
+execute:
+  cache: true
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(viridis)
+library(gplots)
+THRESHOLD = 500
+```
+
+
+
+
+
+```{r}
+# Read in gencode to grab xchr genes
+gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+xchr_genes <- c(xchr_genes, 'Bex3')
+```
+
+
+# Overall p
+
+```{r}
+hippo_1 <- readRDS('betabin_results_overall_bias_hippo_1.rds')
+hippo_2 <- readRDS('betabin_results_overall_bias_hippo_2.rds')
+hippo_3 <- readRDS('betabin_results_overall_bias_hippo_3_nm3.rds')
+cere_4 <- readRDS('betabin_results_overall_bias_cere_visium.rds')
+cere_3 <- readRDS('betabin_results_overall_bias_cere_4_nm3.rds')
+```
+
+
+```{r}
+df <- hippo_1 |> 
+  filter(totalUMI > THRESHOLD) |>
+  mutate(hippo_1 = p) |>
+  select(gene, hippo_1) |>
+  left_join(hippo_2 |>
+              filter(totalUMI > THRESHOLD) |>
+              mutate(hippo_2 = p) |>
+              select(gene, hippo_2)) |>
+  left_join(hippo_3 |>
+              filter(totalUMI > THRESHOLD) |>
+              mutate(hippo_3 = p) |>
+              select(gene, hippo_3)) |>
+  left_join(cere_3 |>
+              filter(totalUMI > THRESHOLD) |>
+              mutate(cere_3 = p) |>
+              select(gene, cere_3)) |>
+  left_join(cere_4 |>
+              filter(totalUMI > THRESHOLD) |>
+              mutate(cere_4 = p) |>
+              select(gene, cere_4)) |>
+  filter(!is.na(hippo_1), !is.na(hippo_2), !is.na(hippo_3), !is.na(cere_3), !is.na(cere_4)) |>
+  mutate(xchr = ifelse(gene %in% xchr_genes, 1, 0)) |>
+  filter(!grepl('mt-', gene))
+```
+
+
+```{r}
+mm <- as.matrix(df[,2:6])
+rownames(mm) <- df$gene
+colnames(mm) <- c('Hippo 1', 'Hippo 2', 'Hippo 3', 'Cere 3', 'Cere 4')
+pdf('figures/03_heatmap.pdf', height=8, width=4)
+heatmap.2(mm, scale='none', col= bluered(100), trace='none', density.info='none', breaks = seq(0,1,length.out=101), lhei=c(1,6), cexRow = 0.5, cexCol = 0.5)
+dev.off()
+```
+
+
+## Estimated p pairs
+
+```{r}
+panel.hist <- function(x, ...)
+{
+  usr <- par("usr")
+  par(usr = c(usr[1:2], 0, 1.5) )
+  h <- hist(x, plot = FALSE, breaks = 50)
+  breaks <- h$breaks; nB <- length(breaks)
+  y <- h$counts; y <- y/max(y)
+  rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
+}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y))^2
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor)
+}
+pdf('figures/03_pair_scatter.pdf', height=6, width=6)
+pairs(df |> filter(xchr == 0) |> select(-gene, -xchr) |> dplyr::rename(`Hippo 1` = hippo_1, `Hippo 2` = hippo_2, `Hippo 3` = hippo_3, `Cere 3` = cere_3, `Cere 4` = cere_4) |> as.matrix(),
+      upper.panel = panel.cor,
+      diag.panel = panel.hist)
+dev.off()
+```
+
+
+# Overall p bias
+
+```{r}
+extract_mat_pat_overall <- function(spase_res, qthresh = 0.01) {
+  dd <- spase_res |> 
+    filter(qval < qthresh | grepl('monoallelic', flag)) |>
+    mutate(bias = case_when(
+      p > 0.6 ~ 'maternal',
+      p < 0.4 ~ 'paternal',
+      flag == 'monoallelic1' ~ 'maternal',
+      flag == 'monoallelic2' ~ 'paternal',
+      T ~ 'low_bias'
+    ))
+  dd$xchr <- ifelse(dd$gene %in% xchr_genes, T, F)
+  return(dd)
+}
+hippo1_overall <- extract_mat_pat_overall(hippo_1)
+
+hippo2_overall <- extract_mat_pat_overall(hippo_2)
+
+hippo3_overall <- extract_mat_pat_overall(hippo_3)
+
+cere4_overall <- extract_mat_pat_overall(cere_4)
+
+cere3_overall <- extract_mat_pat_overall(cere_3)
+```
+
+# Within cell type p bias
+
+```{r}
+load('cside_spase_combined_cere_3_df_5.RData')
+load('cside_spase_combined_cere_4_df_5.RData')
+load('cside_spase_combined_hippo_1_df_5.RData')
+load('cside_spase_combined_hippo_2_df_5.RData')
+load('cside_spase_combined_hippo_3_df_5.RData')
+```
+
+```{r}
+extract_ct_genes <- function(sig_gene_list) {
+  return(unique(unname(unlist(lapply(sig_gene_list, rownames)))))
+}
+
+extract_mat_pat_ct <- function(sig_gene_list) {
+  res <- NULL
+  for (i in seq_along(sig_gene_list)) {
+    dd <- sig_gene_list[[i]]
+    ct <- names(sig_gene_list)[i]
+    dd$gene <- rownames(dd)
+    rownames(dd) <- NULL
+    dd$cell_type <- ct
+    dd$bias <- ifelse(dd$log_fc > 0, 'maternal', 'paternal')
+    dd$xchr <- ifelse(dd$gene %in% xchr_genes, T, F)
+    if (is.null(res)) {
+      res <- dd
+    } else {
+      res <- bind_rows(res, dd)
+    }
+  }
+  res <- res |> select(gene, xchr, cell_type, bias, Z_score, log_fc, se, p_val, mean_0, mean_1, sd_0, sd_1)
+  return(res)
+}
+```
+
+```{r}
+hippo1_ct <- extract_mat_pat_ct(hippo1_intercept@spase_results$sig_gene_list)
+
+hippo2_ct <- extract_mat_pat_ct(hippo2_intercept@spase_results$sig_gene_list)
+
+hippo3_ct <- extract_mat_pat_ct(hippo3_intercept@spase_results$sig_gene_list)
+
+cere4_ct <- extract_mat_pat_ct(cere3_intercept@spase_results$sig_gene_list)
+
+cere3_ct <- extract_mat_pat_ct(cere4_intercept@spase_results$sig_gene_list)
+```
+
+
+# Overall spatial patterns
+
+```{r}
+hippo_2 <- readRDS('spasev1_results_hippo_2.rds')
+hippo_1_combined <- readRDS('spasev1_results_global_combined_hippo_1.rds')
+hippo_3_combined <- readRDS('spasev1_results_global_combined_hippo_3_nm3.rds')
+cere_3_combined <- readRDS('spasev1_results_global_combined_cere_4_nm3.rds')
+cere_4 <- readRDS('spasev1_results_visium_cere_3.rds')
+```
+
+```{r}
+extract_spatial_overall <- function(spase_res, qthresh = 0.01) {
+  dd <- spase_res |> filter(qval < qthresh)
+  dd$xchr <- ifelse(dd$gene %in% xchr_genes, T, F)
+  return(dd)
+}
+
+hippo1_sp_overall <- extract_spatial_overall(hippo_1_combined$result)
+
+hippo2_sp_overall <- extract_spatial_overall(hippo_2$result)
+
+hippo3_sp_overall <- extract_spatial_overall(hippo_3_combined$result)
+
+cere3_sp_overall <- extract_spatial_overall(cere_3_combined$result)
+
+cere4_sp_overall <- extract_spatial_overall(cere_4$result)
+```
+
+
+# Within cell type spatial patterns
+
+```{r}
+hippo_1_spct_res <- readRDS('cside_spase_combined_hippo_1_df_5.rds')
+hippo_2_spct_res <- readRDS('cside_spase_combined_hippo_2_df_5.rds')
+hippo_3_spct_res <- readRDS('cside_spase_combined_hippo_3_df_5.rds')
+cere_3_spct_res <- readRDS('cside_spase_combined_cere_4_df_5.rds')
+cere_4_spct_res <- readRDS('cside_spase_combined_cere_3_df_5.rds')
+```
+
+```{r}
+extract_spatial_ct <- function(sig_gene_list) {
+  res <- NULL
+  for (i in seq_along(sig_gene_list)) {
+    dd <- sig_gene_list[[i]]
+    if (nrow(dd) == 0) {
+      next
+    }
+    ct <- names(sig_gene_list)[i]
+    dd$gene <- rownames(dd)
+    rownames(dd) <- NULL
+    dd$cell_type <- ct
+    dd$xchr <- ifelse(dd$gene %in% xchr_genes, T, F)
+    if (is.null(res)) {
+      res <- dd
+    } else {
+      res <- bind_rows(res, dd)
+    }
+  }
+  return(res)
+}
+
+
+hippo1_sp_ct <- extract_spatial_ct(hippo_1_spct_res@spase_results$sig_gene_list)
+
+hippo2_sp_ct <- extract_spatial_ct(hippo_2_spct_res@spase_results$sig_gene_list)
+
+hippo3_sp_ct <- extract_spatial_ct(hippo_3_spct_res@spase_results$sig_gene_list)
+
+cere3_sp_ct <- extract_spatial_ct(cere_3_spct_res@spase_results$sig_gene_list)
+
+cere4_sp_ct <- extract_spatial_ct(cere_4_spct_res@spase_results$sig_gene_list)
+
+hippo1_sp_ct_all <- extract_spatial_ct(hippo_1_spct_res@spase_results$all_gene_list)
+
+hippo2_sp_ct_all <- extract_spatial_ct(hippo_2_spct_res@spase_results$all_gene_list)
+
+hippo3_sp_ct_all <- extract_spatial_ct(hippo_3_spct_res@spase_results$all_gene_list)
+
+cere3_sp_ct_all <- extract_spatial_ct(cere_3_spct_res@spase_results$all_gene_list)
+
+cere4_sp_ct_all <- extract_spatial_ct(cere_4_spct_res@spase_results$all_gene_list)
+```
+
+```{r}
+format_lengths <- function(c1, c2) {
+  return(paste0(prettyNum(length(c1), big.mark=','), ' (', prettyNum(length(c2), big.mark=','), ')'))
+}
+extract_info_for_table <- function(all, p_bias, ct_p_bias, sp, sp_ct, sp_ct_all) {
+  all$xchr <- ifelse(all$gene %in% xchr_genes, T, F)
+  all_genes_autosome <- all |> filter(!xchr) |> pull(gene)
+  rn <- rownames(sp_ct_all@originalSpatialRNA@maternalCounts[rowSums(sp_ct_all@originalSpatialRNA@maternalCounts) + rowSums(sp_ct_all@originalSpatialRNA@paternalCounts) > 128,])
+  rn_autosome <- rn[!rn %in% xchr_genes]
+  rn_xchr <- rn[rn %in% xchr_genes]
+  all_genes_autosome <- unique(c(all_genes_autosome, rn_autosome))
+  all_genes_xchr <- all |> filter(xchr) |> pull(gene)
+  all_genes_xchr <- unique(c(all_genes_xchr, rn_xchr))
+  mat_genes_autosome <- p_bias |> filter(!xchr, bias == 'maternal') |> pull(gene)
+  pat_genes_autosome <- p_bias |> filter(!xchr, bias == 'paternal') |> pull(gene)
+  mat_genes_xchr <- p_bias |> filter(xchr, bias == 'maternal') |> pull(gene)
+  pat_genes_xchr <- p_bias |> filter(xchr, bias == 'paternal') |> pull(gene)
+  mat_genes_ct_autosome <- ct_p_bias |> filter(!xchr, bias == 'maternal') |> pull(gene) |> unique()
+  pat_genes_ct_autosome <- ct_p_bias |> filter(!xchr, bias == 'paternal') |> pull(gene)|> unique()
+  mat_genes_ct_xchr <- ct_p_bias |> filter(xchr, bias == 'maternal') |> pull(gene)|> unique()
+  pat_genes_ct_xchr <- ct_p_bias |> filter(xchr, bias == 'paternal') |> pull(gene)|> unique()
+  all_spatial_autosome <- sp |> filter(!xchr) |> pull(gene)
+  all_spatial_xchr <- sp |> filter(xchr) |> pull(gene)
+  if (is.null(sp_ct)) {
+    ct_spatial_autosome <- c()
+    ct_spatial_xchr <- c()
+  } else {
+    ct_spatial_autosome <- sp_ct |> filter(!xchr) |> pull(gene) |> unique()
+    ct_spatial_xchr <- sp_ct |> filter(xchr) |> pull(gene) |> unique()
+  }
+  no_sig_ase_autosome <- all_genes_autosome[!all_genes_autosome %in% c(mat_genes_autosome, pat_genes_autosome, mat_genes_ct_autosome, pat_genes_ct_autosome, all_spatial_autosome, ct_spatial_autosome)]
+  no_sig_ase_xchr <- all_genes_xchr[!all_genes_xchr %in% c(mat_genes_xchr, pat_genes_xchr, mat_genes_ct_xchr, pat_genes_ct_xchr, all_spatial_xchr, ct_spatial_xchr)]
+  return(list(
+    col = c(
+      format_lengths(no_sig_ase_autosome, no_sig_ase_xchr),
+      format_lengths(mat_genes_autosome, mat_genes_xchr),
+      format_lengths(pat_genes_autosome, pat_genes_xchr),
+      format_lengths(mat_genes_ct_autosome, mat_genes_ct_xchr),
+      format_lengths(pat_genes_ct_autosome, pat_genes_ct_xchr),
+      format_lengths(all_spatial_autosome, all_spatial_xchr),
+      format_lengths(ct_spatial_autosome, ct_spatial_xchr),
+      format_lengths(all_genes_autosome, all_genes_xchr)
+    ),
+    nsa = no_sig_ase_autosome, nsx = no_sig_ase_xchr,
+    mga = mat_genes_autosome, mgx = mat_genes_xchr, pga = pat_genes_autosome, pgx = pat_genes_xchr, mgca = mat_genes_ct_autosome, mgcx = mat_genes_ct_xchr, pgca = pat_genes_ct_autosome, pgcx = pat_genes_ct_xchr, asa = all_spatial_autosome, asx = all_spatial_xchr, cta = ct_spatial_autosome, ctx = ct_spatial_xchr,
+    aga = all_genes_autosome, agx = all_genes_xchr
+  ))
+}
+
+```
+
+```{r}
+hippo_1 <- readRDS('betabin_results_overall_bias_hippo_1.rds')
+hippo_2 <- readRDS('betabin_results_overall_bias_hippo_2.rds')
+hippo_3 <- readRDS('betabin_results_overall_bias_hippo_3_nm3.rds')
+cere_4 <- readRDS('betabin_results_overall_bias_cere_visium.rds')
+cere_3 <- readRDS('betabin_results_overall_bias_cere_4_nm3.rds')
+```
+
+```{r}
+h1 <- extract_info_for_table(hippo_1, hippo1_overall, hippo1_ct, hippo1_sp_overall, hippo1_sp_ct, hippo_1_spct_res)
+h2 <- extract_info_for_table(hippo_2, hippo2_overall, hippo2_ct, hippo2_sp_overall, hippo2_sp_ct, hippo_2_spct_res)
+h3 <- extract_info_for_table(hippo_3, hippo3_overall, hippo3_ct, hippo3_sp_overall, hippo3_sp_ct, hippo_3_spct_res)
+c3 <- extract_info_for_table(cere_3, cere3_overall, cere3_ct, cere3_sp_overall, cere3_sp_ct, cere_3_spct_res)
+c4 <- extract_info_for_table(cere_4, cere4_overall, cere4_ct, cere4_sp_overall, cere4_sp_ct, cere_4_spct_res)
+
+# make the overlap columns
+c_overlap <- c(
+  format_lengths(c3$nsa[c3$nsa %in% c4$nsa], c3$nsx[c3$nsx %in% c4$nsx]),
+  format_lengths(c3$mga[c3$mga %in% c4$mga], c3$mgx[c3$mgx %in% c4$mgx]),
+  format_lengths(c3$pga[c3$pga %in% c4$pga], c3$pgx[c3$pgx %in% c4$pgx]),
+  format_lengths(c3$mgca[c3$mgca %in% c4$mgca], c3$mgcx[c3$mgcx %in% c4$mgcx]),
+  format_lengths(c3$pgca[c3$pgca %in% c4$pgca], c3$pgcx[c3$pgcx %in% c4$pgcx]),
+  format_lengths(c3$asa[c3$asa %in% c4$asa], c3$asx[c3$asx %in% c4$asx]),
+  format_lengths(c3$cta[c3$cta %in% c4$cta], c3$ctx[c3$ctx %in% c4$ctx]),
+  format_lengths(c3$aga[c3$aga %in% c4$aga], c3$agx[c3$agx %in% c4$agx])
+)
+
+h_overlap12 <- c(
+  format_lengths(h1$nsa[h1$nsa %in% h2$nsa], h1$nsx[h1$nsx %in% h2$nsx]),
+  format_lengths(h1$mga[h1$mga %in% h2$mga], h1$mgx[h1$mgx %in% h2$mgx]),
+  format_lengths(h1$pga[h1$pga %in% h2$pga], h1$pgx[h1$pgx %in% h2$pgx]),
+  format_lengths(h1$mgca[h1$mgca %in% h2$mgca], h1$mgcx[h1$mgcx %in% h2$mgcx]),
+  format_lengths(h1$pgca[h1$pgca %in% h2$pgca], h1$pgcx[h1$pgcx %in% h2$pgcx]),
+  format_lengths(h1$asa[h1$asa %in% h2$asa], h1$asx[h1$asx %in% h2$asx]),
+  format_lengths(h1$cta[h1$cta %in% h2$cta], h1$ctx[h1$ctx %in% h2$ctx]),
+  format_lengths(h1$aga[h1$aga %in% h2$aga], h1$agx[h1$agx %in% h2$agx])
+)
+
+h_overlap13 <- c(
+  format_lengths(h1$nsa[h1$nsa %in% h3$nsa], h1$nsx[h1$nsx %in% h3$nsx]),
+  format_lengths(h1$mga[h1$mga %in% h3$mga], h1$mgx[h1$mgx %in% h3$mgx]),
+  format_lengths(h1$pga[h1$pga %in% h3$pga], h1$pgx[h1$pgx %in% h3$pgx]),
+  format_lengths(h1$mgca[h1$mgca %in% h3$mgca], h1$mgcx[ h1$mgcx %in% h3$mgcx]),
+  format_lengths(h1$pgca[h1$pgca %in% h3$pgca], h1$pgcx[h1$pgcx %in% h3$pgcx]),
+  format_lengths(h1$asa[h1$asa %in% h3$asa], h1$asx[h1$asx %in% h3$asx]),
+  format_lengths(h1$cta[h1$cta %in% h3$cta], h1$ctx[h1$ctx %in% h3$ctx]),
+  format_lengths(h1$aga[h1$aga %in% h3$aga], h1$agx[h1$agx %in% h3$agx])
+)
+```
+
+
+# Table 1
+
+```{r}
+t1 <- data.frame(Category = c('No significant ASE', 'Overall maternal bias', 'Overall paternal bias', 'Within cell type maternal bias', 'Within cell type paternal bias', 'Overall spatial pattern', 'Within cell type spatial pattern', 'Total n genes'),
+                 `Slide-seq (Mouse 3)` = c3$col, `Visium (Mouse 4)` = c4$col, Overlap = c_overlap)
+print(xtable::xtable(t1))
+```
+
+
+# Table 2
+
+```{r}
+t2 <- data.frame(Category = c('No significant ASE', 'Overall maternal bias', 'Overall paternal bias', 'Within cell type maternal bias', 'Within cell type paternal bias', 'Overall spatial pattern', 'Within cell type spatial pattern', 'Total n genes'),
+                 `Mouse 1` = h1$col, `Mouse 2` = h2$col, `Mouse 3` = h3$col, Overlap12 = h_overlap12, Overlap13 = h_overlap13)
+print(xtable::xtable(t2))
+```
+
+
+# Supp table samples
+
+```{r}
+get_stats <- function(cside_spase_obj) {
+  tot <- cside_spase_obj@originalSpatialRNA@counts
+  tot_ase <- cside_spase_obj@originalSpatialRNA@maternalCounts + cside_spase_obj@originalSpatialRNA@paternalCounts
+  nspots <- ncol(tot)
+  readsspot <- mean(colSums(tot))
+  readsase <- mean(colSums(tot_ase))
+  return(c(prettyNum(nspots, big.mark=','), prettyNum(round(readsspot),big.mark=','), prettyNum(round(readsase),big.mark=',')))
+}
+
+rr <- rbind(get_stats(hippo_1_spct_res), get_stats(hippo_2_spct_res), get_stats(hippo_3_spct_res), get_stats(cere_3_spct_res), get_stats(cere_4_spct_res))
+colnames(rr) <- c('N spots', 'Avg. reads/spot', 'Allele-resolved')
+rr <- data.frame(rr)
+
+dd <- bind_cols(
+  data.frame(Mouse = c(1,2,3,3,4), Tissue = c('Hippocampus', 'Hippocampus', 'Hippocampus', 'Cerebellum', 'Cerebellum'), Platform = c('Slide-seq', 'Slide-seq', 'Slide-seq', 'Slide-seq', 'Visium'), `Read length` = c(160, 56, 200, 200, 91)),
+  rr
+)
+xtable::xtable(dd)
+```
+
+# Supp table overall bias
+
+```{r}
+st1 <- hippo1_overall |>
+  mutate(tissue = 'Hippocampus', sample = 'Mouse 1', technology = 'Slide-seq') |>
+  select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr) |>
+  bind_rows(
+    hippo2_overall |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 2', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr)
+  ) |>
+  bind_rows(
+    hippo3_overall |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr)
+  ) |>
+  bind_rows(
+    cere3_overall |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr)
+  ) |>
+  bind_rows(
+    cere4_overall |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
+      select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr)
+  )
+write.csv(st1, file = 'tables/03_supp_table_overall_bias.csv')
+```
+
+# Supp table ct bias
+
+```{r}
+st2 <- hippo1_ct |>
+  mutate(tissue = 'Hippocampus', sample = 'Mouse 1', technology = 'Slide-seq') |>
+  select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr) |>
+  bind_rows(
+    hippo2_ct |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 2', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr)
+  ) |>
+  bind_rows(
+    hippo3_ct |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr
+      )
+  ) |>
+  bind_rows(
+    cere3_ct |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr)
+  )|>
+  bind_rows(
+    cere4_ct |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
+      select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr)
+  )
+write.csv(st2, file = 'tables/03_supp_table_celltype_bias.csv')
+```
+
+
+# Supp table spatial
+
+```{r}
+st3 <- hippo1_sp_overall |>
+  mutate(tissue = 'Hippocampus', sample = 'Mouse 1', technology = 'Slide-seq') |>
+  select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr) |>
+  bind_rows(
+    hippo2_sp_overall |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 2', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr)
+  ) |>
+  bind_rows(
+    hippo3_sp_overall |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr)
+  ) |>
+  bind_rows(
+    cere3_sp_overall |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr)
+  ) |>
+  bind_rows(
+    cere4_sp_overall |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
+      select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr)
+  )
+write.csv(st3, file = 'tables/03_supp_table_spatial_overall_bias.csv')
+```
+
+```{r}
+print(xtable::xtable(st3 |> select(-chisq.p) |> arrange(sample, tissue, qval), display = c('s', 's', 's', 's', 's', 'd', 'd', 'E', 's')), include.rownames=F)
+```
+
+
+# Supp table ct spatial
+
+
+```{r}
+st4 <- hippo1_sp_ct |>
+  mutate(tissue = 'Hippocampus', sample = 'Mouse 1', technology = 'Slide-seq') |>
+  select(tissue, sample, technology, gene, cell_type,p_val,  xchr) |>
+  bind_rows(
+    hippo3_sp_ct |>
+      mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, cell_type,p_val,  xchr) 
+  ) |>
+  bind_rows(
+    cere3_sp_ct |>
+      mutate(tissue = 'Cerebellum', sample = 'Mouse 3', technology = 'Slide-seq') |>
+      select(tissue, sample, technology, gene, cell_type,p_val,  xchr) 
+  ) 
+write.csv(st4, file = 'tables/03_supp_table_spatial_celltype_bias.csv')
+```
+

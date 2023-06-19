@@ -1,0 +1,113 @@
+---
+title: "Simulations"
+format: html
+editor: source
+---
+
+```{r}
+library(Matrix)
+library(spacexr)
+library(spASE)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Visium Cerebellum
+
+```{r}
+cere3 <- readRDS('cside_spase_cere_3.rds')
+cere3@config$max_cores <- 1
+cell_types <- c('Fibroblast', 'Granule', 'MLI2', 'Purkinje', 'Bergmann', 'Oligodendrocytes')
+```
+
+## Compute alphas
+
+```{r}
+gene <- 'Cpe'
+myRCTD <- cere3
+puck <- myRCTD@originalSpatialRNA
+weights <- myRCTD@results$weights
+weights <- weights[,cell_types]
+my_beta <- as.matrix(sweep(weights, 1, rowSums(weights), '/')) # Cell type weights from full mode RCTD
+thresh <- 0.8
+mean_val <- myRCTD@de_results$gene_fits$mean_val # Cell type mean gene expression from CSIDE
+mean_val <- matrix(pmax(-10,pmin(10,mean_val)),
+                   nrow = nrow(mean_val),
+                   ncol=ncol(mean_val),
+                   dimnames = dimnames(mean_val))# numerical stability
+alphas <- sweep(my_beta, 2, exp(mean_val[gene,]), '*')
+alphas <- sweep(alphas, 1, rowSums(alphas), '/')
+```
+
+
+## Generate bases and random smooth for a cell type
+
+Granule has spatial effect. All other cell types are 50/50.
+
+```{r}
+set.seed(88)
+df <- 5
+cell_type <- 'Granule'
+X2 <- build.designmatrix.nonparam(myRCTD, df = df)
+barcodes <- rownames(X2)
+coords <- myRCTD@spatialRNA@coords[barcodes,]
+coef <- rnorm(df, 0, 2)
+p <- expit(X2%*%coef)
+cbind(coords, p) |>
+  cbind(weights |> as.matrix()) |>
+  filter(Granule > 0.2) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = p)) +
+  scale_color_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint = 0.5, limits = c(0,1)) +
+  theme_void() +
+  theme(legend.position = 'none')
+ggsave('figures/02.5_granule_sim_p.pdf', height=2, width=3)
+
+
+cbind(coords, p) |>
+  cbind(weights |> as.matrix()) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = Granule)) +
+  scale_color_gradient(low = 'white', high = 'forestgreen', limits = c(0,1)) +
+  theme_void() +
+  theme(legend.position = 'none')
+ggsave('figures/02.5_granule_weight.pdf', height=3, width=3)
+
+# Generate raw counts
+
+## Compute p_ij
+p_ij <- numeric(nrow(alphas))
+for (k in 1:ncol(alphas)) {
+  if (colnames(alphas)[k] == cell_type) {
+    p_ij <- p_ij + alphas[,k]*expit(X2%*%coef)
+  } else {
+    p_ij <- p_ij + alphas[,k]*expit(0) # expit(0) = 0.5
+  }
+}
+
+## Fix overdispersion phi_j
+phi_j <- 0.3
+
+## Convert to Beta(a,b)
+
+a <- p_ij*(1-phi_j)/phi_j
+b <- (1-phi_j)*(1-p_ij)/phi_j
+
+lambd_ij <- rbeta(length(a), a, b)
+
+## Binomial sampling
+N_ij <- myRCTD@spatialRNA@maternalCounts[gene,barcodes]+myRCTD@spatialRNA@paternalCounts[gene,barcodes]
+y_ij <- rbinom(length(a), size = N_ij, prob = lambd_ij)
+
+cbind(coords, data.frame(yij = y_ij, nij = N_ij)) |>
+  filter(nij > 0) |>
+  filter(y > 7500) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = yij/nij),size=0.5) +
+  scale_color_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint = 0.5, limits = c(0,1)) +
+  theme_void() +
+  theme(legend.position='none')
+ggsave('figures/02.5_Cpe_sim_counts.pdf', height=2, width=3)
+```
+

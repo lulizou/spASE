@@ -1,0 +1,899 @@
+---
+title: "Exploratory data analysis"
+format: 
+  gfm:
+    toc: true
+editor: source
+execute:
+  cache: true
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(spacexr)
+library(reshape2)
+library(viridis)
+library(pals)
+library(rtracklayer)
+library(ggrepel)
+
+gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+```
+
+
+# Slide-seq
+
+## Hippocampus 1
+
+### Combined
+
+```{r}
+hippo_slide <- readRDS('rctd_combined_hippo_1.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+
+### Puck 1
+
+#### Cell types
+
+```{r}
+hippo_slide <- readRDS('hippo_slideseq_mouse_1_1.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(hippo_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_hippo_1_1_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_hippo_1_1_celltype_map.pdf', height=5, width=7)
+```
+
+### Puck 2
+
+#### Cell types
+
+```{r}
+hippo_slide <- readRDS('hippo_slideseq_mouse_1_2.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(hippo_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_hippo_1_2_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_hippo_1_2_celltype_map.pdf', height=5, width=7)
+```
+
+
+## Hippocampus 2
+
+#### Cell types
+
+```{r}
+hippo_slide <- readRDS('hippo_slideseq_mouse_2.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(hippo_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_hippo_2_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_hippo_2_celltype_map.pdf', height=5, width=7)
+```
+
+
+## Hippocampus 3
+
+### Puck 1
+
+#### Cell types
+
+```{r}
+hippo_slide <- readRDS('hippo_slideseq_mouse_3_1.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(hippo_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  sample_n(1000) |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_hippo_3_1_celltype_weights.pdf', height=3, width=8)
+```
+
+##### Cell type map
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_hippo_3_1_celltype_map.pdf', height=7, width=9)
+```
+
+### Puck 2
+
+#### Cell types
+
+```{r}
+hippo_slide <- readRDS('hippo_slideseq_mouse_3_2.rds')
+results <- hippo_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- hippo_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(hippo_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_hippo_3_2_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_hippo_3_2_celltype_map.pdf', height=7, width=9)
+```
+
+## Cerebellum 4
+
+### Combined
+
+```{r}
+cere_slide <- readRDS('rctd_combined_cere_4.rds')
+results <- cere_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- cere_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+```{r}
+cere_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(x>1000, y>1000) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_cere_4_combined_celltype_map.pdf', height=7, width=9)
+```
+
+
+### Puck 1
+
+#### Cell types
+
+```{r}
+cere_slide <- readRDS('cere_slideseq_mouse_4_1.rds')
+results <- cere_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- cere_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(cere_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_cere_4_1_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+cere_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_cere_4_1_celltype_map.pdf', height=7, width=9)
+```
+
+### Puck 2
+
+#### Cell types
+
+```{r}
+cere_slide <- readRDS('cere_slideseq_mouse_4_2.rds')
+results <- cere_slide@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- cere_slide@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(cere_slide@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_slideseq_cere_4_2_celltype_weights.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+cere_slide@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_slideseq_cere_4_2_celltype_map.pdf', height=7, width=9)
+```
+
+
+# Visium
+
+## Cerebellum
+
+### Pathology images
+
+
+#### Hi-resolution H&E
+
+![](../inst/extdata/visium/cerebellum_spatial/tissue_hires_image.png)
+
+
+#### Captured spots
+
+![](../inst/extdata/visium/cerebellum_spatial/detected_tissue_image.jpg)
+
+
+### Cell types
+
+```{r}
+cere_vis <- readRDS('cerebellum_visium_mouse_3.rds')
+results <- cere_vis@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- cere_vis@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+#### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+#### Show weight matrix
+
+
+```{r}
+label_df <- data.frame(bead = rownames(cere_vis@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_visium_cerebellum_celltype_weights.pdf', height=3, width=5)
+```
+
+
+
+
+
+#### Cell type map
+
+
+```{r}
+cere_vis@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type)) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_visium_cerebellum_celltype_map.pdf', height=5, width=7)
+```
+
+### General ASE summary
+
+```{r}
+PATH <- '../inst/extdata/visium/cerebellum_spatial'
+counts <- fread(file.path(PATH, 'cerebellum.csv'))
+positions <- fread(file.path(PATH, 'tissue_positions.csv')) |> dplyr::rename(bead=barcode, x = pxl_row_in_fullres, y = pxl_col_in_fullres)
+counts <- counts |> mutate(total = CAST+`129`) |> filter(!grepl('mt-', gene))
+counts_xchr <- counts |> filter(gene %in% xchr_genes)
+counts_autosome <- counts |> filter(!(gene %in% xchr_genes))
+```
+
+#### Count histograms
+
+```{r}
+png('figures/01_eda_visium_counts_histograms.png')
+par(mfrow=c(2,2))
+hist(log2(counts$CAST+1))
+hist(log2(counts$`129`+1))
+hist(log2(counts$total+1))
+hist(log2(counts$Unassigned+1))
+dev.off()
+```
+
+#### Count scatterplots
+
+```{r}
+counts |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.5) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  xlab('log2(maternal+1)') +
+  ylab('log2(paternal+1)') +
+  ylim(c(0,10))
+ggsave('figures/01_eda_visium_counts_129_vs_CAST.png', height=3, width =3)
+```
+
+
+```{r}
+png('figures/01_eda_visium_xchr_counts_129_vs_CAST.png')
+plot(log2(counts_xchr$CAST+1), log2(counts_xchr$`129`+2))
+dev.off()
+```
+
+
+```{r}
+png('figures/01_eda_visium_autosome_counts_129_vs_CAST.png')
+plot(log2(counts_autosome$CAST+1), log2(counts_autosome$`129`+2))
+dev.off()
+```
+
+
+#### Average maternal p by gene
+
+##### All genes
+
+```{r}
+counts |>
+  group_by(gene) |>
+  summarise(total_CAST = sum(CAST), total_129 = sum(`129`), n_beads = n(), n_umi = sum(total)) |>
+  ggplot(aes(x = total_CAST/n_umi, y = log2(n_umi))) +
+  geom_point(alpha=0.25) +
+  geom_text_repel(aes(label = gene), size=2) +
+  theme_minimal()
+```
+
+
+##### Aldoc
+
+```{r}
+counts |>
+  filter(gene=='Aldoc') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = CAST/total)) +
+  geom_histogram() +
+  facet_wrap(label ~ .) +
+  theme_minimal() +
+  ggtitle('Aldoc expression')
+```
+
+```{r}
+counts |>
+  filter(gene=='Aldoc') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5) +
+  theme_minimal() +
+  ggtitle('Aldoc expression')
+```
+
+##### Mt3
+
+```{r}
+counts |>
+  filter(gene=='Mt3') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = CAST/total)) +
+  geom_histogram() +
+  facet_wrap(label ~ .) +
+  theme_minimal() +
+  ggtitle('Mt3 expression')
+```
+
+
+```{r}
+counts |>
+  filter(gene=='Mt3') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5) +
+  theme_minimal() +
+  ggtitle('Mt3 expression')
+```
+
+##### Meg3
+
+
+```{r}
+counts |>
+  filter(gene=='Meg3') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5) +
+  theme_minimal() +
+  ggtitle('Meg3 expression')
+```
+
+
+##### Peg3
+
+
+```{r}
+counts |>
+  filter(gene=='Peg3') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5, limits=c(0,1)) +
+  theme_minimal() +
+  ggtitle('Peg3 expression')
+```
+
+
+##### Ckb
+
+
+```{r}
+counts |>
+  filter(gene=='Ckb') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5) +
+  theme_minimal() +
+  ggtitle('Ckb expression')
+```
+
+
+##### Calm3
+
+
+```{r}
+counts |>
+  filter(gene=='Calm3') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5, limits=c(0,1)) +
+  theme_minimal() +
+  ggtitle('Calm3 expression')
+```
+
+
+##### Xist
+
+
+```{r}
+counts |>
+  filter(gene=='Xist') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5, limits=c(0,1)) +
+  theme_minimal() +
+  ggtitle('Xist expression')
+```
+
+##### Plp1
+
+```{r}
+counts |>
+  filter(gene=='Plp1') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = CAST/total)) +
+  geom_histogram() +
+  facet_wrap(label ~ .) +
+  theme_minimal() +
+  ggtitle('Plp1 expression')
+```
+
+```{r}
+counts |>
+  filter(gene=='Plp1') |>
+  left_join(positions, by='bead') |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y=x, fill=CAST/total)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5, limits=c(0,1)) +
+  theme_minimal() +
+  ggtitle('Plp1 expression')
+```
+
+
+#### Xist
+
+```{r}
+counts |>
+  filter(gene=='Xist') |>
+  left_join(positions, by='bead') |>
+  mutate(total = CAST+`129`) |>
+  filter(total > 0) |>
+  left_join(label_df, by = 'bead') |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(fill = CAST/total, size=total), shape=21) +
+  scale_fill_gradient2(low = 'blue', mid = 'white', high = 'red', midpoint=0.5) +
+  facet_wrap(label ~ .) +
+  theme_minimal() +
+  ggtitle('Xist expression')
+```
+
+## Mixture
+
+### Pathology images
+
+
+#### Hi-resolution H&E
+
+![](../inst/extdata/visium/mixture/tissue_hires_image.png)
+
+
+#### Captured spots
+
+![](../inst/extdata/visium/mixture/detected_tissue_image.jpg)
+
+
+### Cell types
+
+#### Cerebellum reference
+
+```{r}
+mix_vis <- readRDS('mixture_visium_cerebellumRef_mouse_5.rds')
+results <- mix_vis@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- mix_vis@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=20)]
+```
+
+##### Show weight matrix
+
+
+```{r}
+label_df <- data.frame(bead = rownames(mix_vis@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_visium_mixture_celltype_weights_cerebellum.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+mix_vis@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = -x)) +
+  geom_point(aes(color = cell_type)) +
+  scale_color_tableau(palette='Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_visium_mixture_celltype_map_cerebellum.pdf', height=5, width=7)
+```
+
+
+#### Hippocampus reference
+
+```{r}
+mix_vis <- readRDS('mixture_visium_hippoRef_mouse_5.rds')
+results <- mix_vis@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- mix_vis@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+##### Number of each cell type selecting the max
+
+```{r}
+summary(factor(labels))
+celltypes_less_than_10 <- names(summary(factor(labels)))[which(summary(factor(labels))<=10)]
+```
+
+##### Show weight matrix
+
+```{r}
+label_df <- data.frame(bead = rownames(mix_vis@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  melt() |>
+  rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_visium_mixture_celltype_weights_hippocampus.pdf', height=3, width=5)
+```
+
+##### Cell type map
+
+```{r}
+mix_vis@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = y, y = -x)) +
+  geom_point(aes(color = cell_type)) +
+  scale_color_tableau(palette='Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_visium_mixture_celltype_map_hippocampus.pdf', height=5, width=7)
+```
+
+
+
+
+
+

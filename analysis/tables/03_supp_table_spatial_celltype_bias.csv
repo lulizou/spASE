@@ -1,0 +1,8 @@
+"","tissue","sample","technology","gene","cell_type","p_val","xchr"
+"1","Hippocampus","Mouse 1","Slide-seq","Sst","Interneuron",4.46389022217802e-06,FALSE
+"2","Hippocampus","Mouse 3","Slide-seq","Sst","Interneuron",6.27363925481671e-16,FALSE
+"3","Cerebellum","Mouse 3","Slide-seq","Uba1","Granule",4.60338070467812e-08,TRUE
+"4","Cerebellum","Mouse 3","Slide-seq","Cnksr2","Granule",2.50891101935049e-07,TRUE
+"5","Cerebellum","Mouse 3","Slide-seq","Bex2","Granule",3.88302443991558e-07,TRUE
+"6","Cerebellum","Mouse 3","Slide-seq","Tspan7","Granule",9.18931629576928e-07,TRUE
+"7","Cerebellum","Mouse 3","Slide-seq","Cdr1","Granule",1.44150615636543e-05,TRUE

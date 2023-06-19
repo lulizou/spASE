@@ -1,0 +1,743 @@
+---
+title: "spASE results cerebellum"
+format: 
+  gfm:
+    toc: true
+editor: source
+execute:
+  cache: true
+---
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(xtable)
+library(latex2exp)
+library(rtracklayer)
+
+gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+```
+
+```{r load-data}
+visium <- readRDS('cside_spase_cere_3.rds')
+slideseq <- readRDS('cside_spase_combined_cere_4.rds')
+```
+
+# Summary of reads
+
+## Slide-seq
+
+```{r}
+slideseq_counts <- readRDS('counts_df_cere_4.rds') |> filter(!grepl('mt-', gene)) |> mutate(total = CAST+`129`)
+```
+
+### Per gene
+
+```{r}
+slideseq_counts |>
+  group_by(gene) |>
+  summarise(CAST = sum(CAST), `129` = sum(`129`)) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.25) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_abline(slope=1, intercept=0, lty='dashed', color='red') +
+  xlab('log2(maternal+1)') +
+  ylab('log2(paternal+1)') +
+  ggtitle('Slide-seq')
+ggsave('figures/02_slideseq_counts_scatter_per_gene.png', height=3, width =3)
+```
+
+
+
+## Visium
+
+```{r}
+PATH <- '../inst/extdata/visium/cerebellum_spatial'
+visium_counts <- fread(file.path(PATH, 'cerebellum.csv'))
+positions <- fread(file.path(PATH, 'tissue_positions.csv')) |> dplyr::rename(bead=barcode, x = pxl_row_in_fullres, y = pxl_col_in_fullres)
+visium_counts <- visium_counts |> mutate(total = CAST+`129`) |> filter(!grepl('mt-', gene))
+```
+
+### Per gene
+
+```{r}
+visium_counts |>
+  group_by(gene) |>
+  summarise(CAST = sum(CAST), `129` = sum(`129`)) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.25) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_abline(slope=1, intercept=0, lty='dashed', color='red') +
+  xlab('log2(maternal+1)') +
+  ylab('log2(paternal+1)') +
+  ggtitle('Visium') +
+  coord_cartesian(ylim=c(0,17),xlim=c(0,17)) 
+ggsave('figures/02_visium_counts_scatter_per_gene.png', height=3, width =3)
+```
+
+
+
+## Compare Visium and Slide-seq
+
+```{r}
+compare_df <- visium_counts |>
+  group_by(gene) |>
+  summarise(maternal_p_visium = sum(CAST)/sum(total), visium_cov = sum(total)) |>
+  left_join(
+    slideseq_counts |>
+      group_by(gene) |>
+      summarise(maternal_p_slideseq = sum(CAST)/sum(total), slideseq_cov = sum(total)),
+    by = 'gene'
+  )
+```
+
+
+### Total coverage by gene
+
+```{r}
+compare_df |>
+  ggplot(aes(x = log2(visium_cov+1))) +
+  geom_histogram(bins=100) +
+  theme_minimal() 
+```
+
+```{r}
+compare_df |>
+  ggplot(aes(x = log2(slideseq_cov+1))) +
+  geom_histogram(bins=100) +
+  theme_minimal() 
+```
+
+### Maternal p
+
+```{r}
+compare_df_high_cov <- compare_df |>
+  filter(visium_cov > 2^7, slideseq_cov > 2^7)
+r2 <- round(cor(compare_df_high_cov$maternal_p_visium, compare_df_high_cov$maternal_p_slideseq), 2)^2
+compare_df_high_cov |>
+  ggplot(aes(x = maternal_p_visium, y = maternal_p_slideseq)) +
+  geom_point(alpha=0.25) +
+  annotate('text', x = 0.9, y = 0.1, label = TeX(sprintf(r'($R^2=%f$)', r2))) +
+  geom_abline(slope=1, intercept=0, lty='dashed', color='red') +
+  #geom_smooth(method='lm', se=F, color='blue', linewidth=0.5) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  xlab('Visium maternal proportion') +
+  ylab('Slide-seq maternal proportion')
+ggsave('figures/02_visium_vs_slideseq_maternal_p_gene_scatter.png', height=3, width =3)
+```
+
+
+
+# Cell typing 
+
+## Visium
+
+```{r}
+results <- visium@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- visium@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+main_types <- c('Astrocytes', 'Bergmann', 'Endothelial', 'Fibroblast', 'Granule', 'MLI1', 'MLI2', 'Oligodendrocytes','Purkinje')
+visium@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(cell_type %in% main_types) |>
+  filter(y > 7500) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type),size=0.75) +
+  scale_color_tableau(name = 'First type', palette = 'Tableau 10') +
+  theme_void()
+ggsave('figures/02_visium_cerebellum_celltypes_less.pdf', height=3, width=5)
+```
+
+
+## Slide-seq
+
+```{r}
+# slideseq
+results <- slideseq@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- slideseq@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+main_types <- c('Astrocytes', 'Bergmann', 'Endothelial', 'Fibroblast', 'Granule', 'MLI1', 'MLI2', 'Oligodendrocytes','Purkinje')
+slideseq@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(cell_type %in% main_types) |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type),size=0.01) +
+  scale_color_tableau(palette = 'Tableau 10') +
+  theme_void() +
+  theme(legend.position = 'none')
+ggsave('figures/02_slideseq_cerebellum_celltypes_less.pdf', height=3, width=4)
+```
+
+## One slice pic
+
+```{r}
+one_slice <- readRDS('cere_slideseq_mouse_4_2.rds')
+results <- one_slice@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- one_slice@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+main_types <- c('Astrocytes', 'Bergmann', 'Endothelial', 'Fibroblast', 'Granule', 'MLI1', 'MLI2', 'Oligodendrocytes','Purkinje')
+one_slice@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(cell_type %in% main_types) |>
+  filter(x > 1250, y > 500, x < 4500) |>
+  #filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = cell_type),size=0.01) +
+  scale_color_tableau(palette = 'Tableau 10') +
+  theme_void() +
+  theme(legend.position = 'none')
+ggsave('figures/02_slideseq_cerebellum_one_slice_celltypes_less.pdf', height=3, width=4)
+```
+
+
+
+# spASE results
+
+
+
+## Overall bias $p \neq 0.5$
+
+```{r}
+slideseq_bias <- readRDS('betabin_results_overall_bias_cere_4.rds')
+visium_bias <- readRDS('betabin_results_overall_bias_cere_visium.rds')
+```
+
+
+```{r}
+slideseq_bias <- slideseq_bias |>
+  filter(totalUMI > 2^7) |>
+  filter(!grepl('mt-', gene)) |>
+  arrange(qval) 
+slideseq_bias
+```
+
+
+```{r}
+visium_bias <- visium_bias |>
+  filter(totalUMI > 2^7) |>
+  filter(!grepl('mt-', gene)) |>
+  arrange(qval) 
+visium_bias
+```
+
+
+```{r}
+genes_slideseq_bias <- slideseq_bias |> filter(qval < 0.01, p > 0.6 | p < 0.4) |> pull(gene)
+genes_visium_bias <- visium_bias |> filter(qval < 0.01, p > 0.6 | p < 0.4) |> pull(gene)
+genes_slideseq_bias <- c(genes_slideseq_bias, slideseq_bias |> filter(grepl('monoallelic', flag)) |> pull(gene))
+genes_visium_bias <- c(genes_visium_bias, visium_bias |> filter(grepl('monoallelic',flag)) |> pull(gene))
+```
+
+
+```{r}
+length(which(genes_visium_bias %in% genes_slideseq_bias)) 
+```
+
+
+
+## Cell type-specific bias
+
+```{r}
+slideseq_ct_bias <- readRDS('betabin_results_celltype_bias_cere_4.rds')
+visium_ct_bias <- readRDS('betabin_results_celltype_bias_cere_visium.rds')
+```
+
+```{r}
+slideseq_ct_bias <- slideseq_ct_bias |>
+  filter(totalUMI > 2^7) |>
+  filter(!grepl('mt-', gene)) |>
+  arrange(qval) 
+slideseq_ct_bias
+```
+
+```{r}
+visium_ct_bias <- visium_ct_bias |>
+  filter(totalUMI > 2^7) |>
+  filter(!grepl('mt-', gene)) |>
+  arrange(qval) 
+visium_ct_bias
+```
+
+```{r}
+genes_slideseq_ct_bias <- slideseq_ct_bias |> filter(qval < 0.01) |> pull(gene) 
+genes_visium_ct_bias <- visium_ct_bias |> filter(qval < 0.01) |> pull(gene) 
+genes_slideseq_ct_bias <- c(genes_slideseq_ct_bias, slideseq_ct_bias |> filter(grepl('monoallelic', flag)) |> pull(gene)) |> unique()
+genes_visium_ct_bias <- c(genes_visium_ct_bias, visium_ct_bias |> filter(grepl('monoallelic',flag)) |> pull(gene)) |> unique()
+```
+
+```{r}
+length(which(genes_visium_ct_bias %in% genes_slideseq_ct_bias)) 
+```
+
+
+## Global ASE pattern
+
+```{r}
+slideseq_global <- readRDS('spasev1_results_global_combined_cere_4.rds')
+visium_global <- readRDS('spasev1_results_visium_cere_3.rds')
+```
+
+```{r}
+slideseq_global$result |>
+  filter(!grepl('mt-', gene)) |>
+  filter(qval < 0.01) |>
+  arrange(qval) 
+```
+
+```{r}
+visium_global$result |>
+  filter(!grepl('mt-', gene)) |>
+  filter(qval < 0.01) |>
+  arrange(qval) 
+```
+
+```{r}
+genes_visium_spatial <- visium_global$result |>
+  filter(!grepl('mt-', gene)) |>
+  filter(qval < 0.01) |>
+  arrange(qval)  |> pull(gene)
+genes_slideseq_spatial <- slideseq_global$result |>
+  filter(!grepl('mt-', gene)) |>
+  filter(qval < 0.01) |>
+  arrange(qval) |> pull(gene)
+
+```
+
+
+
+## Cell type-specific ASE pattern 
+
+### spASE v1
+
+```{r}
+slideseq_ct_v1 <- readRDS('spasev1_results_celltype_combined_cere_4.rds')
+```
+
+```{r}
+slideseq_ct_v1$result |>
+  arrange(qval) |>
+  mutate(xchr = ifelse(gene %in% xchr_genes, T, F))
+```
+
+
+
+### CSIDE-spASE
+
+```{r}
+slideseq_ct_spatial <- readRDS('cside_spase_combined_cere_4.rds')
+visium_ct_spatial <- readRDS('cside_spase_cere_3.rds')
+```
+
+
+```{r}
+# Granule is the only one where it was detected
+slideseq_ct_spatial@spase_results$sig_gene_list$Granule
+genes_slideseq_ct_spatial <- rownames(slideseq_ct_spatial@spase_results$sig_gene_list$Granule)
+```
+
+```{r}
+#none of the other cell types have any
+visium_ct_spatial@spase_results$sig_gene_list$Granule
+```
+
+
+
+```{r}
+overall_visium_no_bias <- visium_bias$gene[!visium_bias$gene %in% c(genes_visium_bias, genes_visium_spatial)] |> unique()
+overall_visium_bias <- genes_visium_bias[!genes_visium_bias%in%genes_visium_spatial]
+overall_visium_spatial <- genes_visium_spatial
+
+overall_slideseq_no_bias <- slideseq_bias$gene[!slideseq_bias$gene %in% c(genes_slideseq_bias, genes_slideseq_spatial)] |> unique()
+overall_slideseq_bias <- genes_slideseq_bias[!genes_slideseq_bias%in%genes_slideseq_spatial]
+overall_slideseq_spatial <- genes_slideseq_spatial
+
+
+ct_visium_no_bias <- visium_ct_bias$gene[!visium_ct_bias$gene %in% c(genes_visium_ct_bias)] |> unique()
+ct_visium_bias <- genes_visium_ct_bias 
+ct_visium_spatial <- 0
+
+ct_slideseq_no_bias <- slideseq_ct_bias$gene[!slideseq_ct_bias$gene %in% c(genes_slideseq_ct_bias, genes_slideseq_ct_spatial)] |> unique()
+ct_slideseq_bias <- genes_slideseq_ct_bias[!genes_slideseq_ct_bias %in% genes_slideseq_ct_spatial]
+ct_slideseq_spatial <- genes_slideseq_ct_spatial
+```
+
+
+
+```{r}
+data.frame(
+  label = c(rep('Overall',6), c(rep('Within cell type',6))),
+  technology = c(rep('Visium',3), rep('Slide-seq',3),rep('Visium',3), rep('Slide-seq',3)),
+  type = rep(c('Not significant', 'Significant bias', 'Significant spatial pattern'), times=4),
+  value = c(
+    length(overall_visium_no_bias), length(overall_visium_bias), length(overall_visium_spatial),
+    length(overall_slideseq_no_bias), length(overall_slideseq_bias), length(overall_slideseq_spatial),
+    length(ct_visium_no_bias), length(ct_visium_bias), ct_visium_spatial,
+    length(ct_slideseq_no_bias), length(ct_slideseq_bias), length(ct_slideseq_spatial)
+  )
+) |>
+  mutate(label = factor(label, levels = c('Overall', 'Within cell type'))) |> 
+  ggplot(aes(x = technology, y = value)) +
+  geom_bar(aes(fill=type),stat='identity', position='stack') +
+  coord_flip() +
+  facet_wrap(label ~ .) +
+  scale_fill_tableau(name='') +
+  #scale_color_tableau(guide='none') +
+  theme_minimal() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA), legend.position='bottom') + 
+  ylab('n genes') +
+  xlab('')
+ggsave('figures/02_bar_chart_visium_slideseq_genes.pdf', height=2, width=10)
+```
+
+# Cadm3 
+
+```{r}
+cadm3 <- slideseq_counts |> filter(gene == 'Cadm3')
+coords <- slideseq@spatialRNA@coords
+results <- slideseq@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- slideseq@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+cell_type <- data.frame(bead = rownames(norm_weights), cell_type = labels)
+coords$bead <- rownames(coords)
+rownames(coords) <- NULL
+coords <- left_join(coords, cell_type, by='bead')
+cadm3 <- left_join(cadm3, coords, by = 'bead')
+```
+
+## Raw
+
+```{r}
+cadm3 |>
+  filter(total > 0, !is.na(cell_type)) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total, size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  facet_wrap(cell_type ~ .) +
+  theme_minimal()
+ggsave('figures/02_cadm3_raw_all_cell_types.pdf', height=8, width=10)
+```
+
+```{r}
+cadm3 |>
+  filter(total > 0, cell_type=='Granule') |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total, size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_cadm3_raw_granule.pdf', height=10, width=12)
+```
+
+## Spatial fit
+
+```{r}
+X <- slideseq@internal_vars_spase$X2
+mycoef <- slideseq@spase_results$gene_fits$all_vals['Cadm3',,'Granule']
+fitted_vals <- data.frame(bead = rownames(X), fit = as.numeric(mycoef%*%t(X)))
+
+cadm3 <- left_join(cadm3, fitted_vals, by = 'bead')
+cadm3 |>
+  filter(total > 0, cell_type=='Granule') |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = exp(fit)/(1+exp(fit)), size=total),shape=21) +
+  #scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  scale_fill_viridis() +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+```
+
+
+
+# Bex2
+
+```{r}
+Bex2 <- slideseq_counts |> filter(gene == 'Bex2') |> filter(total>0)
+Bex2 <- left_join(Bex2, coords, by = 'bead')
+```
+
+
+```{r}
+Bex2 |>
+  filter(cell_type=='Granule') |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total,size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_Bex2_raw_granule.pdf', height=10, width=12)
+```
+
+
+# Xist
+
+```{r}
+Xist <- slideseq_counts |> filter(gene == 'Xist') |> filter(total>0)
+Xist <- left_join(Xist, coords, by = 'bead')
+```
+
+
+```{r}
+Xist |>
+  filter(cell_type=='Granule') |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total,size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_Xist_raw_granule.pdf', height=10, width=12)
+```
+
+
+# Tasor
+
+```{r}
+Tasor <- slideseq_counts |> filter(gene == 'Tasor') |> filter(total>0)
+Tasor <- left_join(Tasor, coords, by = 'bead')
+```
+
+
+```{r}
+Tasor |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total,size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_Tasor_raw_granule.pdf', height=10, width=12)
+```
+
+
+# Ptgds
+
+```{r}
+Ptgds <- slideseq_counts |> filter(gene == 'Ptgds') |> filter(total>0)
+Ptgds <- left_join(Ptgds, coords, by = 'bead')
+```
+
+
+```{r}
+Ptgds |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total,size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_Ptgds_raw_granule.pdf', height=10, width=12)
+```
+
+
+# Shank1
+
+```{r}
+Shank1 <- slideseq_counts |> filter(gene == 'Shank1') |> filter(total>0)
+Shank1 <- left_join(Shank1, coords, by = 'bead')
+```
+
+
+```{r}
+Shank1 |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total,size=total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() +
+  theme(panel.border = element_rect(color = "gray 50", fill = NA))
+ggsave('figures/02_Shank1_raw_granule.pdf', height=10, width=12)
+```
+
+
+
+# Aldoc
+
+## Raw slideseq
+
+```{r}
+one_slice <- readRDS('cere_slideseq_mouse_4_2.rds')
+results <- one_slice@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- one_slice@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+main_types <- c('Astrocytes', 'Bergmann', 'Endothelial', 'Fibroblast', 'Granule', 'MLI1', 'MLI2', 'Oligodendrocytes','Purkinje')
+slice2_coords <- one_slice@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(cell_type %in% main_types)
+slice2_coords$bead <- paste0(rownames(slice2_coords), '_2')
+```
+
+
+```{r}
+Aldoc <- slideseq_counts |> filter(gene == 'Aldoc') |> filter(total>0)
+Aldoc <- left_join(Aldoc, slice2_coords, by = 'bead')
+```
+
+```{r}
+Aldoc |>
+  filter(!is.na(cell_type)) |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = log2(total))) +
+  geom_histogram(bins=50) +
+  xlab(TeX(r'($\log_2$(total read count))')) +
+  ylab('')+
+  theme_classic()
+ggsave('figures/02_Aldoc_raw_slideseq_hist.pdf', height=1, width=4)
+```
+
+
+```{r}
+Aldoc |>
+  filter(!is.na(cell_type)) |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.5) +
+  geom_abline(intercept=0, slope=1, lty='dashed', color='red') +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(maternal count))')) +
+  ylab(TeX(r'($\log_2$(paternal count))'))
+ggsave('figures/02_Aldoc_raw_slideseq_bead_count.pdf', height=3, width=4)
+```
+
+
+
+```{r}
+Aldoc |>
+  filter(!is.na(cell_type)) |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(fill = CAST/total),shape=21) +
+  scale_fill_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void()  +
+  theme(legend.position = 'none')
+ggsave('figures/02_Aldoc_raw_slideseq.pdf', height=3, width=4)
+```
+
+## Raw Visium
+
+```{r}
+Aldoc <- visium_counts |> filter(gene == 'Aldoc') |> filter(total>0)
+Aldoc <- left_join(Aldoc, positions, by = 'bead')
+```
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = log2(total))) +
+  geom_histogram(bins=50) +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(total read count))')) +
+  ylab('')
+ggsave('figures/02_Aldoc_raw_visium_hist.pdf', height=1, width=4)
+```
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.5) +
+  geom_abline(intercept=0, slope=1, lty='dashed', color='red') +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(maternal count))')) +
+  ylab(TeX(r'($\log_2$(paternal count))'))
+ggsave('figures/02_Aldoc_raw_visium_bead_count.pdf', height=3, width=4)
+```
+
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total),shape=21) +
+  scale_fill_gradient2(name = 'Maternal\nread\nproportion',low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() 
+ggsave('figures/02_Aldoc_raw_visium.pdf', height=3, width=6)
+```
+
+
+
+
+
+# Generate smooth plots
+
+```{r}
+PATH <- '../inst/extdata/slideseq/cere1'
+
+positions1 <- fread(file.path(PATH, 'Puck_221014_23_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
+  distinct(bead, .keep_all=T) |>
+  mutate(bead = paste0(bead, '_1'))
+counts1 <- fread(file.path(PATH, '2022-12-11_Puck_221014_23_combined_atropos_polyAGtrim.csv')) |>
+  mutate(bead = paste0(substr(bead, 1, 14), '_1')) |>
+  filter(bead %in% positions1$bead)
+positions2 <- fread(file.path(PATH, 'Puck_221014_24_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
+  distinct(bead, .keep_all=T) |>
+  mutate(bead = paste0(bead, '_2'))
+counts2 <- fread(file.path(PATH, '2022-12-11_Puck_221014_24_combined_atropos_polyAGtrim.csv')) |>
+  mutate(bead = paste0(substr(bead, 1, 14), '_2')) |>
+  filter(bead %in% positions2$bead)
+
+
+# MANUAL ALIGNING THE PUCKS
+# rotation
+xcenter <- (max(positions2$x)+min(positions2$x))/2
+ycenter <- (max(positions2$y)+min(positions2$y))/2
+xshift <- 748
+yshift <- -241
+angle <- 86
+
+x <- positions2$x
+y <- positions2$y
+xnew <- (x-xcenter)*cos(angle*pi/180) - (y-ycenter)*sin(angle*pi/180)+xcenter + xshift
+ynew <- (x-xcenter)*sin(angle*pi/180) + (y-ycenter)*cos(angle*pi/180)+ycenter + yshift
+
+positions2$x <- xnew
+positions2$y <- ynew
+
+positions2$x <- xnew
+positions2$y <- ynew
+
+maternal_counts<- counts1 |>
+  bind_rows(counts2) |>
+  arrange(bead, gene) |>
+  mutate(bead = as.factor(bead), gene = as.factor(gene))
+maternal_counts_matrix <- sparseMatrix(i=maternal_counts$gene, j=maternal_counts$bead, x=maternal_counts$CAST)
+rownames(maternal_counts_matrix) <- levels(maternal_counts$gene)
+colnames(maternal_counts_matrix) <- levels(maternal_counts$bead)
+
+paternal_counts <- counts1 |>
+  bind_rows(counts2) |>
+  arrange(bead, gene) |>
+  mutate(bead = as.factor(bead), gene = as.factor(gene))
+paternal_counts_matrix <- sparseMatrix(i=paternal_counts$gene, j=paternal_counts$bead, x=paternal_counts$`129`)
+rownames(paternal_counts_matrix) <- levels(paternal_counts$gene)
+colnames(paternal_counts_matrix) <- levels(paternal_counts$bead)
+
+
+positions <- positions1 |> bind_rows(positions2) |>
+  select(bead,x,y)
+
+coords <- positions |> select(bead, x, y)
+```
+
+
+
+```{r}
+myfit <- spase(maternal_counts_matrix, paternal_counts_matrix, coords,cores=1,verbose=T, df=15, genes=c('Aldoc', 'Ptgds', 'Xist', 'Tasor'))
+```
+
+```{r}
+plotSpase(maternal_counts_matrix, paternal_counts_matrix, coords, myfit, genes = c('Aldoc'), save = 'figures/02_spaseV1_Aldoc')
+```
+

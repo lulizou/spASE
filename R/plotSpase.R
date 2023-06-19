@@ -32,6 +32,9 @@
 #' hairs on the 2D spatial plot and the associated confidence intervals of
 #' those slices in a separate plot. Set to FALSE to turn off.
 #'
+#' @param crosshairs_diag boolean default of FALSE indicating that
+#' the crosshair should be the y=x line.
+#'
 #' @param size.scale boolean default of TRUE indicating the raw data to be
 #' plotted with points that change size depending on the total UMI count at
 #' that pixel. Set to FALSE to turn off.
@@ -63,6 +66,8 @@
 #' @param save the filename prefix to save if want to save instead of visualize.
 #' Default is null meaning no file will be saved.
 #'
+#' @param void default F. If T, remove the axis titles/labels and legend
+#'
 #'
 #' @return Multiple ggplot2 plots or, instead, each one gets saved to a different
 #' file starting with the prefix defined in the save parameter.
@@ -77,9 +82,11 @@
 #' @export
 
 plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
-                      extrapolate.width=0.1, crosshairs=TRUE, size.scale=TRUE,
+                      extrapolate.width=0.1, crosshairs=TRUE, crosshairs_diag = F,
+                      size.scale=TRUE,
                       point.size = 0.5, point.outline = TRUE, theme='default',
-                      cross.x1=NULL, cross.x2=NULL, genes=NULL, save=NULL) {
+                      cross.x1=NULL, cross.x2=NULL, genes=NULL, save=NULL,
+                      void = F) {
   if(!(is(matrix1, 'matrix') | is(matrix1, 'sparseMatrix')) &
      !(is(matrix2, 'matrix') | is(matrix2, 'sparseMatrix'))) {
     stop('input matrix1 and matrix2 must be a matrix or sparseMatrix')
@@ -167,8 +174,12 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
     }
     smooth.model <- spasefit$fits[[genes[i]]]
     smooth.coef <- coef(smooth.model)
-    pred.coords.norm <- sweep(pred.coords, 2, spasefit$coord.mean, '-')
-    pred.coords.norm <- pred.coords.norm/spasefit$coord.sd
+    if (!is.null(coords)) {
+      pred.coords.norm <- sweep(pred.coords, 2, spasefit$coord.mean, '-')
+      pred.coords.norm <- pred.coords.norm/spasefit$coord.sd
+    } else {
+      pred.coords.norm <- pred.coords
+    }
     Xp <- Predict.matrix(sm, pred.coords.norm)
     Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
     Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
@@ -217,28 +228,34 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
         pr <- pr +
           geom_point(aes(color=y/total), size=point.size) +
           scale_color_gradient2(name='y/total', low='blue', mid='white', high='red',
-                               midpoint=0.5, limits=c(0,1))
+                                midpoint=0.5, limits=c(0,1))
       }
     }
     pr <- pr +
       theme_classic() +
       ggtitle(paste(genes[i],'raw'))
     ps <- ggplot(pred.coords, aes(x=x1, y=x2)) +
-      geom_raster(aes(fill=exp(fit)/(1+exp(fit)))) +
-      scale_fill_gradient2(name='fitted p', low='blue', mid='white', high='red',
-                           midpoint=0.5, limits=c(0,1)) +
+      geom_point(aes(color=exp(fit)/(1+exp(fit))), size=point.size) +
+      scale_color_gradient2(name='fitted p', low='blue', mid='white', high='red',
+                            midpoint=0.5, limits=c(0,1)) +
+      theme_dark() +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       ggtitle(paste(genes[i],'smooth'))
     pover <- ps +
       geom_point(data=cbind(data.frame(y=y, total=total), covari.non.norm),
                  aes(fill=y/total, size=total),shape=21,color='black') +
       scale_size_continuous(limits=c(1,60), breaks=c(1,20,40,60), range=c(1,3))
     pz <- ggplot(pred.coords, aes(x=x1, y=x2, fill=fillColor)) +
-      geom_raster(interpolate=F) +
+      geom_point(shape=21, size=point.size) +
       scale_fill_identity() +
       ggtitle(paste(genes[i], 'z score surface'))
     if (theme=='classic') {
       ps <- ps + theme_classic()
       pover <- pover + theme_classic()
+    }
+    if (theme == 'void') {
+      pr <- pr + theme_void()
+      ps <- ps + theme_void()
     }
     if (crosshairs) {
       if (is.null(cross.x1)) {
@@ -247,6 +264,9 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
       if (is.null(cross.x2)) {
         cross.x2 <- round(mean(pred.coords$x2),2)
       }
+      pr <- pr +
+        geom_hline(yintercept = cross.x1, lty='dashed', color='black') +
+        geom_vline(xintercept = cross.x2, lty='dashed', color='black')
       ps <- ps +
         geom_hline(yintercept = cross.x1, lty='dashed', color='black') +
         geom_vline(xintercept = cross.x2, lty='dashed', color='black')
@@ -254,21 +274,50 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
         geom_hline(yintercept = cross.x1, lty='dashed', color='black') +
         geom_vline(xintercept = cross.x2, lty='dashed', color='black')
     }
+    if (crosshairs_diag) {
+      pr <- pr +
+        geom_abline(slope=1, intercept=0, lty='dashed', color='black')
+      ps <- ps +
+        geom_abline(slope=1, intercept=0, lty='dashed', color='black')
+    }
+    if (void) {
+      pr <- pr +
+        ggtitle('') +
+        xlab('') + ylab('') +
+        theme(axis.line = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              legend.position = 'none')
+      ps <- ps +
+        ggtitle('') +
+        xlab('') + ylab('') +
+        theme(axis.line = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              legend.position = 'none')
+      pover <- pover +
+        ggtitle('') +
+        xlab('') + ylab('') +
+        theme(axis.line = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              legend.position = 'none')
+    }
     if (is.null(save)) {
       print(pr)
       print(ps)
-      print(pover)
+      # print(pover)
       print(pz)
     } else {
       savename <- paste0(save,'-raw-',genes[i],'.png')
-      ggsave(file=savename, plot=pr, height=3, width=4)
+      ggsave(file=savename, plot=pr, height=3, width=3)
       message(paste('saved', savename))
       savename <- paste0(save,'-smooth-',genes[i],'.png')
-      ggsave(file=savename, plot=ps, height=3, width=4)
+      ggsave(file=savename, plot=ps, height=3, width=3)
       message(paste('saved', savename))
-      savename <- paste0(save,'-overlay-',genes[i],'.png')
-      ggsave(file=savename, plot=pover, height=3, width=4)
-      message(paste('saved', savename))
+      # savename <- paste0(save,'-overlay-',genes[i],'.png')
+      # ggsave(file=savename, plot=pover, height=3, width=4)
+      # message(paste('saved', savename))
       savename <- paste0(save,'-zscore-',genes[i],'.png')
       ggsave(file=savename, plot=pz, height=3, width=3)
       message(paste('saved', savename))
@@ -280,8 +329,13 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
       x2.pred <- data.frame(x1=seq(min(pred.coords$x1),max(pred.coords$x1),
                                    length.out=50),
                             x2=cross.x2)
-      x1.pred.norm <- sweep(x1.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
-      x2.pred.norm <- sweep(x2.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
+      if (!is.null(coords)) {
+        x1.pred.norm <- sweep(x1.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
+        x2.pred.norm <- sweep(x2.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
+      } else {
+        x1.pred.norm <- x1.pred
+        x2.pred.norm <- x2.pred
+      }
       Xp <- Predict.matrix(sm, x1.pred.norm)
       Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
       Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
@@ -305,10 +359,10 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
                     lty='blank',alpha=0.25) +
         geom_hline(yintercept=0.5, lty='dashed') +
         ylim(c(0,1)) +
-        xlab('x2 coordinate') +
+        xlab('') +
         ylab('estimated p') +
         theme_classic() +
-        ggtitle(paste(genes[i], 'x1 =', cross.x1, 'slice'))
+        theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
       px2 <- ggplot(x2.pred, aes(x=x1, y=exp(fit)/(1+exp(fit)))) +
         geom_line() +
         geom_ribbon(aes(ymin=exp(ci.low)/(1+exp(ci.low)),
@@ -316,10 +370,10 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
                     lty='blank',alpha=0.25) +
         geom_hline(yintercept=0.5, lty='dashed') +
         ylim(c(0,1)) +
-        xlab('x1 coordinate') +
+        xlab('') +
         ylab('estimated p') +
         theme_classic() +
-        ggtitle(paste(genes[i], 'x2 =', cross.x2, 'slice'))
+        theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
       if (is.null(save)) {
         print(px1)
         print(px2)
@@ -329,6 +383,44 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
         message(paste('saved', savename))
         savename <- paste0(save,'-x2-',genes[i],'.png')
         ggsave(file=savename, plot=px2, height=2, width=2)
+        message(paste('saved', savename))
+      }
+    }
+    if (crosshairs_diag) {
+      diag.pred <- data.frame(x1=seq(min(pred.coords$x2),max(pred.coords$x2),
+                                   length.out=50),
+                            x2=seq(min(pred.coords$x2),max(pred.coords$x2),
+                                   length.out=50))
+      if (!is.null(coords)) {
+        diag.pred.norm <- sweep(diag.pred, 2, spasefit$coord.mean, '-')/spasefit$coord.sd
+      } else {
+        diag.pred.norm <- diag.pred
+      }
+      Xp <- Predict.matrix(sm, diag.pred.norm)
+      Xp <- cbind(Xp[,(df-2):df], Xp[,1:(df-3)])
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.mean, '-')
+      Xp[,2:df] <- sweep(Xp[,2:df], 2, spasefit$spline.sd, '/')
+      se <- sqrt(diag(Xp%*%vcov(smooth.model)%*%t(Xp)))
+      diag.pred$fit <- Xp%*%smooth.coef
+      diag.pred$ci.low <- diag.pred$fit-qnorm(.975)*se
+      diag.pred$ci.high <- diag.pred$fit+qnorm(.975)*se
+
+      px1 <- ggplot(diag.pred, aes(x=x2, y=exp(fit)/(1+exp(fit)))) +
+        geom_line() +
+        geom_ribbon(aes(ymin=exp(ci.low)/(1+exp(ci.low)),
+                        ymax=exp(ci.high)/(1+exp(ci.high))),
+                    lty='blank',alpha=0.25) +
+        geom_hline(yintercept=0.5, lty='dashed') +
+        ylim(c(0,1)) +
+        xlab('') +
+        ylab('estimated p') +
+        theme_classic() +
+        theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
+      if (is.null(save)) {
+        print(px1)
+      } else {
+        savename <- paste0(save,'-diag-',genes[i],'.png')
+        ggsave(file=savename, plot=px1, height=2, width=2)
         message(paste('saved', savename))
       }
     }
