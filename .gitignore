@@ -17,3 +17,8 @@ analysis/*pdf
 analysis/*png
 analysis/figures/*pdf
 analysis/figures/*png
+analysis/results/*
+analysis/*html
+analysis/smartseq3/*
+analysis/old_results
+analysis/old_scripts

@@ -14,11 +14,9 @@ library(ggplot2)
 library(data.table)
 library(viridis)
 library(gplots)
+library(rtracklayer)
 THRESHOLD = 500
 ```
-
-
-
 
 
 ```{r}
@@ -137,7 +135,7 @@ cere3_overall <- extract_mat_pat_overall(cere_3)
 
 ```{r}
 load('cside_spase_combined_cere_3_df_5.RData')
-load('cside_spase_combined_cere_4_df_5.RData')
+load('cside_spase_combined_cere4_visium_df_5.RData')
 load('cside_spase_combined_hippo_1_df_5.RData')
 load('cside_spase_combined_hippo_2_df_5.RData')
 load('cside_spase_combined_hippo_3_df_5.RData')
@@ -152,6 +150,9 @@ extract_mat_pat_ct <- function(sig_gene_list) {
   res <- NULL
   for (i in seq_along(sig_gene_list)) {
     dd <- sig_gene_list[[i]]
+    if (nrow(dd)==0) {
+      next
+    }
     ct <- names(sig_gene_list)[i]
     dd$gene <- rownames(dd)
     rownames(dd) <- NULL
@@ -176,9 +177,9 @@ hippo2_ct <- extract_mat_pat_ct(hippo2_intercept@spase_results$sig_gene_list)
 
 hippo3_ct <- extract_mat_pat_ct(hippo3_intercept@spase_results$sig_gene_list)
 
-cere4_ct <- extract_mat_pat_ct(cere3_intercept@spase_results$sig_gene_list)
+cere3_ct <- extract_mat_pat_ct(cere3_intercept@spase_results$sig_gene_list)
 
-cere3_ct <- extract_mat_pat_ct(cere4_intercept@spase_results$sig_gene_list)
+cere4_ct <- extract_mat_pat_ct(cere4_intercept@spase_results$sig_gene_list)
 ```
 
 
@@ -189,7 +190,7 @@ hippo_2 <- readRDS('spasev1_results_hippo_2.rds')
 hippo_1_combined <- readRDS('spasev1_results_global_combined_hippo_1.rds')
 hippo_3_combined <- readRDS('spasev1_results_global_combined_hippo_3_nm3.rds')
 cere_3_combined <- readRDS('spasev1_results_global_combined_cere_4_nm3.rds')
-cere_4 <- readRDS('spasev1_results_visium_cere_3.rds')
+cere_4 <- readRDS('spase_results_visium_cere4.rds')
 ```
 
 ```{r}
@@ -218,7 +219,7 @@ hippo_1_spct_res <- readRDS('cside_spase_combined_hippo_1_df_5.rds')
 hippo_2_spct_res <- readRDS('cside_spase_combined_hippo_2_df_5.rds')
 hippo_3_spct_res <- readRDS('cside_spase_combined_hippo_3_df_5.rds')
 cere_3_spct_res <- readRDS('cside_spase_combined_cere_4_df_5.rds')
-cere_4_spct_res <- readRDS('cside_spase_combined_cere_3_df_5.rds')
+cere_4_spct_res <- readRDS('cside_spase_combined_cere4_visium_df_5.rds')
 ```
 
 ```{r}
@@ -402,7 +403,10 @@ colnames(rr) <- c('N spots', 'Avg. reads/spot', 'Allele-resolved')
 rr <- data.frame(rr)
 
 dd <- bind_cols(
-  data.frame(Mouse = c(1,2,3,3,4), Tissue = c('Hippocampus', 'Hippocampus', 'Hippocampus', 'Cerebellum', 'Cerebellum'), Platform = c('Slide-seq', 'Slide-seq', 'Slide-seq', 'Slide-seq', 'Visium'), `Read length` = c(160, 56, 200, 200, 91)),
+  data.frame(Mouse = c(1,2,3,3,4), 
+             Tissue = c('Hippocampus', 'Hippocampus', 'Hippocampus', 'Cerebellum', 'Cerebellum'), 
+             Platform = c('Slide-seq', 'Slide-seq', 'Slide-seq', 'Slide-seq', 'Visium'), 
+             `Read length` = c(160, 56, 250, 250, 91)),
   rr
 )
 xtable::xtable(dd)

@@ -7,9 +7,9 @@
 #SBATCH --error=run_rctd_%A_%a.err
 #SBATCH --time=24:00:00
 #SBATCH --mem=64G
-#SBATCH --array=1-2
+#SBATCH --array=1-5
 
-ARRAY=('run_rctd_hippo1.R' 'run_rctd_hippo3.R' 'run_rctd_cere4.R' 'run_rctd_hippo2.R')
+ARRAY=('./scripts/run_rctd_hippo1.R' './scripts/run_rctd_hippo3.R' './scripts/run_rctd_cere3.R' './scripts/run_rctd_hippo2.R' './scripts/run_rctd_cere4_visium.R' './scripts/run_rctd_mix5_visium.R')
 
 module load R
 Rscript ${ARRAY[${SLURM_ARRAY_TASK_ID}]}

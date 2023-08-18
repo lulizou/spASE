@@ -4,22 +4,16 @@ format:
   gfm:
     toc: true
 editor: source
-execute:
-  cache: true
 ---
 
-```{r}
-library(data.table)
-library(spacexr)
-library(Matrix)
-library(dplyr)
-library(tidyr)
-library(tibble)
-library(ggplot2)
-library(ggthemes)
-```
+This document details the pre-processing steps run before the rest of the
+analysis scripts, including pointing to which scripts were run to perform
+each step.
+
 
 # Sample table
+
+See code in .qmd document for LaTeX table.
 
 \begin{table}[]
 \begin{tabular}{llll}
@@ -54,463 +48,58 @@ bowtie2 -x bowtie2_index_129xCAST \
 
 BAM files were processed with a custom Python script to get uniquely
 mapped reads based on number of mismatches, as well as the number of reads
-uniquely mapped but unable to be assigned to one allele (used for more
-information to determine cell types).
-
-# Slide-seq
-
-## Hippocampus - Mouse 1
-
-### Load in reference
-
-```{r}
-hippo_ref <- readRDS('../inst/extdata/reference_scrna/scRefSubsampled1000.rds')
-
-celltypes_hippo <- hippo_ref@meta.data$liger_ident_coarse
-levels(celltypes_hippo)[levels(celltypes_hippo)=='Denate'] <- 'Dentate'
-hippo_counts <- hippo_ref@assays$RNA@counts
-names(celltypes_hippo) <- colnames(hippo_counts)
-
-hippo_ref <- Reference(counts = hippo_counts, cell_types = celltypes_hippo)
-```
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/slideseq/hippo1'
-counts1 <- fread(file.path(PATH, '2020-08-20_Puck_200102_01_combined_aligned_counts_4-22-22.csv')) |>
-  mutate(bead = substr(bead, 1, 14)) 
-positions1 <- fread(file.path(PATH, 'Puck_200102_01_barcode_matching.txt'), col.names = c('idk1','idk2','bead','idk3','x','y')) |>
-  distinct(bead, .keep_all=T)
-counts2 <- fread(file.path(PATH, '2020-08-20_Puck_200102_02_combined_aligned_counts_4-22-22.csv')) |>
-  mutate(bead = substr(bead, 1, 14)) 
-positions2 <- fread(file.path(PATH, 'Puck_200102_02_barcode_matching.txt'), col.names = c('idk1','idk2','bead','idk3','x','y')) |>
-  mutate(bead = substr(bead, 1, 14)) |>
-  distinct(bead, .keep_all=T)
-```
-
-### Reads per spot
-
-```{r}
-positions1 |>
-  left_join(counts1, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-```{r}
-positions2 |>
-  left_join(counts, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-### Make barcodes x genes matrix
-
-```{r}
-counts1 <- counts1 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts1_matrix <- sparseMatrix(i=counts1$gene, j=counts1$bead, x=counts1$total)
-rownames(counts1_matrix) <- levels(counts1$gene)
-colnames(counts1_matrix) <- levels(counts1$bead)
-
-counts2 <- counts2 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts2_matrix <- sparseMatrix(i=counts2$gene, j=counts2$bead, x=counts2$total)
-rownames(counts2_matrix) <- levels(counts2$gene)
-colnames(counts2_matrix) <- levels(counts2$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions1 <- positions1 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-positions2 <- positions2 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-puck1 <- SpatialRNA(positions1, counts1_matrix)
-myhippo1 <- create.RCTD(puck1, hippo_ref, max_cores=8)
-myhippo1 <- run.RCTD(myhippo1, doublet_mode = 'doublet')
-```
-
-```{r}
-puck2 <- SpatialRNA(positions2, counts2_matrix)
-myhippo2 <- create.RCTD(puck2, hippo_ref, max_cores=8)
-myhippo2 <- run.RCTD(myhippo2, doublet_mode = 'doublet')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(myhippo1, 'hippo_slideseq_mouse_1_1.rds')
-saveRDS(myhippo2, 'hippo_slideseq_mouse_1_2.rds')
-```
-
-
-## Hippocampus - Mouse 2
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/slideseq/hippo2'
-positions <- fread(file.path(PATH, 'Puck_201006_22_barcode_matching.txt'), col.names = c('idk1','idk2','bead','idk3','x','y'))  |>
-  distinct(bead, .keep_all=T)
-counts <- fread(file.path(PATH, '2020-11-25_Puck_201006_22_combined_aligned_k100_local.csv')) |>
-  mutate(bead = substr(bead, 1, 14)) |>
-  filter(bead %in% positions$bead)
-```
-
-### Reads per spot
-
-```{r}
-positions |>
-  left_join(counts, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-
-### Make barcodes x genes matrix
-
-```{r}
-counts <- counts |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$total)
-rownames(counts_matrix) <- levels(counts$gene)
-colnames(counts_matrix) <- levels(counts$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions <- positions |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-puck <- SpatialRNA(positions, counts_matrix)
-myhippo <- create.RCTD(puck, hippo_ref, max_cores=1)
-myhippo <- run.RCTD(myhippo, doublet_mode = 'doublet')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(myhippo, 'hippo_slideseq_mouse_2.rds')
-```
-
-## Hippocampus - Mouse 3
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/slideseq/hippo3'
-counts1 <- fread(file.path(PATH, '2022-12-11_Puck_221014_21_combined_atropos_polyAGtrim.csv')) |>
-  mutate(bead = substr(bead, 1, 14))
-positions1 <- fread(file.path(PATH, 'Puck_221014_21_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T)
-counts2 <- fread(file.path(PATH, '2022-12-11_Puck_221014_22_combined_atropos_polyAGtrim.csv')) |>
-  mutate(bead = substr(bead, 1, 14)) 
-positions2 <- fread(file.path(PATH, 'Puck_221014_22_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T)
-```
-
-### Reads per spot
-
-```{r}
-positions1 |>
-  left_join(counts1, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-```{r}
-positions2 |>
-  left_join(counts2, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-
-### Make barcodes x genes matrix
-
-```{r}
-counts1 <- counts1 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts1_matrix <- sparseMatrix(i=counts1$gene, j=counts1$bead, x=counts1$total)
-rownames(counts1_matrix) <- levels(counts1$gene)
-colnames(counts1_matrix) <- levels(counts1$bead)
-
-counts2 <- counts2 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts2_matrix <- sparseMatrix(i=counts2$gene, j=counts2$bead, x=counts2$total)
-rownames(counts2_matrix) <- levels(counts2$gene)
-colnames(counts2_matrix) <- levels(counts2$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions1 <- positions1 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-positions2 <- positions2 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-puck1 <- SpatialRNA(positions1, counts1_matrix)
-myhippo1 <- create.RCTD(puck1, hippo_ref, max_cores=8)
-myhippo1 <- run.RCTD(myhippo1, doublet_mode = 'doublet')
-```
-
-```{r}
-puck2 <- SpatialRNA(positions2, counts2_matrix)
-myhippo2 <- create.RCTD(puck2, hippo_ref, max_cores=8)
-myhippo2 <- run.RCTD(myhippo2, doublet_mode = 'doublet')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(myhippo1, 'hippo_slideseq_mouse_3_1.rds')
-saveRDS(myhippo2, 'hippo_slideseq_mouse_3_2.rds')
-```
-
-## Cerebellum - Mouse 4
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/slideseq/cere1'
-counts1 <- fread(file.path(PATH, '2022-12-11_Puck_221014_23_combined_atropos_polyAGtrim.csv')) |>
-  mutate(bead = substr(bead, 1, 14))
-positions1 <- fread(file.path(PATH, 'Puck_221014_23_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T)
-counts2 <- fread(file.path(PATH, '2022-12-11_Puck_221014_24_combined_atropos_polyAGtrim.csv')) |>
-  mutate(bead = substr(bead, 1, 14)) 
-positions2 <- fread(file.path(PATH, 'Puck_221014_24_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T)
-```
-
-### Reads per spot
-
-```{r}
-positions1 |>
-  left_join(counts1, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-```{r}
-positions2 |>
-  left_join(counts2, by = 'bead') |>
-  filter(!is.na(x)) |>
-  group_by(bead) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-
-### Make barcodes x genes matrix
-
-```{r}
-counts1 <- counts1 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts1_matrix <- sparseMatrix(i=counts1$gene, j=counts1$bead, x=counts1$total)
-rownames(counts1_matrix) <- levels(counts1$gene)
-colnames(counts1_matrix) <- levels(counts1$bead)
-
-counts2 <- counts2 |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts2_matrix <- sparseMatrix(i=counts2$gene, j=counts2$bead, x=counts2$total)
-rownames(counts2_matrix) <- levels(counts2$gene)
-colnames(counts2_matrix) <- levels(counts2$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions1 <- positions1 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-positions2 <- positions2 |>
-  select(bead,x,y) |>
-  column_to_rownames('bead') 
-puck1 <- SpatialRNA(positions1, counts1_matrix)
-mycere1 <- create.RCTD(puck1, cere_ref, max_cores=8)
-mycere1 <- run.RCTD(mycere1, doublet_mode = 'doublet')
-```
-
-```{r}
-puck2 <- SpatialRNA(positions2, counts2_matrix)
-mycere2 <- create.RCTD(puck2, cere_ref, max_cores=8)
-mycere2 <- run.RCTD(mycere2, doublet_mode = 'doublet')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(mycere1, 'cere_slideseq_mouse_4_1.rds')
-saveRDS(mycere2, 'cere_slideseq_mouse_4_2.rds')
-```
-
-
-# Visium
-
-
-## Cerebellum - Mouse 3
-
-### Load in reference
-
-```{r}
-cerebellum_ref <- readRDS('../inst/extdata/reference_scrna/cerebellum_sn_ref_spacexr.rds')
-```
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/visium/cerebellum_spatial'
-counts <- fread(file.path(PATH, 'cerebellum.csv'))
-positions <- fread(file.path(PATH, 'tissue_positions.csv'))
-```
-
-### Reads per spot
-
-```{r}
-positions |>
-  left_join(counts, by = c('barcode'='bead')) |>
-  group_by(barcode) |>
-  summarise(cast = sum(CAST), `129` = sum(`129`), una = sum(Unassigned)) |>
-  mutate(allele_res = cast+`129`, total = cast+`129`+una) |>
-  summary()
-```
-
-### Make barcodes x genes matrix
-
-```{r}
-counts <- counts |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$total)
-rownames(counts_matrix) <- levels(counts$gene)
-colnames(counts_matrix) <- levels(counts$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions <- positions |>
-  select(barcode, starts_with('pxl')) |>
-  column_to_rownames('barcode') |>
-  rename(x = pxl_row_in_fullres, y = pxl_col_in_fullres)
-puck <- SpatialRNA(positions, counts_matrix)
-myCerebellum <- create.RCTD(puck, cerebellum_ref, max_cores=1)
-myCerebellum <- run.RCTD(myCerebellum, doublet_mode = 'full')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(myCerebellum, 'cerebellum_visium_mouse_4.rds')
-```
-
-## Hippocampus/cerebellum mixture - Mouse 5
-
-### Combine references
-
-```{r}
-cerebellum_ref <- readRDS('../inst/extdata/reference_scrna/cerebellum_sn_ref_spacexr.rds')
-hippo_ref <- readRDS('../inst/extdata/reference_scrna/scRefSubsampled1000.rds')
-
-celltypes_hippo <- hippo_ref@meta.data$liger_ident_coarse
-celltypes_cere <- cerebellum_ref@cell_types
-
-# add CA1, CA3, Dentate, Interneuron to the Cerebellum reference
-
-levels(celltypes_hippo)[levels(celltypes_hippo)=='Denate'] <- 'Dentate'
-
-genes_in_both <- rownames(cerebellum_ref@counts)[rownames(cerebellum_ref@counts) %in% rownames(hippo_ref@assays$RNA@counts)]
-
-hippo_idx <- which(celltypes_hippo %in% c('Astrocyte', 'CA1', 'CA3', 'Dentate', 'Interneuron'))
-
-hippo_counts <- hippo_ref@assays$RNA@counts[genes_in_both,hippo_idx]
-cere_counts <- cerebellum_ref@counts[genes_in_both,]
-
-celltypes_both <- c(celltypes_hippo[hippo_idx],celltypes_cere)
-celltypes_both <- factor(celltypes_both, levels = unique(as.character(celltypes_both)))
-names(celltypes_both) <- c(colnames(hippo_counts), colnames(cere_counts))
-
-both_ref <- Reference(counts = cbind(hippo_counts, cere_counts), cell_types = celltypes_both)
-```
-
-### Load in data
-
-```{r}
-PATH <- '../inst/extdata/visium/mixture'
-counts <- fread(file.path(PATH, 'mixture.csv'))
-positions <- fread(file.path(PATH, 'tissue_positions.csv'))
-```
-
-### Make barcodes x genes matrix
-
-```{r}
-counts <- counts |>
-  arrange(bead, gene) |>
-  mutate(total = CAST+`129`+Unassigned) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$total)
-rownames(counts_matrix) <- levels(counts$gene)
-colnames(counts_matrix) <- levels(counts$bead)
-```
-
-### Make SpatialRNA and RCTD object, call cell types
-
-```{r}
-positions <- positions |>
-  select(barcode, starts_with('pxl')) |>
-  column_to_rownames('barcode') |>
-  rename(x = pxl_row_in_fullres, y = pxl_col_in_fullres)
-puck <- SpatialRNA(positions, counts_matrix)
-myMix <- create.RCTD(puck, hippo_ref, max_cores=16)
-myMix <- run.RCTD(myMix, doublet_mode = 'full')
-```
-
-### Save RCTD object to file
-
-```{r}
-saveRDS(myMix, 'mixture_visium_hippoRef_mouse_5.rds')
-```
+uniquely mapped but unable to be assigned to one allele (used as input for
+cell type assignment).
 
+
+# RCTD
+
+RCTD was run on each sample individually using the scripts (`>` indicates the name of the output file produced from that script; note that the scripts are not explicitly run with the pipe notation.):
+
+- `run_rctd_hippo1.R > rctd_hippo_1.rds` 
+- `run_rctd_hippo2.R > rctd_hippo_2.rds`
+- `run_rctd_hippo3.R > rctd_hippo_3.rds`
+- `run_rctd_cere3.R > rctd_cere_3.rds`
+- `run_rctd_cere4_visium.R > rctd_cere_4_visium.rds`
+- `run_rctd_mix5_visium.R > rctd_mix_5_visium.rds`
+
+See `run_rctd.sbatch`` for SLURM job submission resources.
+
+
+# Overall ASE: spASE
+
+1. Overall maternal/paternal bias - we assume $\text{logit}(p_{j}) = \beta_{0,j}$, i.e. the mean maternal probability does not change based on cell type or spatial location.
+
+- `run_spase_hippo1_overall_bias.R > results_overall_bias_hippo_1.rds`
+- `run_spase_hippo2_overall_bias.R > results_overall_bias_hippo_2.rds`
+- `run_spase_hippo3_overall_bias.R > results_overall_bias_hippo_3.rds`
+- `run_spase_cere3_overall_bias.R > results_overall_bias_cere_3.rds`
+- `run_spase_cere4_visium_overall_bias.R > > results_overall_bias_cere_4_visium.rds`
+
+See `run_spase_overall_bias.sbatch` for SLURM job submission resources.
+
+2. Overall spatial pattern (no cell type effect) - we assume $\text{logit}(p_{i,j}) = \beta_{0,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,j}$, where $x_{i,\ell}$ are degrees of freedom $L$ thin plate spline basis functions evaluated at spots $i$.
+
+- `run_spase_hippo1_overall_spatial.R > results_overall_spatial_hippo_1.rds`
+- `run_spase_hippo2_overall_spatial.R > results_overall_spatial_hippo_2.rds`
+- `run_spase_hippo3_overall_spatial.R > results_overall_spatial_hippo_3.rds`
+- `run_spase_cere3_overall_spatial.R > results_overall_spatial_cere_3.rds`
+- `run_spase_cere4_visium_overall_spatial.R > results_overall_spatial_cere_4.rds`
+
+See `run_spase_overall_spatial.sbatch` for SLURM job submission resources.
+
+
+# Cell type-specific analyses: C-SIDE and spASE
+
+1. Within cell type maternal/paternal bias - we assume $p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \text{expit}(\beta_{0,k,j})$.
+2. Within cell type spatial pattern - we assume $p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \, \text{expit} \left(\beta_{0,k,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,k,j}\right)$, where $x_{i,\ell}$ are degrees of freedom $L$ thin plate spline basis functions evaluated at spots $i$.
+
+C-SIDE and spASE were run on each sample individually using the scripts:
+
+- `run_spase_hippo1_celltype.R > results_celltype_hippo_1_df_5.rds`
+- `run_spase_hippo2_celltype.R > results_celltype_hippo_2_df_5.rds`
+- `run_spase_hippo3_celltype.R > results_celltype_hippo_3_df_5.rds`
+- `run_spase_cere3_celltype.R > results_celltype_cere_3_df_5.rds`
+- `run_spase_cere4_visium_celltype.R > results_celltype_cere_4_df_5.rds`
+
+See `run_spase_celltype.sbatch` for example SLURM job submission resources.

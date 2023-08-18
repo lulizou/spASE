@@ -1,0 +1,215 @@
+---
+title: "Analyzing 129 and CAST transcripts"
+format: html
+editor: source
+---
+
+
+```{r}
+library(Biostrings)
+library(tidyr)
+library(dplyr)
+library(tibble)
+library(DECIPHER)
+library(stringr)
+```
+
+# Load in data
+
+```{r}
+tx <- readDNAStringSet('/rafalab/lzou/slideseq/emase.pooled.targets.fa')
+ensembl_ids <- read.csv('/rafalab/lzou/slideseq/ensembl_tx_gene.csv')
+tx_names <- tx@ranges@NAMES
+tx_df <- tx_names |> 
+  as.data.frame() |>
+  separate(tx_names, into=c('tx', 'strain'), sep='_') |>
+  left_join(ensembl_ids, by = c('tx' = 'ensembl_transcript_id'))
+# create an index from the row idx 
+tx_df <- tx_df |> 
+  rownames_to_column(var = 'idx') |>
+  pivot_wider(id_cols = c('tx', 'external_gene_name'), names_from = 'strain', values_from='idx')
+colnames(tx_df) <- c('tx', 'gene', 's129', 'sCAST')
+```
+
+# Xist example
+
+```{r}
+# all Xist transcripts
+tx_df |> filter(gene=='Xist')
+```
+
+```{r}
+# align each one
+df <- tx_df |> filter(gene=='Xist')
+for (i in 1:nrow(df)) {
+  test <- pairwiseAlignment(as.character(tx[[as.integer(df$s129[i])]]), as.character(tx[[as.integer(df$sCAST[i])]]))
+  s1 <- alignedPattern(test)
+  s2 <- alignedSubject(test)
+  sdf <- data.frame(
+    idx = seq(1,width(s1)),
+    s129 = unlist(str_split(as.character(s1), pattern='')),
+    sCAST = unlist(str_split(as.character(s2), pattern=''))
+  ) |>
+    mutate(aligned = ifelse(s129==sCAST, 'lightgray', 'red')) 
+  
+  sdf |>
+    pivot_longer(cols = c('s129', 'sCAST')) |>
+    ggplot(aes(x = idx, y = factor(name))) +
+    geom_vline(data= sdf |> filter(aligned=='red') |> unique(),
+               aes(xintercept = idx), color = 'red', linewidth=0.5) +
+    scale_x_continuous(breaks = c(1, round(width(s1)/4), round(width(s1)/2), round(width(s1)/4*3), width(s1)), labels = c(1, round(width(s1)/4), round(width(s1)/2), round(width(s1)/4*3), width(s1)), limits = c(1, width(s1))) +
+    theme_classic() +
+    ylab('') +
+    xlab('Position') +
+    ggtitle(paste0(df[i,1], ', ', df[i,2], ' mismatch: ', nmismatch(test), '; ins: ', as.integer(nindel(test)@insertion[,2]), 'bp; del:', as.integer(nindel(test)@deletion[,2]), 'bp'))
+  ggsave(paste0('figures/06_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
+}
+```
+
+
+```{r}
+plot_tx <- function(g) {
+  df <- tx_df |> filter(gene==g)
+  for (i in 1:nrow(df)) {
+    test <- pairwiseAlignment(as.character(tx[[as.integer(df$s129[i])]]), as.character(tx[[as.integer(df$sCAST[i])]]))
+    s1 <- alignedPattern(test)
+    s2 <- alignedSubject(test)
+    sdf <- data.frame(
+      idx = seq(1,width(s1)),
+      s129 = unlist(str_split(as.character(s1), pattern='')),
+      sCAST = unlist(str_split(as.character(s2), pattern=''))
+    ) |>
+      mutate(aligned = ifelse(s129==sCAST, 'lightgray', 'red')) 
+    
+    print(sdf |>
+      pivot_longer(cols = c('s129', 'sCAST')) |>
+      ggplot(aes(x = idx, y = factor(name))) +
+      geom_vline(data= sdf |> filter(aligned=='red') |> unique(),
+                 aes(xintercept = idx), color = 'red', linewidth=0.5) +
+      scale_x_continuous(breaks = c(1, round(width(s1)/4), round(width(s1)/2), round(width(s1)/4*3), width(s1)), labels = c(1, round(width(s1)/4), round(width(s1)/2), round(width(s1)/4*3), width(s1)), limits = c(1, width(s1))) +
+      theme_classic() +
+      ylab('') +
+      xlab('Position') +
+      ggtitle(paste0(df[i,1], ', ', df[i,2], ' mismatch: ', nmismatch(test), '; ins: ', as.integer(nindel(test)@insertion[,2]), 'bp; del:', as.integer(nindel(test)@deletion[,2]), 'bp')))
+    ggsave(paste0('figures/06_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
+  }
+}
+```
+
+```{r}
+plot_tx('Ptgds')
+```
+
+
+
+# All transcripts
+
+```{r, eval=F}
+tx_df$nmismatch <- 0
+tx_df$ins_bp <- 0
+tx_df$del_bp <- 0
+for (i in 1:nrow(tx_df)) {
+  if (i%%1000 == 0) {
+    message(i)
+  }
+  test <- try(pairwiseAlignment(as.character(tx[[as.integer(tx_df$s129[i])]]), as.character(tx[[as.integer(tx_df$sCAST[i])]])))
+  if (is(test, 'try-error')) {
+    tx_df$nmismatch[i] <- NA
+    tx_df$ins_bp[i] <- NA
+    tx_df$del_bp[i] <- NA
+  } else {
+    tx_df$nmismatch[i] <- nmismatch(test)
+    tx_df$ins_bp[i] <- as.integer(nindel(test)@insertion[,2])
+    tx_df$del_bp[i] <- as.integer(nindel(test)@deletion[,2])
+  }
+}
+tx_df$width <- width(tx)[as.integer(tx_df$s129)]
+saveRDS(tx_df, file = '06_129_CAST_df.rds')
+```
+
+```{r}
+tx_df <- readRDS('06_129_CAST_df.rds')
+```
+
+
+# Summary statistics
+
+```{r}
+tx_df |>
+  mutate(frac_mismatch = nmismatch/width,
+         frac_mismatch_indel = (nmismatch + ins_bp + del_bp)/width) |>
+  summary()
+```
+
+
+```{r}
+tx_df |>
+  ggplot(aes(x=nmismatch/width)) +
+  geom_histogram(bins=50) +
+  theme_minimal() +
+  xlab('n SNPs / transcript length')
+```
+
+
+
+```{r}
+tx_df |>
+  ggplot(aes(x=(nmismatch+ins_bp+del_bp)/width)) +
+  geom_histogram(bins=50) +
+  theme_minimal() +
+  xlab('(n SNPs + indel bp) / transcript length')
+```
+
+
+```{r}
+# num transcripts with indels
+tx_df |>
+  mutate(indel = ifelse(ins_bp>0 | del_bp>0, 'indel', 'no indel')) |>
+  group_by(indel) |>
+  summarise(n=n())
+```
+
+
+
+# Plot number of reads by SNPs
+
+
+```{r}
+# read in visium cerebellum data
+cere3 <- readRDS('cside_spase_combined_cere_4_df_5.rds')
+gene_counts <- rowSums(cere3@spatialRNA@maternalCounts)+rowSums(cere3@spatialRNA@paternalCounts)
+gene_df <- data.frame(gene = names(gene_counts), count = gene_counts)
+tx_df <- left_join(tx_df, gene_df, by = 'gene')
+```
+
+```{r}
+dd <- tx_df |>
+  group_by(gene) |>
+  slice_max(nmismatch, n=1, with_ties = F)
+
+mycor <- cor(log2(dd$nmismatch+1), log2(dd$count+1), use='pairwise.complete')
+
+dd |>
+  filter(!is.na(count)) |>
+  mutate(has_indel = ifelse(ins_bp>0 | del_bp>0, 'Has indel (46,454)', 'No indel (68,664)')) |>
+  filter(!is.na(has_indel)) |>
+  ggplot(aes(x = log2(nmismatch+1), y = log2(count+1))) +
+  geom_point(alpha=0.05) +
+  geom_smooth(method='lm') +
+  facet_wrap(has_indel ~ .) +
+  theme_classic() +
+  xlab('log2(n mismatches + 1)') 
+ggsave('figures/06_129_CAST_nmismatch_vs_count.pdf', height=3, width=6)
+```
+
+# Total number of SNPs in non-zero count genes
+
+```{r}
+dd |>
+  filter(count > 0)  |>
+  ungroup() |>
+  summarise(nsnps = sum(nmismatch, na.rm=T))
+```
+
+
+

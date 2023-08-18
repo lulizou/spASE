@@ -137,6 +137,10 @@ plotSpase <- function(matrix1, matrix2, covariates, spasefit, coords=NULL,
   zscore.palette <- rev(brewer.pal(n=7, 'RdBu'))
   for (i in 1:length(genes)) {
     print(genes[i])
+    if (is.na(spasefit$fits[genes[i]])) {
+      warning(paste(genes[i], 'did not converge; try lowering degrees of freedom. skipping for now'))
+      next
+    }
     if (is.null(spasefit$fits[genes[i]][[1]])) {
       warning(paste(genes[i], 'is not present in the results, probably did not pass minimum threshold of UMI or pixels'))
       next

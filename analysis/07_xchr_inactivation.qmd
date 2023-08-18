@@ -1,0 +1,308 @@
+---
+title: "Plotting X-chromosome genes to see if any escape XCI"
+format: html
+editor: source
+---
+
+```{r}
+library(dplyr)
+library(Matrix)
+library(data.table)
+library(rtracklayer)
+library(tibble)
+library(ggplot2)
+library(ggthemes)
+```
+
+```{r}
+# Read in gencode to grab xchr genes
+gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+xchr_genes <- c(xchr_genes, 'Bex3')
+```
+
+## Hippo 1
+
+```{r}
+hippo1 <- readRDS('rctd_combined_hippo_1.rds')
+maternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@maternalCounts
+paternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@paternalCounts
+coords_hippo <- hippo1@originalSpatialRNA@coords |> rownames_to_column()
+```
+
+```{r}
+xgenes <- rownames(maternal_counts_matrix_hippo)[(rownames(maternal_counts_matrix_hippo) %in% xchr_genes) & ((rowSums(maternal_counts_matrix_hippo) + rowSums(paternal_counts_matrix_hippo)) > 1000) & (rowSums(maternal_counts_matrix_hippo)>0 & rowSums(paternal_counts_matrix_hippo)>0)]
+```
+
+
+```{r}
+myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=15, genes = xgenes)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_hippo, 
+  matrix2 = paternal_counts_matrix_hippo, 
+  covariates = coords_hippo, 
+  spasefit = myfit_hippo, 
+  coords = coords_hippo |> select(x,y) |> sample_n(10000), 
+  genes = xgenes,
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_hippo1'
+)
+```
+
+
+## Hippo 2
+
+```{r}
+hippo2 <- readRDS('cside_spase_combined_hippo_2_df_5.rds')
+maternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@maternalCounts
+paternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@paternalCounts
+coords_hippo <- hippo2@originalSpatialRNA@coords |> rownames_to_column()
+```
+
+```{r}
+xgenes <- rownames(maternal_counts_matrix_hippo)[(rownames(maternal_counts_matrix_hippo) %in% xchr_genes) & ((rowSums(maternal_counts_matrix_hippo) + rowSums(paternal_counts_matrix_hippo)) > 1000) & (rowSums(maternal_counts_matrix_hippo)>0 & rowSums(paternal_counts_matrix_hippo)>0)]
+xgenes <- c(xgenes, 'Morf4l2', 'Tceal5', 'Tceal6')
+```
+
+
+```{r}
+myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=15, genes = xgenes, min.umi=100)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_hippo, 
+  matrix2 = paternal_counts_matrix_hippo, 
+  covariates = coords_hippo, 
+  spasefit = myfit_hippo, 
+  coords = coords_hippo |> select(x,y) |> sample_n(10000), 
+  genes = xgenes,
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_hippo2'
+)
+```
+
+Smooth Morf4l2 with lower df to be able to compare to hippo1
+
+```{r}
+myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=5, genes = 'Morf4l2', min.umi=100)
+```
+
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_hippo, 
+  matrix2 = paternal_counts_matrix_hippo, 
+  covariates = coords_hippo, 
+  spasefit = myfit_hippo, 
+  coords = coords_hippo |> select(x,y) |> sample_n(10000), 
+  genes = 'Morf4l2',
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_hippo2'
+)
+```
+
+## Hippo 3
+
+```{r}
+hippo3 <- readRDS('cside_spase_combined_hippo_3_df_5.rds')
+maternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@maternalCounts
+paternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@paternalCounts
+coords_hippo <- hippo3@originalSpatialRNA@coords |> rownames_to_column()
+```
+
+```{r}
+xgenes <- rownames(maternal_counts_matrix_hippo)[(rownames(maternal_counts_matrix_hippo) %in% xchr_genes) & ((rowSums(maternal_counts_matrix_hippo) + rowSums(paternal_counts_matrix_hippo)) > 1000) & (rowSums(maternal_counts_matrix_hippo)>0 & rowSums(paternal_counts_matrix_hippo)>0)]
+```
+
+
+```{r}
+myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=15, genes = c('Arhgef9', 'Bex3', 'Cdkl5', 'Sat1', 'Syp', 'Tceal5'), min.umi=100) # subset to the ones i'm actually going to include in the supplemental figure; the rest are pretty much all maternal
+```
+
+
+```{r}
+set.seed(5)
+common_coords <- coords_hippo |> select(x,y) |> sample_n(10000)
+plotSpase(
+  matrix1 = maternal_counts_matrix_hippo, 
+  matrix2 = paternal_counts_matrix_hippo, 
+  covariates = coords_hippo, 
+  spasefit = myfit_hippo, 
+  coords = common_coords, 
+  genes = c('Arhgef9', 'Bex3', 'Cdkl5', 'Sat1', 'Syp', 'Tceal5'),
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_hippo3'
+)
+```
+
+Extra genes for comparison to other samples
+
+```{r}
+myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=5, genes = c('Tceal3','Tceal6','Morf4l2'), min.umi=100)
+```
+
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_hippo, 
+  matrix2 = paternal_counts_matrix_hippo, 
+  covariates = coords_hippo, 
+  spasefit = myfit_hippo, 
+  coords = common_coords, 
+  genes = c('Tceal3','Tceal6','Morf4l2'),
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_hippo3'
+)
+```
+
+
+## Cerebellum 3
+
+```{r}
+cere3 <- readRDS('cside_spase_combined_cere_4_df_5.rds')
+maternal_counts_matrix_cere <- cere3@originalSpatialRNA@maternalCounts
+paternal_counts_matrix_cere <- cere3@originalSpatialRNA@paternalCounts
+coords_cere <- cere3@originalSpatialRNA@coords |> rownames_to_column()
+```
+
+```{r}
+xgenes <- rownames(maternal_counts_matrix_cere)[(rownames(maternal_counts_matrix_cere) %in% xchr_genes) & ((rowSums(maternal_counts_matrix_cere) + rowSums(paternal_counts_matrix_cere)) > 1000) & (rowSums(maternal_counts_matrix_cere)>0 & rowSums(paternal_counts_matrix_cere)>0)]
+```
+
+
+```{r}
+myfit_cere <- spase(maternal_counts_matrix_cere, paternal_counts_matrix_cere, coords_cere,cores=1,verbose=T, df=15, genes = xgenes)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_cere, 
+  matrix2 = paternal_counts_matrix_cere, 
+  covariates = coords_cere, 
+  spasefit = myfit_cere, 
+  coords = coords_cere |> select(x,y) |> sample_n(10000), 
+  genes = xgenes,
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_cere3'
+)
+```
+
+
+Gene I want to compare to other samples
+
+```{r}
+myfit_cere <- spase(maternal_counts_matrix_cere, paternal_counts_matrix_cere, coords_cere,cores=1,verbose=T, df=5, genes = c('Morf4l2'), min.umi=100)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_cere, 
+  matrix2 = paternal_counts_matrix_cere, 
+  covariates = coords_cere, 
+  spasefit = myfit_cere, 
+  coords = coords_cere |> select(x,y) |> sample_n(10000), 
+  genes = 'Morf4l2',
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_cere3'
+)
+```
+
+## Cerebellum 4
+
+
+```{r}
+cere4 <- readRDS('rctd_cere4_visium.rds')
+maternal_counts_matrix_cere <- cere4@originalSpatialRNA@maternalCounts
+paternal_counts_matrix_cere <- cere4@originalSpatialRNA@paternalCounts
+coords_cere <- cere4@originalSpatialRNA@coords |> rownames_to_column()
+```
+
+```{r}
+xgenes <- rownames(maternal_counts_matrix_cere)[(rownames(maternal_counts_matrix_cere) %in% xchr_genes) & ((rowSums(maternal_counts_matrix_cere) + rowSums(paternal_counts_matrix_cere)) > 1000) & (rowSums(maternal_counts_matrix_cere)>0 & rowSums(paternal_counts_matrix_cere)>0)]
+```
+
+```{r}
+myfit_cere <- spase(maternal_counts_matrix_cere, paternal_counts_matrix_cere, coords_cere,cores=1,verbose=T, df=15, genes = xgenes)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_cere, 
+  matrix2 = paternal_counts_matrix_cere, 
+  covariates = coords_cere, 
+  spasefit = myfit_cere, 
+  coords = coords_cere |> select(x,y) |> filter(y > 7500), # not a lot of reads at the bottom 
+  genes = xgenes,
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_cere4'
+)
+```
+
+
+Add in ones to compare across samples; using lower df since fewer spots/UMIs sampled for these genes
+
+```{r}
+myfit_cere <- spase(maternal_counts_matrix_cere, paternal_counts_matrix_cere, coords_cere,cores=1,verbose=T, df=5, genes = c('Morf4l2', 'Tceal3', 'Tceal6', 'Xist'), min.umi=100)
+```
+
+```{r}
+plotSpase(
+  matrix1 = maternal_counts_matrix_cere, 
+  matrix2 = paternal_counts_matrix_cere, 
+  covariates = coords_cere, 
+  spasefit = myfit_cere, 
+  coords = coords_cere |> select(x,y) |> filter(y > 7500), # not a lot of reads at the bottom 
+  genes = c('Morf4l2', 'Tceal3', 'Tceal6','Xist'),
+  crosshairs = T,
+  crosshairs_diag = F,
+  point.size = 0.75,
+  size.scale = F,
+  theme = 'void',
+  void = T,
+  save = 'figures/07_xchr_cere4'
+)
+```
