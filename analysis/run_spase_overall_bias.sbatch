@@ -7,9 +7,9 @@
 #SBATCH --error=run_betabin_%A_%a.err
 #SBATCH --time=04:00:00
 #SBATCH --mem=32G
-#SBATCH --array=2
+#SBATCH --array=0-5
 
-ARRAY=('run_betabin_bias_and_celltype_cere_4.R' 'run_betabin_bias_and_celltype_hippo_3.R' 'run_betabin_bias_and_celltype_cere_visium.R')
+ARRAY=('scripts/run_spase_hippo1_overall_bias.R' 'scripts/run_spase_hippo2_overall_bias.R' 'scripts/run_spase_hippo3_overall_bias.R' 'scripts/run_spase_cere3_overall_bias.R' 'scripts/run_spase_cere4_visium_overall_bias.R' 'scripts/run_spase_mix5_visium_overall_bias.R')
 module load R
 Rscript ${ARRAY[${SLURM_ARRAY_TASK_ID}]}
 
