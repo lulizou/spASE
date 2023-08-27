@@ -7,10 +7,9 @@
 #SBATCH --error=run_spasev1_combined_%A_%a.err
 #SBATCH --time=08:00:00
 #SBATCH --mem=32G
-#SBATCH --array=4
+#SBATCH --array=0,1,4
 
-ARRAY=('run_spasev1_combined_hippo1.R' 'run_spasev1_combined_hippo3.R' 'run_spasev1_combined_cere4.R' 'run_spase_hippo2.R' 'run_spasev1_visium_cere.R' 'run_spase_mixture.R')
-
+ARRAY=('scripts/run_spase_hippo1_overall_spatial.R' 'scripts/run_spase_hippo2_overall_spatial.R' 'scripts/run_spase_hippo3_overall_spatial.R' 'scripts/run_spase_cere3_overall_spatial.R' 'scripts/run_spase_cere4_visium_overall_spatial.R' 'scripts/run_spase_mix5_visium_overall_spatial.R')
 module load R
 Rscript ${ARRAY[${SLURM_ARRAY_TASK_ID}]}
 
