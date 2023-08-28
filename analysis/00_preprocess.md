@@ -40,18 +40,19 @@ allele (used as input for cell type assignment).
 
 # RCTD
 
-RCTD was run on each sample individually using the scripts (`>`
-indicates the name of the output file produced from that script; note
-that the scripts are not explicitly run with the pipe notation.):
+RCTD was run on each sample individually using the scripts:
 
-- `run_rctd_hippo1.R > rctd_hippo_1.rds`
-- `run_rctd_hippo2.R > rctd_hippo_2.rds`
-- `run_rctd_hippo3.R > rctd_hippo_3.rds`
-- `run_rctd_cere3.R > rctd_cere_3.rds`
-- `run_rctd_cere4_visium.R > rctd_cere_4_visium.rds`
-- `run_rctd_mix5_visium.R > rctd_mix_5_visium.rds`
+- `scripts/run_rctd_hippo1.R > results/rctd_hippo_1.rds`
+- `scripts/run_rctd_hippo2.R > results/rctd_hippo_2.rds`
+- `scripts/run_rctd_hippo3.R > results/rctd_hippo_3.rds`
+- `scripts/run_rctd_cere3.R > results/rctd_cere_3.rds`
+- `scripts/run_rctd_cere4_visium.R > results/rctd_cere_4_visium.rds`
+- `scripts/run_rctd_mix5_visium.R > results/rctd_mix_5_visium.rds`
 
-See \`run_rctd.sbatch\`\` for SLURM job submission resources.
+Note that I use `>` to show what the output of each script was, but it
+is not necessary to run the script with an output pipe.
+
+See `run_rctd.sbatch` for SLURM job submission resources.
 
 # Overall ASE: spASE
 
@@ -84,9 +85,9 @@ resources.
 # Cell type-specific analyses: C-SIDE and spASE
 
 1.  Within cell type maternal/paternal bias - we assume
-    $p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \text{expit}(\beta_{0,k,j})$.
+    $$p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \text{expit}(\beta_{0,k,j}).$$
 2.  Within cell type spatial pattern - we assume
-    $p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \, \text{expit} \left(\beta_{0,k,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,k,j}\right)$,
+    $$p_{i,j} = \sum_{k=1}^K \alpha_{i,j,k} \, \text{expit} \left(\beta_{0,k,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,k,j}\right),$$
     where $x_{i,\ell}$ are degrees of freedom $L$ thin plate spline
     basis functions evaluated at spots $i$.
 
