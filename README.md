@@ -23,8 +23,8 @@ devtools::install_github("lulizou/spASE")
 
 ## Quick start
 
-The main input to spASE includes: - maternal counts matrix (rows are
-genes, columns are spots or cells) - paternal counts matrix - spatial
+The main input to spASE includes: \* maternal counts matrix (rows are
+genes, columns are spots or cells) \* paternal counts matrix \* spatial
 coordinates.
 
 Note that spASE currently modifies many functions from the `spacexr`
