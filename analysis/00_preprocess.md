@@ -32,10 +32,11 @@ Alignment was conducted with e.g. the command:
             -U ./tagged2.fastq |
             samtools view -bS - > ./tagged_bwt2_129_CAST.bam
 
-BAM files were processed with a custom Python script to get uniquely
-mapped reads based on number of mismatches, as well as the number of
-reads uniquely mapped but unable to be assigned to one allele (used as
-input for cell type assignment).
+BAM files were processed with a [custom Python
+script](https://github.com/lulizou/spASE/blob/master/scripts/processBowtie2.py)
+to get uniquely mapped reads based on number of mismatches, as well as
+the number of reads uniquely mapped but unable to be assigned to one
+allele (used as input for cell type assignment).
 
 # RCTD
 
