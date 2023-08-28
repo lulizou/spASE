@@ -69,7 +69,7 @@ See `run_rctd.sbatch` for SLURM job submission resources.
 See `run_spase_overall_bias.sbatch` for SLURM job submission resources.
 
 2.  Overall spatial pattern (no cell type effect) - we assume
-    $\text{logit}(p_{i,j}) = \beta_{0,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,j}$,
+    $$\text{logit}(p_{i,j}) = \beta_{0,j} + \sum_{\ell=1}^L x_{i,\ell}\beta_{\ell,j},$$
     where $x_{i,\ell}$ are degrees of freedom $L$ thin plate spline
     basis functions evaluated at spots $i$.
 
