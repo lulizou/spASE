@@ -8,10 +8,10 @@ args <- commandArgs(trailingOnly=T)
 source('../R/spase_sim_utils.R')
 
 
-myRCTD <- readRDS('results/rctd_cere_4_visium.rds')
+myRCTD <- readRDS('results/results_celltype_cere_4_visium_df_5.rds')
 params <- read.delim('simulations_cere4_params.tsv')
 df <- 5
-cell_types <- c('Granule', 'MLI2','Fibroblast','Oligodendrocytes')
+cell_types <- colnames(myRCTD@de_results$gene_fits$mean_val)
 
 chunk <- as.integer(args[1])
 idx <- (1:1000)+(chunk-1)*1000

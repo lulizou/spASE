@@ -8,7 +8,7 @@ args <- commandArgs(trailingOnly=T)
 source('../R/spase_sim_utils.R')
 
 
-myRCTD <- readRDS('results/rctd_cere_3.rds')
+myRCTD <- readRDS('results/results_celltype_cere_3_df_5.rds')
 params <- read.delim('simulations_cere3_params.tsv')
 df <- 5
 cell_types <- c('Fibroblast', 'Granule', 'MLI2', 'Purkinje', 'Bergmann', 'Oligodendrocytes')
