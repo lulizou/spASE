@@ -1,0 +1,233 @@
+---
+title: "Comparing Visium and Slide-seq"
+format: 
+  gfm:
+    toc: true
+editor: source
+---
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(xtable)
+library(latex2exp)
+library(rtracklayer)
+library(ggthemes)
+library(tibble)
+
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+```
+
+```{r load-data}
+visium <- readRDS('results/rctd_cere_4_visium.rds')
+slideseq <- readRDS('results/rctd_cere_3.rds')
+```
+
+# Summary of reads
+
+## Slide-seq
+
+```{r}
+maternal_counts <- as.data.frame(summary(slideseq@originalSpatialRNA@maternalCounts))
+maternal_counts$gene <- rownames(slideseq@originalSpatialRNA@maternalCounts)[maternal_counts$i]
+maternal_counts$bead <- colnames(slideseq@originalSpatialRNA@maternalCounts)[maternal_counts$j]
+maternal_counts$CAST <- maternal_counts$x
+maternal_counts <- maternal_counts[,c('gene','bead','CAST')]
+
+paternal_counts <- as.data.frame(summary(slideseq@originalSpatialRNA@paternalCounts))
+paternal_counts$gene <- rownames(slideseq@originalSpatialRNA@paternalCounts)[paternal_counts$i]
+paternal_counts$bead <- colnames(slideseq@originalSpatialRNA@paternalCounts)[paternal_counts$j]
+paternal_counts$`129` <- paternal_counts$x
+paternal_counts <- paternal_counts[,c('gene','bead','129')]
+
+slideseq_counts <- left_join(maternal_counts, paternal_counts)
+```
+
+### Per gene
+
+```{r}
+slideseq_counts |>
+  group_by(gene) |>
+  summarise(CAST = sum(CAST), `129` = sum(`129`)) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.25) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_abline(slope=1, intercept=0, lty='dashed', color='red') +
+  xlab('log2(maternal+1)') +
+  ylab('log2(paternal+1)') +
+  ggtitle('Slide-seq')
+ggsave('figures/02_slideseq_counts_scatter_per_gene.png', height=3, width =3)
+```
+
+
+
+## Visium
+
+```{r}
+maternal_counts <- as.data.frame(summary(visium@originalSpatialRNA@maternalCounts))
+maternal_counts$gene <- rownames(visium@originalSpatialRNA@maternalCounts)[maternal_counts$i]
+maternal_counts$bead <- colnames(visium@originalSpatialRNA@maternalCounts)[maternal_counts$j]
+maternal_counts$CAST <- maternal_counts$x
+maternal_counts <- maternal_counts[,c('gene','bead','CAST')]
+
+paternal_counts <- as.data.frame(summary(visium@originalSpatialRNA@paternalCounts))
+paternal_counts$gene <- rownames(visium@originalSpatialRNA@paternalCounts)[paternal_counts$i]
+paternal_counts$bead <- colnames(visium@originalSpatialRNA@paternalCounts)[paternal_counts$j]
+paternal_counts$`129` <- paternal_counts$x
+paternal_counts <- paternal_counts[,c('gene','bead','129')]
+
+visium_counts <- left_join(maternal_counts, paternal_counts)
+```
+
+### Per gene
+
+```{r}
+visium_counts |>
+  group_by(gene) |>
+  summarise(CAST = sum(CAST), `129` = sum(`129`)) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.25) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_abline(slope=1, intercept=0, lty='dashed', color='red') +
+  xlab('log2(maternal+1)') +
+  ylab('log2(paternal+1)') +
+  ggtitle('Visium') +
+  coord_cartesian(ylim=c(0,17),xlim=c(0,17)) 
+ggsave('figures/02_visium_counts_scatter_per_gene.png', height=3, width =3)
+```
+
+
+# Cell types (less)
+
+## Visium
+
+```{r}
+results <- visium@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- spASE:::normalize_weights(results$weights) 
+cell_type_names <- visium@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+main_types <- c('Astrocytes', 'Bergmann', 'Endothelial', 'Fibroblast', 'Granule', 'MLI1', 'MLI2', 'Oligodendrocytes','Purkinje')
+visium@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  filter(cell_type %in% main_types) |>
+  filter(y > 7500) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type),size=0.75) +
+  scale_color_tableau(name = 'First type', palette = 'Tableau 10') +
+  theme_void()
+ggsave('figures/02_visium_cerebellum_celltypes_less.pdf', height=3, width=5)
+```
+
+
+## Slide-seq
+
+```{r}
+slideseq@spatialRNA@coords |>
+  rownames_to_column('barcode') |>
+  bind_cols(slideseq@results$results_df) |>
+  filter(grepl('_2', barcode)) |>
+  filter(first_type %in% main_types) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = first_type),size=0.01) +
+  scale_color_tableau(name = 'First type', palette = 'Tableau 10') +
+  theme_void() +
+  theme(legend.position='none')
+ggsave('figures/02_slideseq_cerebellum_one_slice_celltypes_less.pdf', height=3, width=4)
+```
+
+
+# Aldoc
+
+## Raw slideseq
+
+
+```{r}
+Aldoc <- slideseq_counts |> filter(gene == 'Aldoc', grepl('_2', bead)) |> mutate(total = CAST + `129`) |> filter(total>0)
+Aldoc <- left_join(Aldoc, slideseq@spatialRNA@coords |> rownames_to_column('bead'), by = 'bead') |> left_join((slideseq@results$results_df |> rownames_to_column('bead')))
+```
+
+```{r}
+Aldoc |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = log2(total))) +
+  geom_histogram(bins=50) +
+  xlab(TeX(r'($\log_2$(total read count))')) +
+  ylab('')+
+  theme_classic()
+ggsave('figures/02_Aldoc_raw_slideseq_hist.pdf', height=1, width=4)
+```
+
+
+```{r}
+Aldoc |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.5) +
+  geom_abline(intercept=0, slope=1, lty='dashed', color='red') +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(maternal count))')) +
+  ylab(TeX(r'($\log_2$(paternal count))'))
+ggsave('figures/02_Aldoc_raw_slideseq_bead_count.pdf', height=3, width=4)
+```
+
+
+
+```{r}
+Aldoc |>
+  filter(x > 1000, y > 1000, x < 5400) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = CAST/total),size=0.5) +
+  scale_color_gradient2(low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void()  +
+  theme(legend.position = 'none')
+ggsave('figures/02_Aldoc_raw_slideseq.pdf', height=3, width=4)
+```
+
+## Raw Visium
+
+```{r}
+Aldoc <- visium_counts |> filter(gene == 'Aldoc') |> mutate(total = CAST + `129`) |> filter(total>0)
+Aldoc <- left_join(Aldoc, visium@spatialRNA@coords |> rownames_to_column('bead'), by = 'bead') 
+```
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = log2(total))) +
+  geom_histogram(bins=50) +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(total read count))')) +
+  ylab('')
+ggsave('figures/02_Aldoc_raw_visium_hist.pdf', height=1, width=4)
+```
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = log2(CAST+1), y = log2(`129`+1))) +
+  geom_point(alpha=0.5) +
+  geom_abline(intercept=0, slope=1, lty='dashed', color='red') +
+  theme_classic() +
+  xlab(TeX(r'($\log_2$(maternal count))')) +
+  ylab(TeX(r'($\log_2$(paternal count))'))
+ggsave('figures/02_Aldoc_raw_visium_bead_count.pdf', height=3, width=4)
+```
+
+
+```{r}
+Aldoc |>
+  filter(y > 7500) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(fill = CAST/total),shape=21) +
+  scale_fill_gradient2(name = 'Maternal\nread\nproportion',low='blue',mid='white',high='red',midpoint=0.5,limits=c(0,1)) +
+  theme_void() 
+ggsave('figures/02_Aldoc_raw_visium.pdf', height=3, width=6)
+```
+
+

@@ -1,0 +1,206 @@
+---
+title: "Cell type maps"
+format: 
+  gfm:
+    toc: true
+editor: source
+---
+
+```{r}
+library(spacexr)
+library(spASE)
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+library(viridis)
+library(pals)
+library(rtracklayer)
+library(ggrepel)
+library(ggthemes)
+library(tibble)
+
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
+xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
+```
+
+
+# Slide-seq
+
+## Hippocampus 1
+
+```{r}
+hippo_slide <- readRDS('results/rctd_hippo_1.rds')
+```
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  rownames_to_column('barcode') |>
+  mutate(puck = ifelse(grepl('_1', barcode), 'Hippo 1 - Puck 1', 'Hippo 1 - Puck 2')) |>
+  bind_cols(hippo_slide@results$results_df) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = first_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  facet_wrap(puck ~ ., scales='free') +
+  guides(color = guide_legend(override.aes = list(size=5))) +
+  theme_void()
+ggsave('figures/01_eda_slideseq_hippo_1_celltype.png', height=5, width=11)
+```
+
+## Hippocampus 2
+
+```{r}
+hippo_slide <- readRDS('results/rctd_hippo_2.rds')
+```
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  bind_cols(hippo_slide@results$results_df) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = first_type),size=0.5) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  guides(color = guide_legend(override.aes = list(size=5))) +
+  theme_void()
+ggsave('figures/01_eda_slideseq_hippo_2_celltype.png', height=4, width=6)
+```
+
+
+## Hippocampus 3
+
+```{r}
+hippo_slide <- readRDS('results/rctd_hippo_3.rds')
+```
+
+```{r}
+hippo_slide@spatialRNA@coords |>
+  rownames_to_column('barcode') |>
+  mutate(puck = ifelse(grepl('_1', barcode), 'Hippo 3 - Puck 1', 'Hippo 3 - Puck 2')) |>
+  bind_cols(hippo_slide@results$results_df) |>
+  ggplot(aes(x = y, y = x)) +
+  geom_point(aes(color = first_type),size=0.01) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  facet_wrap(puck ~ .) +
+  guides(color = guide_legend(override.aes = list(size=5))) +
+  theme_void()
+ggsave('figures/01_eda_slideseq_hippo_3_celltype.png', height=5, width=11)
+```
+
+
+## Cerebellum 3
+
+```{r}
+cere_slide <- readRDS('results/rctd_cere_3.rds')
+```
+
+```{r}
+cere_slide@spatialRNA@coords |>
+  rownames_to_column('barcode') |>
+  mutate(puck = ifelse(grepl('_1', barcode), 'Cere 3 - Puck 1', 'Cere 3 - Puck 2')) |>
+  bind_cols(cere_slide@results$results_df) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = first_type),size=0.01) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  facet_wrap(puck ~ .) +
+  guides(color = guide_legend(override.aes = list(size=5))) +
+  theme_void()
+ggsave('figures/01_eda_slideseq_cere_3_celltype.png', height=5, width=11)
+```
+
+
+# Visium
+
+## Cerebellum 4
+
+```{r}
+cere_vis <- readRDS('results/rctd_cere_4_visium.rds')
+results <- cere_vis@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- cere_vis@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+#### Show weight matrix
+
+
+```{r}
+label_df <- data.frame(bead = rownames(cere_vis@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  reshape2::melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_visium_cerebellum_celltype_weights.png', height=3, width=5)
+```
+
+
+#### Cell type map
+
+
+```{r}
+cere_vis@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type)) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_visium_cerebellum_celltype_map.pdf', height=5, width=7)
+```
+
+
+
+## Mixture
+
+```{r}
+mix_vis <- readRDS('results/rctd_mix_5_visium.rds')
+results <- mix_vis@results
+# normalize the cell type proportions to sum to 1.
+norm_weights <- normalize_weights(results$weights) 
+cell_type_names <- mix_vis@cell_type_info$info[[2]] #list of cell type names
+labels <- cell_type_names[max.col(norm_weights, 'first')]
+```
+
+#### Show weight matrix
+
+
+```{r}
+label_df <- data.frame(bead = rownames(mix_vis@spatialRNA@coords), label = labels)
+df <- as.matrix(norm_weights) |>
+  reshape2::melt() |>
+  dplyr::rename(bead = Var1, celltype = Var2) |>
+  left_join(label_df, by='bead') |>
+  arrange(label)
+df$bead <- factor(df$bead, levels = unique(df$bead))
+df |>
+  ggplot(aes(x = bead, y = celltype, fill = value)) +
+  geom_raster() +
+  scale_fill_viridis(name = 'Weight') +
+  theme_minimal() +
+  theme(axis.text.x = element_blank()) +
+  ylab('Cell type') +
+  xlab('Bead')
+ggsave('figures/01_eda_visium_mixture_celltype_weights.png', height=3, width=5)
+```
+
+#### Cell type map
+
+
+```{r}
+mix_vis@spatialRNA@coords |>
+  mutate(cell_type = labels) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(aes(color = cell_type)) +
+  scale_color_tableau(palette = 'Tableau 20') +
+  theme_minimal()
+ggsave('figures/01_eda_visium_mixture_celltype_map.pdf', height=5, width=7)
+```
