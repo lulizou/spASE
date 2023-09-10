@@ -1,12 +1,16 @@
 ---
 title: "Analyzing 129 and CAST transcripts"
-format: html
+format: 
+  gfm:
+    toc: true
 editor: source
 ---
 
 
 ```{r}
 library(Biostrings)
+library(Matrix)
+library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(tibble)
@@ -17,8 +21,8 @@ library(stringr)
 # Load in data
 
 ```{r}
-tx <- readDNAStringSet('/rafalab/lzou/slideseq/emase.pooled.targets.fa')
-ensembl_ids <- read.csv('/rafalab/lzou/slideseq/ensembl_tx_gene.csv')
+tx <- readDNAStringSet('../inst/extdata/emase.pooled.targets.fa')
+ensembl_ids <- read.csv('../inst/extdata/ensembl_tx_gene.csv')
 tx_names <- tx@ranges@NAMES
 tx_df <- tx_names |> 
   as.data.frame() |>
@@ -62,7 +66,7 @@ for (i in 1:nrow(df)) {
     ylab('') +
     xlab('Position') +
     ggtitle(paste0(df[i,1], ', ', df[i,2], ' mismatch: ', nmismatch(test), '; ins: ', as.integer(nindel(test)@insertion[,2]), 'bp; del:', as.integer(nindel(test)@deletion[,2]), 'bp'))
-  ggsave(paste0('figures/06_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
+  ggsave(paste0('figures/07_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
 }
 ```
 
@@ -91,7 +95,7 @@ plot_tx <- function(g) {
       ylab('') +
       xlab('Position') +
       ggtitle(paste0(df[i,1], ', ', df[i,2], ' mismatch: ', nmismatch(test), '; ins: ', as.integer(nindel(test)@insertion[,2]), 'bp; del:', as.integer(nindel(test)@deletion[,2]), 'bp')))
-    ggsave(paste0('figures/06_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
+    ggsave(paste0('figures/07_',df[i,2],'_',df[i,1],'.pdf'),height=1, width=8)
   }
 }
 ```
@@ -124,11 +128,11 @@ for (i in 1:nrow(tx_df)) {
   }
 }
 tx_df$width <- width(tx)[as.integer(tx_df$s129)]
-saveRDS(tx_df, file = '06_129_CAST_df.rds')
+saveRDS(tx_df, file = '07_129_CAST_df.rds')
 ```
 
 ```{r}
-tx_df <- readRDS('06_129_CAST_df.rds')
+tx_df <- readRDS('../inst/extdata/07_129_CAST_df.rds')
 ```
 
 
@@ -176,8 +180,8 @@ tx_df |>
 
 ```{r}
 # read in visium cerebellum data
-cere3 <- readRDS('cside_spase_combined_cere_4_df_5.rds')
-gene_counts <- rowSums(cere3@spatialRNA@maternalCounts)+rowSums(cere3@spatialRNA@paternalCounts)
+cere4 <- readRDS('results/rctd_cere_4_visium.rds')
+gene_counts <- rowSums(cere4@spatialRNA@maternalCounts)+rowSums(cere4@spatialRNA@paternalCounts)
 gene_df <- data.frame(gene = names(gene_counts), count = gene_counts)
 tx_df <- left_join(tx_df, gene_df, by = 'gene')
 ```
@@ -199,7 +203,7 @@ dd |>
   facet_wrap(has_indel ~ .) +
   theme_classic() +
   xlab('log2(n mismatches + 1)') 
-ggsave('figures/06_129_CAST_nmismatch_vs_count.pdf', height=3, width=6)
+ggsave('figures/07_129_CAST_nmismatch_vs_count.pdf', height=3, width=6)
 ```
 
 # Total number of SNPs in non-zero count genes

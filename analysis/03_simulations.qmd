@@ -1,6 +1,8 @@
 ---
 title: "Simulations"
-format: html
+format: 
+  gfm:
+    toc: true
 editor: source
 ---
 
@@ -227,9 +229,9 @@ an sbatch script to the cluster. Results/stats that we are interested in are:
 set.seed(13579)
 cell_types <- c('Granule', 'MLI2','Fibroblast','Oligodendrocytes')
 phis <- c(0.25, 0.5, 0.75)
-add_count <- c(0, 5, 25)
+add_count <- c(0, 1, 2, 5, 25)
 genes <- find_genes(cere4, cell_types)
-niter <- 5
+niter <- 10
 
 params <- expand.grid(cell_types, phis, add_count, genes)
 params <- sapply(params, rep, each = niter)
@@ -271,13 +273,13 @@ write.table(params, file = 'simulations_cere3_params.tsv', quote = F, sep = '\t'
 
 ```{r}
 visium_params <- fread('simulations_cere4_params.tsv')
-visium_results <- fread('simulation_results_cere4.csv', col.names=c('idx','total_N', 'avg_N', 'median_N', 'MSE', 'avg_var', 'coverage', 'cor_p'))
+visium_results <- read.csv('simulation_results_cere4.csv', header=F, col.names=c('idx','total_N', 'avg_N', 'median_N', 'MSE', 'avg_var', 'coverage', 'cor_p'))
 visium_params$idx <- 1:nrow(visium_params)
 visium_results <- left_join(visium_params, visium_results, by = 'idx') |>
   mutate(platform = 'Visium') 
 
 ss_params <- fread('simulations_cere3_params.tsv')
-ss_results <- fread('simulation_results_cere3.csv', col.names=c('idx','total_N', 'avg_N', 'median_N', 'MSE', 'avg_var', 'coverage', 'cor_p'))
+ss_results <-  read.csv('simulation_results_cere3.csv', header=F, col.names=c('idx','total_N', 'avg_N', 'median_N', 'MSE', 'avg_var', 'coverage', 'cor_p'))
 ss_params$idx <- 1:nrow(ss_params)
 ss_results <- left_join(ss_params, ss_results, by = 'idx') |>
   mutate(platform = 'Slide-seq')
@@ -289,8 +291,8 @@ mypal <- wes_palette('Darjeeling2',3)[2:3]
 
 ```{r}
 aa <- all_results |>
-  mutate(bin_N = cut(total_N, breaks=c(0,1000,5000,10000,250000))) |>
-  filter(!is.na(bin_N))
+  mutate(bin_N = cut(total_N, breaks=c(0,1000,5000,10000,1e6), include.lowest=T)) |>
+  filter(!is.na(cor_p)) # very few entries are NA due to occasional file writing errors; usually the NA rows are duplicates of other rows. Could avoid this in the future by having the simulation write to different files instead of the same file
 
 aa |>
   select(bin_N) |>
@@ -303,7 +305,7 @@ aa |>
   distinct()
   
 aa |>
-  #filter(cell_type != 'Bergmann', cell_type != 'Purkinje') |>
+  filter(cell_type != 'Bergmann', cell_type != 'Purkinje') |>
   mutate(bin_N = factor(bin_N, labels = c('<1,000','1,000-5,000', '5,000-10,000', '>10,000'))) |>
   ggplot(aes(x = bin_N, y = cor_p^2)) +
   geom_boxplot(aes(color = platform),outlier.size=0.1) +
@@ -322,7 +324,7 @@ ggsave('figures/03_simulations_r2.pdf', height=3, width=7)
 ```{r}
 aa |>
   mutate(bin_N = factor(bin_N, labels = c('<1,000','1,000-\n5,000', '5,000-\n10,000', '>10,000'))) |>
-  filter(cell_type != 'Bergmann', cell_type != 'Fibroblast') |>
+  filter(cell_type != 'Bergmann', cell_type != 'Purkinje') |>
   ggplot(aes(x = bin_N, y = sqrt(MSE))) +
   geom_boxplot(aes(color = platform),outlier.size=0.1) +
   scale_color_manual(name='',values = mypal) +
@@ -341,7 +343,7 @@ ggsave('figures/03_simulations_rmse.pdf', height=3, width=7)
 
 ```{r}
 all_results |>
-  filter(total_N > 10000) |>
+  filter(total_N > 10000) |> # only look at ones with high coverage
   ggplot(aes(x = avg_var)) +
   geom_density(aes(color = platform, fill = platform), alpha=0.25) +
   theme_classic() +

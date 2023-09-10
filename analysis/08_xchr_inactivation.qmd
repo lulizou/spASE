@@ -1,10 +1,14 @@
 ---
 title: "Plotting X-chromosome genes to see if any escape XCI"
-format: html
+format: 
+  gfm:
+    toc: true
 editor: source
 ---
 
 ```{r}
+library(spacexr)
+library(spASE)
 library(dplyr)
 library(Matrix)
 library(data.table)
@@ -16,7 +20,7 @@ library(ggthemes)
 
 ```{r}
 # Read in gencode to grab xchr genes
-gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
 xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
 xchr_genes <- c(xchr_genes, 'Bex3')
 ```
@@ -24,7 +28,7 @@ xchr_genes <- c(xchr_genes, 'Bex3')
 ## Hippo 1
 
 ```{r}
-hippo1 <- readRDS('rctd_combined_hippo_1.rds')
+hippo1 <- readRDS('results/rctd_hippo_1.rds')
 maternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@paternalCounts
 coords_hippo <- hippo1@originalSpatialRNA@coords |> rownames_to_column()
@@ -53,7 +57,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_hippo1'
+  save = 'figures/08_xchr_hippo1'
 )
 ```
 
@@ -61,7 +65,7 @@ plotSpase(
 ## Hippo 2
 
 ```{r}
-hippo2 <- readRDS('cside_spase_combined_hippo_2_df_5.rds')
+hippo2 <- readRDS('results/rctd_hippo_2.rds')
 maternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@paternalCounts
 coords_hippo <- hippo2@originalSpatialRNA@coords |> rownames_to_column()
@@ -91,7 +95,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_hippo2'
+  save = 'figures/08_xchr_hippo2'
 )
 ```
 
@@ -116,14 +120,14 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_hippo2'
+  save = 'figures/08_xchr_hippo2'
 )
 ```
 
 ## Hippo 3
 
 ```{r}
-hippo3 <- readRDS('cside_spase_combined_hippo_3_df_5.rds')
+hippo3 <- readRDS('results/rctd_hippo_3.rds')
 maternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@paternalCounts
 coords_hippo <- hippo3@originalSpatialRNA@coords |> rownames_to_column()
@@ -155,7 +159,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_hippo3'
+  save = 'figures/08_xchr_hippo3'
 )
 ```
 
@@ -180,7 +184,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_hippo3'
+  save = 'figures/08_xchr_hippo3'
 )
 ```
 
@@ -188,7 +192,7 @@ plotSpase(
 ## Cerebellum 3
 
 ```{r}
-cere3 <- readRDS('cside_spase_combined_cere_4_df_5.rds')
+cere3 <- readRDS('results/rctd_cere_3.rds')
 maternal_counts_matrix_cere <- cere3@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere3@originalSpatialRNA@paternalCounts
 coords_cere <- cere3@originalSpatialRNA@coords |> rownames_to_column()
@@ -217,7 +221,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_cere3'
+  save = 'figures/08_xchr_cere3'
 )
 ```
 
@@ -242,7 +246,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_cere3'
+  save = 'figures/08_xchr_cere3'
 )
 ```
 
@@ -250,7 +254,7 @@ plotSpase(
 
 
 ```{r}
-cere4 <- readRDS('rctd_cere4_visium.rds')
+cere4 <- readRDS('results/rctd_cere_4_visium.rds')
 maternal_counts_matrix_cere <- cere4@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere4@originalSpatialRNA@paternalCounts
 coords_cere <- cere4@originalSpatialRNA@coords |> rownames_to_column()
@@ -278,7 +282,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_cere4'
+  save = 'figures/08_xchr_cere4'
 )
 ```
 
@@ -303,6 +307,6 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/07_xchr_cere4'
+  save = 'figures/08_xchr_cere4'
 )
 ```

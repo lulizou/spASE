@@ -1,17 +1,25 @@
 ---
 title: "Visium and Slide-seq cerebellum, mixtures"
-format: html
+format: 
+  gfm:
+    toc: true
 editor: source
 ---
 
 ```{r}
 library(tibble)
 library(latex2exp)
+library(dplyr)
+library(ggplot2)
+library(rtracklayer)
+library(data.table)
+library(tidyr)
+library(Matrix)
 ```
 
 ```{r}
 # for removing x chromosome genes
-gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
 xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
 xchr_genes <- c(xchr_genes, 'Bex3')
 ```
@@ -21,8 +29,8 @@ xchr_genes <- c(xchr_genes, 'Bex3')
 # Characterizing mixtures - histograms
 
 ```{r}
-ss <- readRDS('rctd_combined_cere_4.rds')
-viz <- readRDS('cside_spase_cere_3.rds')
+ss <- readRDS('results/rctd_cere_3.rds')
+viz <- readRDS('results/rctd_cere_4_visium.rds')
 ```
 
 ## Slide-seq
@@ -91,7 +99,6 @@ for (i in 2:10) {
 coords_viz <- viz@spatialRNA@coords |> rownames_to_column(var = 'bead')
 genes <- rownames(viz@spatialRNA@maternalCounts)
 genes <- genes[-which(genes %in% xchr_genes)]
-genes <- genes[-which(grepl('mt-', genes))]
 mat <- viz@spatialRNA@maternalCounts[genes,coords_viz$bead]
 pat <- viz@spatialRNA@paternalCounts[genes,coords_viz$bead]
 tot <- mat+pat
@@ -185,7 +192,7 @@ bind_rows(doub, sing, viz, binsamp, ss3) |>
   xlab('Maternal count proportion') +
   ylab('N spots or cells') +
   scale_x_continuous(breaks = c(0, 0.5, 1), limits = c(-0.1, 1.1), labels = c(0, 0.5, 1))
-ggsave('figures/03_singlet_doublet_all_histogram_2-6.pdf', height=3, width=4)
+ggsave('figures/06_singlet_doublet_all_histogram_2-6.pdf', height=3, width=4)
 ```
 
 # Smart-seq3 only
@@ -200,122 +207,6 @@ ss3 |>
   xlab('Maternal count proportion') +
   ylab('N cells') +
   scale_x_continuous(breaks = c(0, 0.5, 1), limits = c(-0.1, 1.1), labels = c(0, 0.5, 1))
-ggsave('figures/03_smartseq3_2-100.pdf', height=6, width=8)
+ggsave('figures/06_smartseq3_2-100.pdf', height=6, width=8)
 ```
-
-
-# Overdispersions
-
-```{r}
-bb_viz <- readRDS('betabin_results_overall_bias_cere_visium.rds')
-bb_sing <- readRDS('betabin_results_overall_bias_cere_4_singlets.rds')
-bb_doub <- readRDS('betabin_results_overall_bias_cere_4_doublets.rds')
-bb_ss3 <- readRDS('betabin_results_smartseq3.rds')
-```
-
-```{r}
-bb_viz |>
-  mutate(class = 'visium') |>
-  bind_rows(bb_sing |> mutate(class = 'singlets')) |>
-  bind_rows(bb_doub |> mutate(class = 'doublets')) |>
-  bind_rows(bb_ss3 |> mutate(class = 'smart-seq3')) |>
-  filter(!grepl('mt-', gene)) |>
-  filter(!(gene %in% xchr_genes)) |>
-  mutate(class = factor(class, levels = c('visium', 'doublets', 'singlets', 'smart-seq3'))) |>
-  filter(totalUMI > 1000) |>
-  ggplot(aes(x = phi)) +
-  geom_histogram(bins=100) +
-  facet_grid(class ~ ., scales='free') +
-  theme_minimal() +
-  theme(strip.text = element_blank()) +
-  xlab(TeX(r'(Estimated gene-specific overdispersion ($\hat{\phi}_j$))')) +
-  ylab('N genes') +
-  scale_y_continuous(position = 'right')
-ggsave('figures/03_overdispersion_histograms.pdf', height=2.65, width=4)
-```
-
-
-# Individual gene correlation and proportion
-
-For each sample, compute individual gene correlation and proportion
-
-```{r}
-library(fields)
-library(FastKNN)
-
-get_cor <- function(rctd_obj, genes = c('Malat1', 'Plp1')) {
-  coords <- rctd_obj@spatialRNA@coords |> rownames_to_column(var = 'bead')
-  mygenes <- genes
-  res <- NULL
-  for (g in mygenes) {
-    coords$mat <- rctd_obj@spatialRNA@maternalCounts[g,coords$bead]
-    coords$pat <- rctd_obj@spatialRNA@paternalCounts[g,coords$bead]
-    coords <- coords |> mutate(tot = mat+pat)
-    coords_sub <- coords |> filter(tot>0)
-    coords_dist <- rdist(coords_sub |> select(x,y) |> as.matrix())
-    results_cor <- numeric(10)
-    results_proportion_same_bias <- numeric(10)
-    for (k in 1:10) {
-      nn = matrix(0,nrow(coords_dist),k) # n x k
-      avg_nn_p <- numeric(nrow(coords_dist))
-      for (i in 1:nrow(coords_dist)) {
-        nn[i,] <- k.nearest.neighbors(i, coords_dist, k = k)
-        avg_nn_p[i] <- mean(coords_sub$mat[nn[i,]]/coords_sub$tot[nn[i,]],na.rm=T)
-      }
-      results_cor[k] <- cor(coords_sub$mat/coords_sub$tot, avg_nn_p, use='pairwise.complete')
-      mat_bias <- coords_sub$mat/coords_sub$tot > 0.5
-      nn_bias <- avg_nn_p > 0.5
-      results_proportion_same_bias[k] <- sum(mat_bias==nn_bias)/length(mat_bias)
-    }
-    dd <- data.frame(gene = g, k = 1:10, cor = results_cor, prop = results_proportion_same_bias)
-    if (is.null(res)) {
-      res <- dd
-    } else {
-      res <- bind_rows(res, dd)
-    }
-  }
-  return(res)
-}
-```
-
-```{r}
-res_hippo1 <- get_cor(readRDS('rctd_combined_hippo_1.rds'), genes = c('Malat1', 'Plp1'))
-res_hippo2 <- get_cor(readRDS('hippo_slideseq_mouse_2.rds'), genes = c('Malat1', 'Plp1'))
-res_hippo3 <- get_cor(readRDS('rctd_combined_hippo_3_nm3.rds'), genes = c('Malat1', 'Plp1'))
-res_cere3 <- get_cor(readRDS('rctd_combined_cere_4_nm3.rds'), genes = c('Malat1', 'Plp1'))
-res_cere4 <- get_cor(readRDS('rctd_cere_3.rds'), genes = c('Malat1', 'Plp1'))
-```
-
-```{r}
-res |>
-  pivot_longer(cols = c('cor','prop')) |>
-  filter(name == 'cor') |>
-  ggplot(aes(x = k, y = value)) +
-  geom_point(aes(color = gene)) +
-  geom_line(aes(color = gene)) +
-  geom_hline(yintercept=0, lty='dashed') +
-  scale_color_tableau() +
-  theme_classic()
-```
-
-
-
-```{r}
-res |>
-  pivot_longer(cols = c('cor','prop')) |>
-  filter(name == 'prop') |>
-  ggplot(aes(x = k, y = value)) +
-  geom_point(aes(color = gene)) +
-  geom_line(aes(color = gene)) +
-  geom_hline(yintercept=0.5, lty='dashed') +
-  scale_color_tableau() +
-  theme_classic()
-```
-
-```{r}
-
-```
-
-
-
 

@@ -4,24 +4,26 @@ format:
   gfm:
     toc: true
 editor: source
-execute:
-  cache: true
 ---
 
 ```{r}
+library(spacexr)
+library(spASE)
+
 library(dplyr)
 library(ggplot2)
 library(data.table)
 library(viridis)
 library(gplots)
 library(rtracklayer)
+library(Matrix)
 THRESHOLD = 500
 ```
 
 
 ```{r}
 # Read in gencode to grab xchr genes
-gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
 xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
 xchr_genes <- c(xchr_genes, 'Bex3')
 ```
@@ -30,11 +32,11 @@ xchr_genes <- c(xchr_genes, 'Bex3')
 # Overall p
 
 ```{r}
-hippo_1 <- readRDS('betabin_results_overall_bias_hippo_1.rds')
-hippo_2 <- readRDS('betabin_results_overall_bias_hippo_2.rds')
-hippo_3 <- readRDS('betabin_results_overall_bias_hippo_3_nm3.rds')
-cere_4 <- readRDS('betabin_results_overall_bias_cere_visium.rds')
-cere_3 <- readRDS('betabin_results_overall_bias_cere_4_nm3.rds')
+hippo_1 <- readRDS('results/results_overall_bias_hippo_1.rds')
+hippo_2 <- readRDS('results/results_overall_bias_hippo_2.rds')
+hippo_3 <- readRDS('results/results_overall_bias_hippo_3.rds')
+cere_3 <- readRDS('results/results_overall_bias_cere_3.rds')
+cere_4 <- readRDS('results/results_overall_bias_cere_4_visium.rds')
 ```
 
 
@@ -69,7 +71,7 @@ df <- hippo_1 |>
 mm <- as.matrix(df[,2:6])
 rownames(mm) <- df$gene
 colnames(mm) <- c('Hippo 1', 'Hippo 2', 'Hippo 3', 'Cere 3', 'Cere 4')
-pdf('figures/03_heatmap.pdf', height=8, width=4)
+pdf('figures/04_heatmap.pdf', height=8, width=4)
 heatmap.2(mm, scale='none', col= bluered(100), trace='none', density.info='none', breaks = seq(0,1,length.out=101), lhei=c(1,6), cexRow = 0.5, cexCol = 0.5)
 dev.off()
 ```
@@ -96,7 +98,7 @@ panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
   if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
   text(0.5, 0.5, txt, cex = cex.cor)
 }
-pdf('figures/03_pair_scatter.pdf', height=6, width=6)
+pdf('figures/04_pair_scatter.pdf', height=6, width=6)
 pairs(df |> filter(xchr == 0) |> select(-gene, -xchr) |> dplyr::rename(`Hippo 1` = hippo_1, `Hippo 2` = hippo_2, `Hippo 3` = hippo_3, `Cere 3` = cere_3, `Cere 4` = cere_4) |> as.matrix(),
       upper.panel = panel.cor,
       diag.panel = panel.hist)
@@ -134,11 +136,11 @@ cere3_overall <- extract_mat_pat_overall(cere_3)
 # Within cell type p bias
 
 ```{r}
-load('cside_spase_combined_cere_3_df_5.RData')
-load('cside_spase_combined_cere4_visium_df_5.RData')
-load('cside_spase_combined_hippo_1_df_5.RData')
-load('cside_spase_combined_hippo_2_df_5.RData')
-load('cside_spase_combined_hippo_3_df_5.RData')
+hippo1_intercept <- readRDS('results/results_celltype_intercept_hippo_1_df_5.rds')
+hippo2_intercept <- readRDS('results/results_celltype_intercept_hippo_2_df_5.rds')
+hippo3_intercept <- readRDS('results/results_celltype_intercept_hippo_3_df_5.rds')
+cere3_intercept <- readRDS('results/results_celltype_intercept_cere_3_df_5.rds')
+cere4_intercept <- readRDS('results/results_celltype_intercept_cere_4_visium_df_5.rds')
 ```
 
 ```{r}
@@ -180,17 +182,19 @@ hippo3_ct <- extract_mat_pat_ct(hippo3_intercept@spase_results$sig_gene_list)
 cere3_ct <- extract_mat_pat_ct(cere3_intercept@spase_results$sig_gene_list)
 
 cere4_ct <- extract_mat_pat_ct(cere4_intercept@spase_results$sig_gene_list)
+
+rm(hippo1_intercept, hippo2_intercept, hippo3_intercept, cere3_intercept, cere4_intercept)
 ```
 
 
 # Overall spatial patterns
 
 ```{r}
-hippo_2 <- readRDS('spasev1_results_hippo_2.rds')
-hippo_1_combined <- readRDS('spasev1_results_global_combined_hippo_1.rds')
-hippo_3_combined <- readRDS('spasev1_results_global_combined_hippo_3_nm3.rds')
-cere_3_combined <- readRDS('spasev1_results_global_combined_cere_4_nm3.rds')
-cere_4 <- readRDS('spase_results_visium_cere4.rds')
+hippo_1_sp <- readRDS('results/results_overall_spatial_hippo_1.rds')
+hippo_2_sp <- readRDS('results/results_overall_spatial_hippo_2.rds')
+hippo_3_sp <- readRDS('results/results_overall_spatial_hippo_3.rds')
+cere_3_sp <- readRDS('results/results_overall_spatial_cere_3.rds')
+cere_4_sp <- readRDS('results/results_overall_spatial_cere_4_visium.rds')
 ```
 
 ```{r}
@@ -200,26 +204,26 @@ extract_spatial_overall <- function(spase_res, qthresh = 0.01) {
   return(dd)
 }
 
-hippo1_sp_overall <- extract_spatial_overall(hippo_1_combined$result)
+hippo1_sp_overall <- extract_spatial_overall(hippo_1_sp$result)
 
-hippo2_sp_overall <- extract_spatial_overall(hippo_2$result)
+hippo2_sp_overall <- extract_spatial_overall(hippo_2_sp$result)
 
-hippo3_sp_overall <- extract_spatial_overall(hippo_3_combined$result)
+hippo3_sp_overall <- extract_spatial_overall(hippo_3_sp$result)
 
-cere3_sp_overall <- extract_spatial_overall(cere_3_combined$result)
+cere3_sp_overall <- extract_spatial_overall(cere_3_sp$result)
 
-cere4_sp_overall <- extract_spatial_overall(cere_4$result)
+cere4_sp_overall <- extract_spatial_overall(cere_4_sp$result)
 ```
 
 
 # Within cell type spatial patterns
 
 ```{r}
-hippo_1_spct_res <- readRDS('cside_spase_combined_hippo_1_df_5.rds')
-hippo_2_spct_res <- readRDS('cside_spase_combined_hippo_2_df_5.rds')
-hippo_3_spct_res <- readRDS('cside_spase_combined_hippo_3_df_5.rds')
-cere_3_spct_res <- readRDS('cside_spase_combined_cere_4_df_5.rds')
-cere_4_spct_res <- readRDS('cside_spase_combined_cere4_visium_df_5.rds')
+hippo_1_spct_res <- readRDS('results/results_celltype_hippo_1_df_5.rds')
+hippo_2_spct_res <- readRDS('results/results_celltype_hippo_2_df_5.rds')
+hippo_3_spct_res <- readRDS('results/results_celltype_hippo_3_df_5.rds')
+cere_3_spct_res <- readRDS('results/results_celltype_cere_3_df_5.rds')
+cere_4_spct_res <- readRDS('results/results_celltype_cere_4_visium_df_5.rds')
 ```
 
 ```{r}
@@ -318,14 +322,6 @@ extract_info_for_table <- function(all, p_bias, ct_p_bias, sp, sp_ct, sp_ct_all)
 ```
 
 ```{r}
-hippo_1 <- readRDS('betabin_results_overall_bias_hippo_1.rds')
-hippo_2 <- readRDS('betabin_results_overall_bias_hippo_2.rds')
-hippo_3 <- readRDS('betabin_results_overall_bias_hippo_3_nm3.rds')
-cere_4 <- readRDS('betabin_results_overall_bias_cere_visium.rds')
-cere_3 <- readRDS('betabin_results_overall_bias_cere_4_nm3.rds')
-```
-
-```{r}
 h1 <- extract_info_for_table(hippo_1, hippo1_overall, hippo1_ct, hippo1_sp_overall, hippo1_sp_ct, hippo_1_spct_res)
 h2 <- extract_info_for_table(hippo_2, hippo2_overall, hippo2_ct, hippo2_sp_overall, hippo2_sp_ct, hippo_2_spct_res)
 h3 <- extract_info_for_table(hippo_3, hippo3_overall, hippo3_ct, hippo3_sp_overall, hippo3_sp_ct, hippo_3_spct_res)
@@ -386,6 +382,11 @@ print(xtable::xtable(t2))
 ```
 
 
+Note that \textit{Sst} is detected as significant within Interneuron for Mouse 3; however, this goes
+away when controlling for the Interneuron sub-type located in the cluster of cells with
+high Sst expression. Thus, it is not included in the final table.
+
+
 # Supp table samples
 
 ```{r}
@@ -438,7 +439,7 @@ st1 <- hippo1_overall |>
       mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
       select(tissue, sample, technology, gene, totalUMI, totalCells, p, ci.low, ci.high, z, pval, qval, bias, xchr)
   )
-write.csv(st1, file = 'tables/03_supp_table_overall_bias.csv')
+write.csv(st1, file = 'tables/04_supp_table_overall_bias.csv')
 ```
 
 # Supp table ct bias
@@ -468,7 +469,7 @@ st2 <- hippo1_ct |>
       mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
       select(tissue, sample, technology, gene, cell_type, Z_score, log_fc, se, p_val, bias, xchr)
   )
-write.csv(st2, file = 'tables/03_supp_table_celltype_bias.csv')
+write.csv(st2, file = 'tables/04_supp_table_celltype_bias.csv')
 ```
 
 
@@ -498,7 +499,7 @@ st3 <- hippo1_sp_overall |>
       mutate(tissue = 'Cerebellum', sample = 'Mouse 4', technology = 'Visium') |>
       select(tissue, sample, technology, gene, totalUMI, totalSpots, chisq.p, qval,  xchr)
   )
-write.csv(st3, file = 'tables/03_supp_table_spatial_overall_bias.csv')
+write.csv(st3, file = 'tables/04_supp_table_spatial_overall_bias.csv')
 ```
 
 ```{r}
@@ -510,19 +511,14 @@ print(xtable::xtable(st3 |> select(-chisq.p) |> arrange(sample, tissue, qval), d
 
 
 ```{r}
-st4 <- hippo1_sp_ct |>
-  mutate(tissue = 'Hippocampus', sample = 'Mouse 1', technology = 'Slide-seq') |>
-  select(tissue, sample, technology, gene, cell_type,p_val,  xchr) |>
-  bind_rows(
-    hippo3_sp_ct |>
-      mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
-      select(tissue, sample, technology, gene, cell_type,p_val,  xchr) 
-  ) |>
+st4 <-  hippo3_sp_ct |>
+  mutate(tissue = 'Hippocampus', sample = 'Mouse 3', technology = 'Slide-seq') |>
+  select(tissue, sample, technology, gene, cell_type,p_val,  xchr)  |>
   bind_rows(
     cere3_sp_ct |>
       mutate(tissue = 'Cerebellum', sample = 'Mouse 3', technology = 'Slide-seq') |>
       select(tissue, sample, technology, gene, cell_type,p_val,  xchr) 
   ) 
-write.csv(st4, file = 'tables/03_supp_table_spatial_celltype_bias.csv')
+write.csv(st4, file = 'tables/04_supp_table_spatial_celltype_bias.csv')
 ```
 

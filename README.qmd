@@ -86,7 +86,7 @@ plotSpase(
 
 ## Reproducibility
 
-To reproduce the results in the manuscript, see the `analysis` folder.
+To reproduce the results in the manuscript, see the [analysis](https://github.com/lulizou/spASE/tree/master/analysis) folder.
 The data is available in the Broad single cell portal at [SCP1692](https://singlecell.broadinstitute.org/single_cell/study/SCP1692/detection-of-allele-specific-expression-in-spatial-transcriptomics-with-spase).
 
 

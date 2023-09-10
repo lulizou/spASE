@@ -3,10 +3,13 @@
 .RData
 .Ruserdata
 vignettes/smartseq3-analysis.Rmd
+analysis/*mtx
 analysis/*rds
 analysis/*RData
 analysis/*err
 analysis/*out
+inst/extdata/*fa
+inst/extdata/*csv
 inst/extdata/*RData
 inst/extdata/*rds
 vignettes/*png

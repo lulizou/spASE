@@ -4,11 +4,12 @@ format:
   gfm:
     toc: true
 editor: source
-execute:
-  cache: true
 ---
 
 ```{r}
+library(spacexr)
+library(spASE)
+
 library(dplyr)
 library(Matrix)
 library(data.table)
@@ -21,142 +22,18 @@ library(ggthemes)
 
 # Load in data
 
-## Hippocampus - Mouse 3
-
-```{r}
-PATH <- '../inst/extdata/slideseq/hippo3'
-
-positions1 <- fread(file.path(PATH, 'Puck_221014_21_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T) |>
-  mutate(bead = paste0(bead, '_1'))
-counts1 <- fread(file.path(PATH, '2022-12-11_Puck_221014_21_combined_atropos_polyAGtrim_nm3.csv')) |>
-  mutate(bead = paste0(substr(bead, 1, 14), '_1')) |>
-  filter(bead %in% positions1$bead)
-positions2 <- fread(file.path(PATH, 'Puck_221014_22_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T) |>
-  mutate(bead = paste0(bead, '_2'))
-counts2 <- fread(file.path(PATH, '2022-12-11_Puck_221014_22_combined_atropos_polyAGtrim_nm3.csv')) |>
-  mutate(bead = paste0(substr(bead, 1, 14), '_2')) |>
-  filter(bead %in% positions2$bead)
-
-
-# MANUAL ALIGNING THE PUCKS
-# flip puck2 coordinates over x=2500
-vline <- 2500
-positions2 <- positions2 |> mutate(x = -(x-vline)+vline)
-# shrink x coordinates
-positions2 <- positions2 |> mutate(x = x/1.1)
-# rotation
-xcenter <- (max(positions2$x)+min(positions2$x))/2
-ycenter <- (max(positions2$y)+min(positions2$y))/2
-xshift <- 552
-yshift <- 278
-angle <- 47
-
-x <- positions2$x
-y <- positions2$y
-xnew <- (x-xcenter)*cos(angle*pi/180) - (y-ycenter)*sin(angle*pi/180)+xcenter + xshift
-ynew <- (x-xcenter)*sin(angle*pi/180) + (y-ycenter)*cos(angle*pi/180)+ycenter + yshift
-
-positions2$x <- xnew
-positions2$y <- ynew
-
-maternal_counts<- counts1 |>
-  bind_rows(counts2) |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-maternal_counts_matrix_hippo <- sparseMatrix(i=maternal_counts$gene, j=maternal_counts$bead, x=maternal_counts$CAST)
-rownames(maternal_counts_matrix_hippo) <- levels(maternal_counts$gene)
-colnames(maternal_counts_matrix_hippo) <- levels(maternal_counts$bead)
-
-paternal_counts <- counts1 |>
-  bind_rows(counts2) |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-paternal_counts_matrix_hippo <- sparseMatrix(i=paternal_counts$gene, j=paternal_counts$bead, x=paternal_counts$`129`)
-rownames(paternal_counts_matrix_hippo) <- levels(paternal_counts$gene)
-colnames(paternal_counts_matrix_hippo) <- levels(paternal_counts$bead)
-
-
-positions <- positions1 |> bind_rows(positions2) |>
-  select(bead,x,y)
-
-coords_hippo <- positions |> select(bead, x, y)
-```
-
-## Cerebellum - Mouse 3
-
-```{r}
-PATH <- '../inst/extdata/slideseq/cere3'
-
-positions1 <- fread(file.path(PATH, 'Puck_221014_23_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T) |>
-  mutate(bead = paste0(bead, '_1'))
-counts1 <- fread(file.path(PATH, '2022-12-11_Puck_221014_23_combined_atropos_polyAGtrim_nm3.csv')) |>
-  mutate(bead = paste0(substr(bead, 1, 14), '_1')) |>
-  filter(bead %in% positions1$bead)
-positions2 <- fread(file.path(PATH, 'Puck_221014_24_barcode_matching.txt.gz'), header=F, col.names = c('bead','idk1','x','y')) |>
-  distinct(bead, .keep_all=T) |>
-  mutate(bead = paste0(bead, '_2'))
-counts2 <- fread(file.path(PATH, '2022-12-11_Puck_221014_24_combined_atropos_polyAGtrim_nm3.csv')) |>
-  mutate(bead = paste0(substr(bead, 1, 14), '_2')) |>
-  filter(bead %in% positions2$bead)
-
-
-# MANUAL ALIGNING THE PUCKS
-# rotation
-xcenter <- (max(positions2$x)+min(positions2$x))/2
-ycenter <- (max(positions2$y)+min(positions2$y))/2
-xshift <- 748
-yshift <- -241
-angle <- 86
-
-x <- positions2$x
-y <- positions2$y
-xnew <- (x-xcenter)*cos(angle*pi/180) - (y-ycenter)*sin(angle*pi/180)+xcenter + xshift
-ynew <- (x-xcenter)*sin(angle*pi/180) + (y-ycenter)*cos(angle*pi/180)+ycenter + yshift
-
-positions2$x <- xnew
-positions2$y <- ynew
-
-positions2$x <- xnew
-positions2$y <- ynew
-
-maternal_counts<- counts1 |>
-  bind_rows(counts2) |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-maternal_counts_matrix_cere <- sparseMatrix(i=maternal_counts$gene, j=maternal_counts$bead, x=maternal_counts$CAST)
-rownames(maternal_counts_matrix_cere) <- levels(maternal_counts$gene)
-colnames(maternal_counts_matrix_cere) <- levels(maternal_counts$bead)
-
-paternal_counts <- counts1 |>
-  bind_rows(counts2) |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-paternal_counts_matrix_cere <- sparseMatrix(i=paternal_counts$gene, j=paternal_counts$bead, x=paternal_counts$`129`)
-rownames(paternal_counts_matrix_cere) <- levels(paternal_counts$gene)
-colnames(paternal_counts_matrix_cere) <- levels(paternal_counts$bead)
-
-
-positions <- positions1 |> bind_rows(positions2) |>
-  select(bead,x,y)
-
-coords_cere <- positions |> select(bead, x, y)
-```
-
 
 # Cell type
 
 ## Cell type map - hippo
 
 ```{r}
-rctd_hippo <- readRDS('rctd_combined_hippo_3_nm3.rds')
+rctd_hippo <- readRDS('results/rctd_hippo_3.rds')
 ```
 
 ```{r}
 hippo_ct <- left_join(rctd_hippo@originalSpatialRNA@coords |> rownames_to_column(), rctd_hippo@results$results_df |> rownames_to_column()) |> filter(!is.na(first_type)) |> mutate(first_type = as.character(first_type))
-hippo_ct$first_type[grepl('Endothelial', hippo_ct$first_type)] <- 'Endothelial'
+hippo_ct$first_type[grepl('Endothelial', hippo_ct$first_type)] <- 'Endothelial' # merge endothelials
 ```
 
 ```{r}
@@ -169,7 +46,7 @@ hippo_ct |>
   scale_color_tableau() +
   theme_void() +
   theme(legend.position = 'none')
-ggsave('figures/04_hippo_3_celltype_map.pdf', height=3, width=3)
+ggsave('figures/05_hippo_3_celltype_map.pdf', height=3, width=3)
 
 hippo_ct |> 
   filter(spot_class == 'singlet') |>
@@ -180,13 +57,13 @@ hippo_ct |>
   geom_point(aes(color = first_type), size=1) +
   scale_color_tableau(name='') +
   theme_void() 
-ggsave('figures/04_hippo_3_celltype_map_legend.pdf', height=3, width=3)
+ggsave('figures/05_hippo_3_celltype_map_legend.pdf', height=3, width=3)
 ```
 
 ## Cell type map - cere
 
 ```{r}
-rctd_cere <- readRDS('rctd_combined_cere_4_nm3.rds')
+rctd_cere <- readRDS('results/rctd_cere_3.rds')
 cere_ct <- left_join(rctd_cere@originalSpatialRNA@coords |> rownames_to_column(), rctd_cere@results$results_df |> rownames_to_column()) |> filter(!is.na(first_type)) |> mutate(first_type = as.character(first_type))
 ```
 
@@ -200,7 +77,7 @@ cere_ct |>
   scale_color_tableau() +
   theme_void() +
   theme(legend.position = 'none')
-ggsave('figures/04_cere_3_celltype_map.pdf', height=3, width=3)
+ggsave('figures/05_cere_3_celltype_map.pdf', height=3, width=3)
 
 cere_ct |> 
   filter(spot_class %in% c('singlet')) |>
@@ -210,24 +87,24 @@ cere_ct |>
   geom_point(aes(color = first_type), size=1) +
   scale_color_tableau() +
   theme_void() 
-ggsave('figures/04_cere_3_celltype_map_legend.pdf', height=3, width=3)
+ggsave('figures/05_cere_3_celltype_map_legend.pdf', height=3, width=3)
 ```
 
 
 
 ```{r}
-myfit_hippo <- spase(maternal_counts_matrix_hippo, paternal_counts_matrix_hippo, coords_hippo,cores=1,verbose=T, df=15, genes=c('Nrip3', 'Ptgds', 'Sst'))
+myfit_hippo <- spase(rctd_hippo@originalSpatialRNA@maternalCounts, rctd_hippo@originalSpatialRNA@paternalCounts, rctd_hippo@originalSpatialRNA@coords |> rownames_to_column(),cores=1,verbose=T, df=15, genes=c('Nrip3', 'Ptgds', 'Sst'))
 ```
 
 ## Ptgds
 
 ```{r}
 plotSpase(
-  matrix1 = maternal_counts_matrix_hippo, 
-  matrix2 = paternal_counts_matrix_hippo, 
-  covariates = coords_hippo, 
+  matrix1 = rctd_hippo@originalSpatialRNA@maternalCounts, 
+  matrix2 = rctd_hippo@originalSpatialRNA@paternalCounts, 
+  covariates = rctd_hippo@originalSpatialRNA@coords |> rownames_to_column(), 
   spasefit = myfit_hippo, 
-  coords = coords_hippo |> select(x,y) |> sample_n(10000), 
+  coords = rctd_hippo@originalSpatialRNA@coords  |> select(x,y) |> sample_n(10000), 
   genes = c('Ptgds'),
   crosshairs = F,
   crosshairs_diag = T,
@@ -235,7 +112,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_Crosshairs'
+  #save = 'figures/05_Crosshairs'
 )
 ```
 
@@ -245,78 +122,79 @@ plotSpase(
 
 ```{r}
 plotSpase(
-  matrix1 = maternal_counts_matrix_hippo, 
-  matrix2 = paternal_counts_matrix_hippo, 
-  covariates = coords_hippo, 
+  matrix1 = rctd_hippo@originalSpatialRNA@maternalCounts, 
+  matrix2 = rctd_hippo@originalSpatialRNA@paternalCounts, 
+  covariates = rctd_hippo@originalSpatialRNA@coords |> rownames_to_column(), 
   spasefit = myfit_hippo, 
-  coords = coords_hippo |>  select(x,y) |> sample_n(10000), 
+  coords = rctd_hippo@originalSpatialRNA@coords  |> select(x,y) |> sample_n(10000), 
   genes = c('Sst'),
   crosshairs = T,
   point.size = 0.75,
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_Crosshairs'
+  #save = 'figures/05_Crosshairs'
 )
 ```
 
 ## Bex2, Uba1, Tspan7
 
 ```{r}
-myfit_cere <- spase(maternal_counts_matrix_cere, paternal_counts_matrix_cere, coords_cere,cores=1,verbose=T, df=15, genes=c('Uba1', 'Bex2', 'Tspan7'))
+myfit_cere <- spase(rctd_cere@originalSpatialRNA@maternalCounts, rctd_cere@originalSpatialRNA@paternalCounts, rctd_cere@originalSpatialRNA@coords |> rownames_to_column(),cores=1,verbose=T, df=15, genes=c('Uba1', 'Bex2', 'Tspan7'))
 ```
 
 ```{r}
 plotSpase(
-  matrix1 = maternal_counts_matrix_cere, 
-  matrix2 = paternal_counts_matrix_cere, 
-  covariates = coords_cere, 
+  matrix1 = rctd_cere@originalSpatialRNA@maternalCounts, 
+  matrix2 = rctd_cere@originalSpatialRNA@paternalCounts, 
+  covariates = rctd_cere@originalSpatialRNA@coords |> rownames_to_column(), 
   spasefit = myfit_cere, 
-  coords = coords_cere |>  select(x,y) |> sample_n(10000), 
+  coords = rctd_cere@originalSpatialRNA@coords |>  select(x,y) |> sample_n(10000), 
   genes = c('Uba1'),
   crosshairs = T,
   point.size = 0.75,
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04'
+  #save = 'figures/05'
 )
 ```
 
 ```{r}
 plotSpase(
-  matrix1 = maternal_counts_matrix_cere, 
-  matrix2 = paternal_counts_matrix_cere, 
-  covariates = coords_cere, 
+  matrix1 = rctd_cere@originalSpatialRNA@maternalCounts, 
+  matrix2 = rctd_cere@originalSpatialRNA@paternalCounts, 
+  covariates = rctd_cere@originalSpatialRNA@coords |> rownames_to_column(), 
   spasefit = myfit_cere, 
   coords = cere_ct |> 
-  filter(spot_class %in% c('singlet')) |>
-  filter(first_type %in% c('Granule')) |> select(x,y) |> filter(x>1000, y>1000), 
+    filter(spot_class %in% c('singlet')) |>
+    filter(first_type %in% c('Granule')) |> select(x,y) |> filter(x>1000, y>1000), 
   genes = c('Uba1'),
   crosshairs = F,
   point.size = 0.75,
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_granule'
+  #save = 'figures/05_granule'
 )
 ```
+
 ```{r}
 plotSpase(
-  matrix1 = maternal_counts_matrix_cere, 
-  matrix2 = paternal_counts_matrix_cere, 
-  covariates = coords_cere, 
+  matrix1 = rctd_cere@originalSpatialRNA@maternalCounts, 
+  matrix2 = rctd_cere@originalSpatialRNA@paternalCounts, 
+  covariates = rctd_cere@originalSpatialRNA@coords |> rownames_to_column(), 
   spasefit = myfit_cere, 
   coords = cere_ct |> 
-  filter(spot_class %in% c('singlet')) |>
-  filter(first_type %in% c('Granule')) |> select(x,y) |> filter(x > 1000, y > 1000), 
+    filter(spot_class %in% c('singlet')) |>
+    filter(first_type %in% c('Granule')) |> select(x,y) |> filter(x > 1000, y > 1000), 
   genes = c('Tspan7'),
   crosshairs = F,
   point.size = 0.75,
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_granule'
+ # save = 'figures/05_granule'
 )
 ```
 
@@ -325,7 +203,7 @@ plotSpase(
 
 ```{r}
 # Read in gencode to grab xchr genes
-gencode <- import('/rafalab/lzou/resources/gencode.vM10.annotation.gff3.gz')
+gencode <- import('results/gencode.vM10.annotation.gff3.gz')
 xchr_genes <- unique(gencode$gene_name[which(seqnames(gencode)=='chrX')])
 xchr_genes <- c(xchr_genes, 'Bex3')
 
@@ -334,7 +212,7 @@ xchr_genes <- c(xchr_genes, 'Bex3')
 ## Hippo 1
 
 ```{r}
-hippo1 <- readRDS('rctd_combined_hippo_1.rds')
+hippo1 <- readRDS('results/rctd_hippo_1.rds')
 maternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@paternalCounts
 coords_hippo <- hippo1@originalSpatialRNA@coords |> rownames_to_column()
@@ -369,7 +247,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_hippo1'
+  #save = 'figures/05_mergedX_hippo1'
 )
 ```
 
@@ -377,7 +255,7 @@ plotSpase(
 ## Hippo 2
 
 ```{r}
-hippo2 <- readRDS('hippo_slideseq_mouse_2.rds')
+hippo2 <- readRDS('results/rctd_hippo_2.rds')
 maternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@paternalCounts
 coords_hippo <- hippo2@originalSpatialRNA@coords |> rownames_to_column()
@@ -406,14 +284,14 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_hippo2'
+  #save = 'figures/05_mergedX_hippo2'
 )
 ```
 
 ## Cere 3
 
 ```{r}
-cere3 <- readRDS('rctd_combined_cere_4.rds')
+cere3 <- readRDS('results/rctd_cere_3.rds')
 maternal_counts_matrix_cere <- cere3@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere3@originalSpatialRNA@paternalCounts
 coords_cere <- cere3@originalSpatialRNA@coords |> rownames_to_column()
@@ -448,7 +326,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_cere3'
+ # save = 'figures/05_mergedX_cere3'
 )
 ```
 
@@ -468,7 +346,7 @@ paternal_counts_x <- t(as.matrix(colSums(paternal_counts_matrix_hippo[xchr_idx,]
 maternal_counts_x <- rbind(maternal_counts_x, maternal_counts_matrix_hippo['Xist',])
 paternal_counts_x <- rbind(paternal_counts_x, paternal_counts_matrix_hippo['Xist',])
 rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
-myfit_hippo <- spase(maternal_counts_x, paternal_counts_x, coords_hippo,cores=1,verbose=T, df=15, genes = c('X', 'Xist'))
+myfit_hippo <- spase(maternal_counts_x, paternal_counts_x, coords_hippo,cores=1,verbose=T, df=15, genes = c('X', 'Xist'), min.pixels=50, min.umi=50)
 ```
 
 
@@ -487,7 +365,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_hippo3'
+  #save = 'figures/05_mergedX_hippo3'
 )
 ```
 
@@ -495,7 +373,7 @@ plotSpase(
 ## Cere 4
 
 ```{r}
-cere4 <- readRDS('rctd_cere_3.rds')
+cere4 <- readRDS('results/rctd_cere_4_visium.rds')
 maternal_counts_matrix_cere <- cere4@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere4@originalSpatialRNA@paternalCounts
 coords_cere <- cere4@originalSpatialRNA@coords |> rownames_to_column()
@@ -524,7 +402,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_cere4'
+  #save = 'figures/05_mergedX_cere4'
 )
 ```
 
@@ -543,7 +421,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_cere4_cross'
+ # save = 'figures/05_mergedX_cere4_cross'
 )
 ```
 
@@ -552,19 +430,10 @@ plotSpase(
 
 
 ```{r}
-PATH <- '../inst/extdata/visium/mixture'
-counts <- fread(file.path(PATH, 'mixture.csv'))
-positions <- fread(file.path(PATH, 'tissue_positions.csv'))
-counts <- counts |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-maternal_counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$CAST)
-paternal_counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$`129`)
-rownames(maternal_counts_matrix) <- rownames(paternal_counts_matrix) <- levels(counts$gene)
-colnames(maternal_counts_matrix) <- colnames(paternal_counts_matrix) <- levels(counts$bead)
-positions <- positions |>
-  select(barcode, starts_with('pxl')) |>
-  dplyr::rename(x = pxl_row_in_fullres, y = pxl_col_in_fullres)
+mix5 <- readRDS('results/rctd_mix_5_visium.rds')
+maternal_counts_matrix <- mix5@originalSpatialRNA@maternalCounts
+paternal_counts_matrix <- mix5@originalSpatialRNA@paternalCounts
+positions <- mix5@originalSpatialRNA@coords |> rownames_to_column()
 ```
 
 ```{r}
@@ -590,7 +459,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_mix5'
+  #save = 'figures/05_mergedX_mix5'
 )
 ```
 
@@ -609,7 +478,7 @@ plotSpase(
   size.scale = F,
   theme = 'void',
   void = T,
-  save = 'figures/04_mergedX_mix5_cross'
+ # save = 'figures/05_mergedX_mix5_cross'
 )
 ```
 
@@ -624,7 +493,7 @@ xx <- data.frame(samples = c('Mouse 1 Hippo', 'Mouse 2 Hippo', 'Mouse 3 Hippo', 
 
 
 ```{r}
-hippo1 <- readRDS('rctd_combined_hippo_1.rds')
+hippo1 <- readRDS('results/rctd_hippo_1.rds')
 maternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo1@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
@@ -637,7 +506,7 @@ rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
 myfit <- scase(maternal_counts_x, paternal_counts_x, cores=1, verbose=T, genes = 'X')
 xx[1,2:4] <- c(as.numeric(rowSums(maternal_counts_x + paternal_counts_x)), myfit$phi)
 
-hippo2 <- readRDS('hippo_slideseq_mouse_2.rds')
+hippo2 <- readRDS('results/rctd_hippo_2.rds')
 maternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo2@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
@@ -650,7 +519,7 @@ rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
 myfit <- scase(maternal_counts_x, paternal_counts_x, cores=1, verbose=T, genes = 'X')
 xx[2,2:4] <- c(as.numeric(rowSums(maternal_counts_x + paternal_counts_x)), myfit$phi)
 
-hippo3 <- readRDS('rctd_combined_hippo_3_nm3.rds')
+hippo3 <- readRDS('results/rctd_hippo_3.rds')
 maternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_hippo <- hippo3@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
@@ -663,7 +532,7 @@ rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
 myfit <- scase(maternal_counts_x, paternal_counts_x, cores=1, verbose=T, genes = 'X', min.cells=5)
 xx[3,2:4] <- c(as.numeric(rowSums(maternal_counts_x + paternal_counts_x)), myfit$phi)
 
-cere3 <- readRDS('rctd_combined_cere_4_nm3.rds')
+cere3 <- readRDS('results/rctd_cere_3.rds')
 maternal_counts_matrix_cere <- cere3@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere3@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
@@ -676,7 +545,7 @@ rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
 myfit <- scase(maternal_counts_x, paternal_counts_x, cores=1, verbose=T, genes = 'X', min.cells=5)
 xx[4,2:4] <- c(as.numeric(rowSums(maternal_counts_x + paternal_counts_x)), myfit$phi)
 
-cere4 <- readRDS('rctd_cere_3.rds')
+cere4 <- readRDS('results/rctd_cere_4_visium.rds')
 maternal_counts_matrix_cere <- cere4@originalSpatialRNA@maternalCounts
 paternal_counts_matrix_cere <- cere4@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
@@ -689,19 +558,9 @@ rownames(maternal_counts_x) <- rownames(paternal_counts_x) <- c('X','Xist')
 myfit <- scase(maternal_counts_x, paternal_counts_x, cores=1, verbose=T, genes = 'X', min.cells=5)
 xx[5,2:4] <- c(as.numeric(rowSums(maternal_counts_x + paternal_counts_x)), myfit$phi)
 
-PATH <- '../inst/extdata/visium/mixture'
-counts <- fread(file.path(PATH, 'mixture.csv'))
-positions <- fread(file.path(PATH, 'tissue_positions.csv'))
-counts <- counts |>
-  arrange(bead, gene) |>
-  mutate(bead = as.factor(bead), gene = as.factor(gene))
-maternal_counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$CAST)
-paternal_counts_matrix <- sparseMatrix(i=counts$gene, j=counts$bead, x=counts$`129`)
-rownames(maternal_counts_matrix) <- rownames(paternal_counts_matrix) <- levels(counts$gene)
-colnames(maternal_counts_matrix) <- colnames(paternal_counts_matrix) <- levels(counts$bead)
-positions <- positions |>
-  select(barcode, starts_with('pxl')) |>
-  dplyr::rename(x = pxl_row_in_fullres, y = pxl_col_in_fullres)
+mix5 <- readRDS('results/rctd_mix_5_visium.rds')
+maternal_counts_matrix <- mix5@originalSpatialRNA@maternalCounts
+paternal_counts_matrix <- mix5@originalSpatialRNA@paternalCounts
 x_inactive <- xchr_genes[-which(xchr_genes == 'Xist')]
 xchr_idx <- rownames(maternal_counts_matrix) %in% x_inactive
 maternal_counts_x <- t(as.matrix(colSums(maternal_counts_matrix[xchr_idx,])))
@@ -721,8 +580,11 @@ xx |>
   theme_classic() +
   xlab('Normalized Xist expression') +
   ylab('X-chromosome overdispersion')
-ggsave(filename = 'figures/04_xchr_overdispersion_scatter_samples.pdf', height=3, width=5)
+ggsave(filename = 'figures/05_xchr_overdispersion_scatter_samples.pdf', height=3, width=5)
 ```
 
+```{r}
+cor(xx$Xist/xx$X, xx$phi)^2
+```
 
 
