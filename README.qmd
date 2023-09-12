@@ -86,8 +86,22 @@ plotSpase(
 
 ## Reproducibility
 
-To reproduce the results in the manuscript, see the [analysis](https://github.com/lulizou/spASE/tree/master/analysis) folder.
-The data is available in the Broad single cell portal at [SCP1692](https://singlecell.broadinstitute.org/single_cell/study/SCP1692/detection-of-allele-specific-expression-in-spatial-transcriptomics-with-spase).
+The data is available in the Broad single cell portal at [SCP1692](https://singlecell.broadinstitute.org/single_cell/study/SCP1692/detection-of-allele-specific-expression-in-spatial-transcriptomics-with-spase). 
+
+To reproduce the results in the manuscript, see the [analysis](https://github.com/lulizou/spASE/tree/master/analysis) folder. To see the knitted Quarto documents, see:
+
+* [00_preprocess.md](https://github.com/lulizou/spASE/blob/master/analysis/00_preprocess.md) - details on the alignment and custom scripts for running RCTD, C-SIDE, and spASE
+* [01_cell_type_maps.md](https://github.com/lulizou/spASE/blob/master/analysis/01_cell_type_maps.md) - cell type plots for each sample
+* [02_compare_visium_slideseq_cerebellum.md](https://github.com/lulizou/spASE/blob/master/analysis/02_compare_visium_slideseq_cerebellum.md) - comparison of the Visium and Slide-seqV2 on different cerebellum samples
+* [03_simulations.md](https://github.com/lulizou/spASE/blob/master/analysis/03_simulations.md) - simulation results
+* [04_overall_results_summary_figures.md](https://github.com/lulizou/spASE/blob/master/analysis/04_overall_results_summary_figures.md) - main summary figures and tables from running spASE
+* [05_celltype_xchr_figures.md](https://github.com/lulizou/spASE/blob/master/analysis/05_celltype_xchr_figures.md) - main figure comparing cell type-driven and within cell type spatial ASE
+* [06_visium_slideseq_mixtures_overdispersion.md](https://github.com/lulizou/spASE/blob/master/analysis/06_visium_slideseq_mixtures_overdispersion.md) - supplemental figures showing count distributions of perfect binomial sampling, spatial transcriptomics, and Smart-seq3 data
+* [07_129_CAST_analysis.md](https://github.com/lulizou/spASE/blob/master/analysis/07_129_CAST_analysis.md) - supplemental figures on comparing CAST and 129 transcripts
+* [08_xchr_inactivation.md](https://github.com/lulizou/spASE/blob/master/analysis/08_xchr_inactivation.md) - supplemental figures showing X-chromosome genes for each sample
+
+
+
 
 
 ## Citation
