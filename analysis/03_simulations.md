@@ -149,7 +149,7 @@ hippo1@de_results$gene_fits$mean_val |>
   geom_histogram(bins=50) +
   facet_grid(Var2 ~ sample) +
   theme_minimal() + 
-  xlim(c(-10,10)) +
+  xlim(c(-5,5)) +
   xlab('Estimated coefficient (log scale)') 
 ```
 
@@ -177,7 +177,7 @@ hippo1@de_results$gene_fits$mean_val |>
     namespace like reshape2::melt(hippo3@de_results$gene_fits$mean_val). In the
     next version, this warning will become an error.
 
-    Warning: Removed 1915 rows containing non-finite values (`stat_bin()`).
+    Warning: Removed 4571 rows containing non-finite values (`stat_bin()`).
 
 ![](03_simulations_files/figure-commonmark/unnamed-chunk-3-1.png)
 
@@ -185,7 +185,7 @@ hippo1@de_results$gene_fits$mean_val |>
 ggsave('figures/03_cside_estimates_hippo.pdf', height=6, width=5)
 ```
 
-    Warning: Removed 1915 rows containing non-finite values (`stat_bin()`).
+    Warning: Removed 4571 rows containing non-finite values (`stat_bin()`).
 
 ``` r
 cere3@de_results$gene_fits$mean_val |>
@@ -196,9 +196,9 @@ cere3@de_results$gene_fits$mean_val |>
               mutate(sample = 'Cerebellum 4 (V)')) |>
   ggplot(aes(x = value)) +
   geom_histogram(bins=50) +
-  facet_grid(Var2 ~ sample) +
+  facet_grid(Var2 ~ sample, scales='free') +
   theme_minimal() + 
-  xlim(c(-10,10)) +
+  xlim(c(-5,5)) +
   xlab('Estimated coefficient (log scale)') 
 ```
 
@@ -218,7 +218,7 @@ cere3@de_results$gene_fits$mean_val |>
     namespace like reshape2::melt(cere4@de_results$gene_fits$mean_val). In the next
     version, this warning will become an error.
 
-    Warning: Removed 3975 rows containing non-finite values (`stat_bin()`).
+    Warning: Removed 7200 rows containing non-finite values (`stat_bin()`).
 
 ![](03_simulations_files/figure-commonmark/unnamed-chunk-4-1.png)
 
@@ -226,7 +226,7 @@ cere3@de_results$gene_fits$mean_val |>
 ggsave('figures/03_cside_estimates_cere.pdf', height=6, width=3)
 ```
 
-    Warning: Removed 3975 rows containing non-finite values (`stat_bin()`).
+    Warning: Removed 7200 rows containing non-finite values (`stat_bin()`).
 
 ``` r
 hippo1@de_results$gene_fits$s_mat |>
@@ -249,7 +249,8 @@ hippo1@de_results$gene_fits$s_mat |>
   geom_histogram(bins=100) +
   theme_minimal() +
   xlim(c(0,10)) +
-  facet_wrap(sample ~ ., scales='free')
+  facet_wrap(sample ~ ., scales='free') +
+  xlab('Variance of estimated coefficient (log scale)')
 ```
 
     Warning in melt(hippo1@de_results$gene_fits$s_mat): The melt generic in
