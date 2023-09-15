@@ -150,7 +150,7 @@ hippo1@de_results$gene_fits$mean_val |>
   facet_grid(Var2 ~ sample) +
   theme_minimal() + 
   xlim(c(-5,5)) +
-  xlab('Estimated coefficient (log scale)') 
+  xlab('Estimated coefficient (logit scale)') 
 ```
 
     Warning in melt(hippo1@de_results$gene_fits$mean_val): The melt generic in
@@ -199,7 +199,7 @@ cere3@de_results$gene_fits$mean_val |>
   facet_grid(Var2 ~ sample, scales='free') +
   theme_minimal() + 
   xlim(c(-5,5)) +
-  xlab('Estimated coefficient (log scale)') 
+  xlab('Estimated coefficient (logit scale)') 
 ```
 
     Warning in melt(cere3@de_results$gene_fits$mean_val): The melt generic in
@@ -250,7 +250,7 @@ hippo1@de_results$gene_fits$s_mat |>
   theme_minimal() +
   xlim(c(0,10)) +
   facet_wrap(sample ~ ., scales='free') +
-  xlab('Variance of estimated coefficient (log scale)')
+  xlab('Variance of estimated coefficient (logit scale)')
 ```
 
     Warning in melt(hippo1@de_results$gene_fits$s_mat): The melt generic in
