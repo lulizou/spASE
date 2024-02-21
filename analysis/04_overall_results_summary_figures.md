@@ -546,7 +546,7 @@ print(xtable::xtable(t1))
 ```
 
     % latex table generated in R 4.3.1 by xtable 1.8-4 package
-    % Mon Sep  4 11:43:43 2023
+    % Wed Feb 21 11:43:57 2024
     \begin{table}[ht]
     \centering
     \begin{tabular}{rllll}
@@ -574,7 +574,7 @@ print(xtable::xtable(t2))
 ```
 
     % latex table generated in R 4.3.1 by xtable 1.8-4 package
-    % Mon Sep  4 11:43:43 2023
+    % Wed Feb 21 11:43:57 2024
     \begin{table}[ht]
     \centering
     \begin{tabular}{rllllll}
@@ -625,7 +625,7 @@ xtable::xtable(dd)
 ```
 
     % latex table generated in R 4.3.1 by xtable 1.8-4 package
-    % Mon Sep  4 11:43:51 2023
+    % Wed Feb 21 11:44:04 2024
     \begin{table}[ht]
     \centering
     \begin{tabular}{rrllrlll}
@@ -734,7 +734,7 @@ print(xtable::xtable(st3 |> select(-chisq.p) |> arrange(sample, tissue, qval), d
 ```
 
     % latex table generated in R 4.3.1 by xtable 1.8-4 package
-    % Mon Sep  4 11:43:51 2023
+    % Wed Feb 21 11:44:05 2024
     \begin{table}[ht]
     \centering
     \begin{tabular}{llllrrrl}
