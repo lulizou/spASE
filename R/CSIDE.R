@@ -5,15 +5,16 @@ run.CSIDE.intercept <- function(myRCTD, barcodes = NULL, cell_types = NULL, cell
                                 gene_threshold = 5e-5, doublet_mode = T, weight_threshold = NULL,
                                 sigma_gene = T, PRECISION.THRESHOLD = 0.05, cell_types_present = NULL,
                                 normalize_expr = F, logs=F, test_error = F, spase=F, remove_genes = NULL,
-                                skip_fit = F) {
+                                skip_fit = F, test_genes_sig=T, gene_list = NULL, test_genes_nonref = NULL) {
   X2 <- build.designmatrix.intercept(myRCTD, barcodes = barcodes)
   barcodes <- rownames(X2)
   return(run.CSIDE(myRCTD, X2, barcodes, cell_types, gene_threshold = gene_threshold, cell_type_threshold = cell_type_threshold,
                    doublet_mode = doublet_mode, test_mode = 'individual', params_to_test = 1,
-                   weight_threshold = weight_threshold, sigma_gene = sigma_gene, test_genes_sig = T,
+                   weight_threshold = weight_threshold, sigma_gene = sigma_gene, test_genes_sig = test_genes_sig,
                    PRECISION.THRESHOLD = PRECISION.THRESHOLD,
                    cell_types_present = cell_types_present, normalize_expr = normalize_expr,
-                   logs=logs, test_error = test_error, spase=spase, remove_genes = remove_genes, skip_fit = skip_fit))
+                   logs=logs, test_error = test_error, spase=spase, remove_genes = remove_genes, skip_fit = skip_fit,
+                   gene_list = gene_list, test_genes_nonref = test_genes_nonref))
 }
 
 
@@ -108,7 +109,8 @@ run.CSIDE.nonparam <- function(myRCTD, df = 15, barcodes = NULL, cell_types = NU
                                cell_type_threshold = 125, gene_threshold = 5e-5, doublet_mode = T,
                                weight_threshold = NULL, sigma_gene = T,
                                PRECISION.THRESHOLD = 0.05, cell_types_present = NULL, fdr = .01, test_genes_sig = T,
-                               logs=F, test_error = F, spase = F, remove_genes = NULL) {
+                               logs=F, test_error = F, spase = F, remove_genes = NULL, gene_list = NULL,
+                               test_genes_nonref = NULL) {
   X2 <- build.designmatrix.nonparam(myRCTD, barcodes = barcodes, df = df)
   region_thresh <- cell_type_threshold / 4
   barcodes <- rownames(X2)
@@ -128,7 +130,8 @@ run.CSIDE.nonparam <- function(myRCTD, df = 15, barcodes = NULL, cell_types = NU
                    weight_threshold = weight_threshold, sigma_gene = sigma_gene,test_genes_sig = test_genes_sig,
                    PRECISION.THRESHOLD = PRECISION.THRESHOLD, test_error = test_error,
                    cell_types_present = cell_types_present, params_to_test = 2:df, fdr = fdr, normalize_expr = F,
-                   logs=logs, cell_type_filter = cell_type_filter, spase = spase, remove_genes = remove_genes))
+                   logs=logs, cell_type_filter = cell_type_filter, spase = spase, remove_genes = remove_genes,
+                   gene_list = gene_list, test_genes_nonref = test_genes_nonref))
 }
 
 #' Runs CSIDE on a \code{\linkS4class{RCTD}} object for DE across multiple discrete regions
@@ -227,7 +230,7 @@ run.CSIDE <- function(myRCTD, X, barcodes, cell_types = NULL, gene_threshold = 5
                       test_genes_sig = T, fdr = .01, cell_type_specific = NULL,
                       params_to_test = NULL, normalize_expr = F, logs=F, log_fc_thresh = 0.4,
                       cell_type_filter = NULL, test_error = F, fdr_method = 'BH', spase = F,
-                      remove_genes = NULL, skip_fit = F) {
+                      remove_genes = NULL, skip_fit = F, gene_list = NULL, test_genes_nonref = NULL) {
   if (spase) {
     log_fc_thresh = 0 # in this case means log(OR)
   }
@@ -247,7 +250,8 @@ run.CSIDE <- function(myRCTD, X, barcodes, cell_types = NULL, gene_threshold = 5
                            cell_types_present = cell_types_present, test_genes_sig = test_genes_sig,
                            fdr = fdr, normalize_expr = normalize_expr, logs=logs,
                            cell_type_filter = cell_type_filter, log_fc_thresh = log_fc_thresh, test_error = test_error,
-                           fdr_method = fdr_method, spase = spase, remove_genes = remove_genes, skip_fit = skip_fit))
+                           fdr_method = fdr_method, spase = spase, remove_genes = remove_genes, skip_fit = skip_fit,
+                           gene_list = gene_list, test_genes_nonref = test_genes_nonref))
 }
 
 #' Runs CSIDE on a \code{\linkS4class{RCTD}} object with a general design matrix
@@ -290,6 +294,8 @@ run.CSIDE <- function(myRCTD, X, barcodes, cell_types = NULL, gene_threshold = 5
 #' @param test_error (default FALSE) if TRUE, exits after testing for error messages without running CSIDE.
 #' If set to TRUE, this can be used to quickly evaluate if CSIDE will run without error.
 #' @param fdr_method (default BH) if BH, uses the Benjamini-Hochberg method. Otherwise, uses local fdr with an empirical null.
+#' @param skip_fit (default FALSE) whether or not to skip the fitting phase
+#' @param gene_list (default NULL) if not null, supply a vector of genes to fit
 #' @return an \code{\linkS4class{RCTD}} object containing the results of the CSIDE algorithm. Contains objects \code{de_results},
 #' which contain the results of the CSIDE algorithm including `gene_fits`, which contains the results of fits on individual genes,
 #' in addition `sig_gene_list`, a list, for each cell type, of significant genes detected by CSIDE, whereas
@@ -301,7 +307,7 @@ run.CSIDE.general <- function(myRCTD, X1, X2, barcodes, cell_types = NULL, gene_
                               sigma_gene = T, PRECISION.THRESHOLD = 0.05, cell_types_present = NULL,
                               test_genes_sig = T, fdr = .01, params_to_test = NULL, normalize_expr = F,
                               logs=F, cell_type_filter = NULL, log_fc_thresh = 0.4, test_error = FALSE, fdr_method = 'BH',
-                              spase = F, remove_genes = NULL, skip_fit = F) {
+                              spase = F, skip_fit = F, remove_genes = NULL, gene_list = NULL, test_genes_nonref = NULL) {
   if(gene_threshold == .01 || fdr == 0.25 || cell_type_threshold == 10 ||
      (!is.null(weight_threshold) && weight_threshold == 0.1))
     warning('run.CSIDE.general: some parameters are set to the CSIDE vignette values, which are intended for testing but not proper execution. For more accurate results, consider using the default parameters to this function.')
@@ -355,6 +361,9 @@ run.CSIDE.general <- function(myRCTD, X1, X2, barcodes, cell_types = NULL, gene_
     stop('run.CSIDE.general: some barcodes do not appear in the rownames of X1 or X2.')
   puck = myRCTD@originalSpatialRNA
   gene_list_tot <- filter_genes(puck, threshold = gene_threshold, remove_genes = remove_genes)
+  if (!is.null(gene_list)) {
+    gene_list_tot <- gene_list
+  }
   if(length(gene_list_tot) == 0)
     stop('run.CSIDE.general: no genes past threshold. Please consider lowering gene_threshold.')
   if(length(intersect(gene_list_tot,rownames(myRCTD@cell_type_info$info[[1]]))) == 0)
@@ -402,7 +411,7 @@ run.CSIDE.general <- function(myRCTD, X1, X2, barcodes, cell_types = NULL, gene_
     both_gene_list <- get_sig_genes(puck, myRCTD, gene_list_tot, cell_types, my_beta, barcodes, nUMI,
                                     gene_fits, cell_types_present, X2, test_mode, fdr = fdr,
                                     params_to_test = params_to_test, normalize_expr = normalize_expr,
-                                    log_fc_thresh = log_fc_thresh, fdr_method = fdr_method)
+                                    log_fc_thresh = log_fc_thresh, fdr_method = fdr_method, test_genes_nonref = test_genes_nonref)
     sig_gene_list <- both_gene_list$sig_gene_list; all_gene_list <- both_gene_list$all_gene_list
   } else {
     sig_gene_list <- NULL
@@ -426,12 +435,22 @@ run.CSIDE.general <- function(myRCTD, X1, X2, barcodes, cell_types = NULL, gene_
 
 get_sig_genes <- function(puck, myRCTD, gene_list_tot, cell_types, my_beta, barcodes, nUMI,
                           gene_fits, cell_types_present, X2, test_mode, params_to_test = 2,
-                          fdr = .01, p_thresh = 1, log_fc_thresh = 0.4, normalize_expr = F, fdr_method = 'BH') {
+                          fdr = .01, p_thresh = 1, log_fc_thresh = 0.4, normalize_expr = F, fdr_method = 'BH',
+                          test_genes_nonref = NULL) {
   cti_renorm <- get_norm_ref(puck, myRCTD@cell_type_info$info[[1]], intersect(gene_list_tot,rownames(myRCTD@cell_type_info$info[[1]])), myRCTD@internal_vars$proportions)
   sig_gene_list <- list(); all_gene_list <- list()
   for(cell_type in cell_types) {
-    gene_list_type <- get_gene_list_type(my_beta, barcodes, cell_type, nUMI, gene_list_tot,
-                                         cti_renorm, cell_types_present, gene_fits, test_mode = test_mode)
+    if (cell_type %in% colnames(cti_renorm)) {
+      # cell type was in reference
+      cell_types_present <- intersect(cell_types_present, colnames(cti_renorm))
+      gene_list_type <- get_gene_list_type(my_beta, barcodes, cell_type, nUMI, gene_list_tot,
+                                           cti_renorm, cell_types_present, gene_fits, test_mode = test_mode)
+    } else {
+      # cell type not in reference
+      if (is.null(test_genes_nonref))
+        stop('if using a custom cell type, you must specify test_genes_nonref')
+      gene_list_type <- test_genes_nonref
+    }
     if(test_mode == 'individual')
       both_genes <- find_sig_genes_individual(cell_type, cell_types, gene_fits, gene_list_type, X2,
                                               params_to_test = params_to_test, fdr = fdr, p_thresh = p_thresh,
@@ -475,164 +494,199 @@ test_genes_sig_post <- function(myRCTD, params_to_test = NULL, fdr = .01, p_thre
 
 find_sig_genes_categorical <- function(cell_type, cell_types, gene_fits, gene_list_type, X2, fdr = 0.01,
                                        p_thresh = 1, log_fc_thresh = 0.4, params_to_test = NULL) {
-  if(length(gene_list_type) == 0)
-    stop(paste0('find_sig_genes_categorical: cell type ', cell_type,
-                ' has not converged on any genes. Consider removing this cell type from the model using the cell_types option.'))
-  if(is.null(params_to_test))
-    params_to_test <- 1:dim(X2)[2]
-  n_regions <- length(params_to_test); n_cell_types <- length(cell_types)
-  cell_ind = (which(cell_types == cell_type))
-  s_mat_ind <- (1:dim(X2)[2]) + (n_regions*(cell_ind - 1))
-  p_val_sig_pair <- numeric(length(gene_list_type)); names(p_val_sig_pair) <- gene_list_type
-  log_fc_best_pair <- numeric(length(gene_list_type)); names(log_fc_best_pair) <- gene_list_type
-  sd_vec <- numeric(length(gene_list_type)); names(sd_vec) <- gene_list_type
-  sd_lfc_vec <- numeric(length(gene_list_type)); names(sd_lfc_vec) <- gene_list_type
-  i1_vec <- numeric(length(gene_list_type)); names(i1_vec) <- gene_list_type
-  i2_vec <- numeric(length(gene_list_type)); names(i2_vec) <- gene_list_type
-  for(gene in gene_list_type) {
-    con_regions <- get_con_regions(gene_fits, gene, dim(X2)[2], cell_ind, n_cell_types) &
-      (params_to_test %in% 1:dim(X2)[2])
-    n_regions_con <- sum(con_regions)
-    x <- gene_fits$all_vals[gene, con_regions,cell_ind]
-    s_mat_ind_cur <- s_mat_ind[con_regions]
-    var_vals <- (gene_fits$s_mat[gene, s_mat_ind_cur])^2
-    ovr_best_p_val <- 1
-    best_log_fc <- 0; best_sd <- 0
-    best_i1 <- 0; best_i2 <- 0
-    for(i1 in 1:(n_regions_con-1))
-      for(i2 in (i1+1):n_regions_con) {
-        log_fc <- abs(x[i1] - x[i2])
-        sd_cur <- sqrt(var_vals[i1] + var_vals[i2])
-        z_score <- (log_fc) / sd_cur
-        p_val <- 2*(pnorm(-z_score))
-        if(p_val < ovr_best_p_val) {
-          ovr_best_p_val <- p_val
-          best_log_fc <- log_fc
-          best_sd <- sd_cur
-          best_i1 <- which(con_regions)[i1]
-          best_i2 <- which(con_regions)[i2]
-        }
-      }
-    p_val_sig_pair[gene] <- min(1, ovr_best_p_val * choose(n_regions_con, 2))
-    log_fc_best_pair[gene] <- best_log_fc
-    sd_vec[gene] <- best_sd
-    sd_lfc_vec[gene] <- sd(x)
-    i1_vec[gene] <- best_i1
-    i2_vec[gene] <- best_i2
-  }
-  gene_list_sig <- fdr_sig_genes(gene_list_type, p_val_sig_pair, fdr)
-  all_genes <- data.frame(sd_lfc_vec[gene_list_type], i1_vec[gene_list_type], i2_vec[gene_list_type],
-                          sd_vec[gene_list_type], p_val_sig_pair[gene_list_type],
-                          log_fc_best_pair[gene_list_type])
-  rownames(all_genes) <- gene_list_type
-  custom_names <- c('sd_lfc','paramindex1_best', 'paramindex2_best', 'sd_best','p_val_best','log_fc_best')
-  colnames(all_genes) <- custom_names
-  if(length(gene_list_type) > 1) {
-    all_genes <- data.frame(all_genes, gene_fits$all_vals[rownames(all_genes),params_to_test,cell_ind],
-                            gene_fits$s_mat[rownames(all_genes),s_mat_ind[params_to_test]]) # add on the means
-    colnames(all_genes)[(length(custom_names)+1):length(all_genes)] <-
-      c(lapply(params_to_test,function(x) paste0('mean_',x)), lapply(params_to_test,function(x) paste0('sd_',x)))
+  if(length(gene_list_type) == 0) {
+    warning(paste0('find_sig_genes_categorical: cell type ', cell_type,
+                   ' has not converged on any genes. Consider removing this cell type from the model using the cell_types option.'))
+    return(list(sig_genes = list(), all_genes = list()))
   } else {
-    if(length(gene_list_type) == 1) {
-      all_genes <- data.frame(t(unlist((c(all_genes, gene_fits$all_vals[rownames(all_genes),params_to_test,cell_ind],
-                                          gene_fits$s_mat[rownames(all_genes),s_mat_ind[params_to_test]])))))
-      rownames(all_genes) <- gene_list_type
+    if(is.null(params_to_test))
+      params_to_test <- 1:dim(X2)[2]
+    n_regions <- length(params_to_test); n_cell_types <- length(cell_types)
+    cell_ind = (which(cell_types == cell_type))
+    s_mat_ind <- (1:dim(X2)[2]) + (n_regions*(cell_ind - 1))
+    p_val_sig_pair <- numeric(length(gene_list_type)); names(p_val_sig_pair) <- gene_list_type
+    log_fc_best_pair <- numeric(length(gene_list_type)); names(log_fc_best_pair) <- gene_list_type
+    sd_vec <- numeric(length(gene_list_type)); names(sd_vec) <- gene_list_type
+    sd_lfc_vec <- numeric(length(gene_list_type)); names(sd_lfc_vec) <- gene_list_type
+    i1_vec <- numeric(length(gene_list_type)); names(i1_vec) <- gene_list_type
+    i2_vec <- numeric(length(gene_list_type)); names(i2_vec) <- gene_list_type
+    for(gene in gene_list_type) {
+      con_regions <- get_con_regions(gene_fits, gene, dim(X2)[2], cell_ind, n_cell_types) &
+        (params_to_test %in% 1:dim(X2)[2])
+      n_regions_con <- sum(con_regions)
+      x <- gene_fits$all_vals[gene, con_regions,cell_ind]
+      s_mat_ind_cur <- s_mat_ind[con_regions]
+      var_vals <- (gene_fits$s_mat[gene, s_mat_ind_cur])^2
+      ovr_best_p_val <- 1
+      best_log_fc <- 0; best_sd <- 0
+      best_i1 <- 0; best_i2 <- 0
+      for(i1 in 1:(n_regions_con-1))
+        for(i2 in (i1+1):n_regions_con) {
+          log_fc <- abs(x[i1] - x[i2])
+          sd_cur <- sqrt(var_vals[i1] + var_vals[i2])
+          z_score <- (log_fc) / sd_cur
+          p_val <- 2*(pnorm(-z_score))
+          if(p_val < ovr_best_p_val) {
+            ovr_best_p_val <- p_val
+            best_log_fc <- log_fc
+            best_sd <- sd_cur
+            best_i1 <- which(con_regions)[i1]
+            best_i2 <- which(con_regions)[i2]
+          }
+        }
+      p_val_sig_pair[gene] <- min(1, ovr_best_p_val * choose(n_regions_con, 2))
+      log_fc_best_pair[gene] <- best_log_fc
+      sd_vec[gene] <- best_sd
+      sd_lfc_vec[gene] <- sd(x)
+      i1_vec[gene] <- best_i1
+      i2_vec[gene] <- best_i2
+    }
+    gene_list_sig <- fdr_sig_genes(gene_list_type, p_val_sig_pair, fdr)
+    all_genes <- data.frame(sd_lfc_vec[gene_list_type], i1_vec[gene_list_type], i2_vec[gene_list_type],
+                            sd_vec[gene_list_type], p_val_sig_pair[gene_list_type],
+                            log_fc_best_pair[gene_list_type])
+    rownames(all_genes) <- gene_list_type
+    custom_names <- c('sd_lfc','paramindex1_best', 'paramindex2_best', 'sd_best','p_val_best','log_fc_best')
+    colnames(all_genes) <- custom_names
+    if(length(gene_list_type) > 1) {
+      all_genes <- data.frame(all_genes, gene_fits$all_vals[rownames(all_genes),params_to_test,cell_ind],
+                              gene_fits$s_mat[rownames(all_genes),s_mat_ind[params_to_test]]) # add on the means
       colnames(all_genes)[(length(custom_names)+1):length(all_genes)] <-
         c(lapply(params_to_test,function(x) paste0('mean_',x)), lapply(params_to_test,function(x) paste0('sd_',x)))
-    } else
-      all_genes <- list()
+    } else {
+      if(length(gene_list_type) == 1) {
+        all_genes <- data.frame(t(unlist((c(all_genes, gene_fits$all_vals[rownames(all_genes),params_to_test,cell_ind],
+                                            gene_fits$s_mat[rownames(all_genes),s_mat_ind[params_to_test]])))))
+        rownames(all_genes) <- gene_list_type
+        colnames(all_genes)[(length(custom_names)+1):length(all_genes)] <-
+          c(lapply(params_to_test,function(x) paste0('mean_',x)), lapply(params_to_test,function(x) paste0('sd_',x)))
+      } else
+        all_genes <- list()
+    }
+    if(length(gene_list_sig) > 0) {
+      sig_genes <- all_genes[gene_list_sig, ]
+      sig_genes <- sig_genes[abs(sig_genes$p_val < p_thresh) & abs(sig_genes$log_fc) >= log_fc_thresh, ]
+    } else {
+      sig_genes <- list()
+    }
+    return(list(sig_genes = sig_genes, all_genes = all_genes))
   }
-  if(length(gene_list_sig) > 0) {
-    sig_genes <- all_genes[gene_list_sig, ]
-    sig_genes <- sig_genes[abs(sig_genes$p_val < p_thresh) & abs(sig_genes$log_fc) >= log_fc_thresh, ]
-  } else {
-    sig_genes <- list()
-  }
-  return(list(sig_genes = sig_genes, all_genes = all_genes))
 }
 
 
 find_sig_genes_individual <- function(cell_type, cell_types, gene_fits, gene_list_type, X2, params_to_test = 2, fdr = 0.01, p_thresh = 1,
                                       log_fc_thresh = 0.4, normalize_expr = F, fdr_method = 'BH', se_thresh = 1) {
-  if(length(gene_list_type) == 0)
-    stop(paste0('find_sig_genes_individual: cell type ', cell_type,
-                ' has not converged on any genes. Consider removing this cell type from the model using the cell_types option.'))
-  ct_ind <- which(cell_types == cell_type)
-  I_ind = dim(X2)[2]*(ct_ind - 1) + params_to_test
-  I_ind_intercept = dim(X2)[2]*(ct_ind - 1) + 1
-  if(normalize_expr) {
-    log_fc <- gene_fits$mean_val_cor[[cell_type]][gene_list_type]
+  if(length(gene_list_type) == 0) {
+    warning(paste0('find_sig_genes_individual: cell type ', cell_type,
+                   ' has not converged on any genes. Consider removing this cell type from the model using the cell_types option.'))
+    return(list(sig_genes = list(), all_genes = list()))
   } else {
-    log_fc <- gene_fits$all_vals[gene_list_type,params_to_test, ct_ind]
-  }
-  s_vec <- gene_fits$s_mat[gene_list_type,I_ind]
-  z_score <- abs(log_fc) / s_vec
-  p_val <- 2*(pnorm(-z_score))
-  if(length(params_to_test) > 1)
-    p_val <- pmin(apply(p_val, 1, min)*length(params_to_test),1)
-  names(p_val) <- gene_list_type
-  gene_list_sig <- fdr_sig_genes(gene_list_type, p_val, fdr, Z = log_fc / s_vec, method = fdr_method)
-  if(length(gene_list_sig) > 0)
-    p_thresh <- min(p_thresh, max(p_val[gene_list_sig]))
-  if(length(params_to_test) > 1) {
+    ct_ind <- which(cell_types == cell_type)
+    I_ind = dim(X2)[2]*(ct_ind - 1) + params_to_test
+    I_ind_intercept = dim(X2)[2]*(ct_ind - 1) + 1
+    if(normalize_expr) {
+      log_fc <- gene_fits$mean_val_cor[[cell_type]][gene_list_type]
+    } else {
+      log_fc <- gene_fits$all_vals[gene_list_type,params_to_test, ct_ind]
+    }
+    s_vec <- gene_fits$s_mat[gene_list_type,I_ind]
+    z_score <- abs(log_fc) / s_vec
     p_val <- 2*(pnorm(-z_score))
-    best_mat <- function(gene) {
-      index <- which(p_val[gene,]*length(params_to_test) < p_thresh)
-      if(length(index) > 0) {
-        best_ind <- which.max(abs(z_score[gene,index]))
-        lfc <- log_fc[gene,index][best_ind]
-        sd <- s_vec[gene,index][best_ind]
-        z <- z_score[gene,index][best_ind]
-        best_ind <- params_to_test[index[best_ind]]
-        return(c(best_ind, lfc,sd,z))
+    if(length(params_to_test) > 1) {
+      if (!is.null(dim(p_val))) {
+        p_val <- pmin(apply(p_val, 1, min)*length(params_to_test),1)
       } else {
-        return(c(0,0,0,0))
+        p_val <- min(min(p_val)*length(params_to_test), 1)
       }
     }
-    best_ind <- function(gene) {
-      best_mat(gene)[1]
+    names(p_val) <- gene_list_type
+    if (length(params_to_test)==1) {
+      names(z_score) <- gene_list_type
+      names(s_vec) <- gene_list_type
+      names(log_fc) <- gene_list_type
     }
-    best_log_fc <- function(gene) {
-      best_mat(gene)[2]
+    gene_list_sig <- fdr_sig_genes(gene_list_type, p_val, fdr, Z = log_fc / s_vec, method = fdr_method)
+    if(length(gene_list_sig) > 0)
+      p_thresh <- min(p_thresh, max(p_val[gene_list_sig]))
+    if(length(params_to_test) > 1) {
+      p_val <- 2*(pnorm(-z_score))
+      best_mat <- function(gene) {
+        if (!is.null(dim(p_val))) {
+          index <- which(p_val[gene,]*length(params_to_test) <= p_thresh)
+        } else {
+          index <- which(p_val*length(params_to_test) <= p_thresh)
+        }
+        if(length(index) > 0) {
+          if (!is.null(dim(z_score))) {
+            best_ind <- which.max(abs(z_score[gene,index]))
+            lfc <- log_fc[gene,index][best_ind]
+            sd <- s_vec[gene,index][best_ind]
+            z <- z_score[gene,index][best_ind]
+          } else {
+            best_ind <- which.max(abs(z_score[index]))
+            lfc <- log_fc[best_ind]
+            sd <- s_vec[best_ind]
+            z <- z_score[best_ind]
+          }
+          best_ind <- params_to_test[index[best_ind]]
+          return(c(best_ind, lfc,sd,z))
+        } else {
+          return(c(0,0,0,0))
+        }
+      }
+      best_ind <- function(gene) {
+        best_mat(gene)[1]
+      }
+      best_log_fc <- function(gene) {
+        best_mat(gene)[2]
+      }
+      best_sd <- function(gene) {
+        best_mat(gene)[3]
+      }
+      best_Z <- function(gene) {
+        best_mat(gene)[4]
+      }
+      best_indn <- unlist(lapply(gene_list_type, best_ind))
+      names(best_indn) <- gene_list_type
+      log_fcn <- unlist(lapply(gene_list_type, best_log_fc))
+      names(log_fcn) <- gene_list_type
+      z_scoren <- unlist(lapply(gene_list_type, best_Z))
+      names(z_scoren) <- gene_list_type
+      s_vec <- unlist(lapply(gene_list_type, best_sd))
+      names(s_vec) <- gene_list_type
+      best_ind <- best_indn; z_score <- z_scoren; log_fc <- log_fcn
+      if (!is.null(dim(p_val))) {
+        p_val <- pmin(apply(p_val, 1, min)*length(params_to_test),1)
+      } else {
+        p_val <- min(min(p_val)*length(params_to_test), 1)
+      }
+    } else {
+      best_ind <- rep(params_to_test, length(gene_list_type))
+      names(best_ind) <- gene_list_type
     }
-    best_sd <- function(gene) {
-      best_mat(gene)[3]
+    all_genes <- data.frame(z_score[gene_list_type], log_fc[gene_list_type], s_vec[gene_list_type], best_ind[gene_list_type])
+    names(all_genes) <- c('Z_score','log_fc', 'se', 'paramindex_best')
+    all_genes$conv <- gene_fits$con_mat[gene_list_type, cell_type]
+    if (!is.null(dim(p_val))) {
+      all_genes$p_val <- p_val[gene_list_type]
+    } else {
+      all_genes$p_val <- p_val
     }
-    best_Z <- function(gene) {
-      best_mat(gene)[4]
+    if(length(params_to_test) == 1 & !any(X2[,1] != 1)) {
+      mean_0 <- gene_fits$all_vals[gene_list_type, 1, ct_ind]
+      mean_1 <- mean_0 + log_fc
+      sd_0 <- gene_fits$s_mat[gene_list_type,I_ind_intercept]
+      sd_1 <- s_vec^2 - sd_0^2
+      sd_1[sd_1 < 0] <- 100
+      sd_1 <- sqrt(sd_1)
+      all_genes$mean_0 <- mean_0
+      all_genes$mean_1 <- mean_1
+      all_genes$sd_0 <- sd_0
+      all_genes$sd_1 <- sd_1
     }
-    best_indn <- unlist(lapply(gene_list_type, best_ind))
-    names(best_indn) <- gene_list_type
-    log_fcn <- unlist(lapply(gene_list_type, best_log_fc))
-    names(log_fcn) <- gene_list_type
-    z_scoren <- unlist(lapply(gene_list_type, best_Z))
-    names(z_scoren) <- gene_list_type
-    s_vec <- unlist(lapply(gene_list_type, best_sd))
-    names(s_vec) <- gene_list_type
-    best_ind <- best_indn; z_score <- z_scoren; log_fc <- log_fcn
-    p_val <- pmin(apply(p_val, 1, min)*length(params_to_test),1)
-  } else {
-    best_ind <- rep(params_to_test, length(gene_list_type))
-    names(best_ind) <- gene_list_type
+    sig_genes <- all_genes[gene_list_sig, ]
+    return(list(sig_genes = sig_genes, all_genes = all_genes))
   }
-  all_genes <- data.frame(z_score[gene_list_type], log_fc[gene_list_type], s_vec[gene_list_type], best_ind[gene_list_type])
-  names(all_genes) <- c('Z_score','log_fc', 'se', 'paramindex_best')
-  all_genes$conv <- gene_fits$con_mat[gene_list_type, cell_type]
-  all_genes$p_val <- p_val[gene_list_type]
-  if(length(params_to_test) == 1 & !any(X2[,1] != 1)) {
-    mean_0 <- gene_fits$all_vals[gene_list_type, 1, ct_ind]
-    mean_1 <- mean_0 + log_fc
-    sd_0 <- gene_fits$s_mat[gene_list_type,I_ind_intercept]
-    sd_1 <- s_vec^2 - sd_0^2
-    sd_1[sd_1 < 0] <- 100
-    sd_1 <- sqrt(sd_1)
-    all_genes$mean_0 <- mean_0
-    all_genes$mean_1 <- mean_1
-    all_genes$sd_0 <- sd_0
-    all_genes$sd_1 <- sd_1
-  }
-  sig_genes <- all_genes[gene_list_sig, ]
-  return(list(sig_genes = sig_genes, all_genes = all_genes))
 }
 
 get_de_gene_fits <- function(X1,X2,my_beta, nUMI, gene_list, cell_types, puck, barcodes, sigma_init, test_mode, myRCTD,
